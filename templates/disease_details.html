@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}{{ disease.disease_name }} Details - AgriVision AI{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <!-- Breadcrumb -->
+    <div style="margin-bottom: 2rem; font-size: 0.95rem; color: var(--text-muted);">
+      <a href="{{ url_for('diseases') }}">Disease Library</a> &gt; 
+      <a href="{{ url_for('diseases', crop=disease.crop_name) }}">{{ disease.crop_name }}</a> &gt; 
+      <span style="color: var(--text-main); font-weight: 700;">{{ disease.disease_name }}</span>
+    </div>
+
+    <!-- Header Banner -->
+    <div class="result-header-card">
+      <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+        {% if disease.reference_image %}
+          <img src="{{ url_for('static', filename=disease.reference_image) }}" alt="{{ disease.disease_name }}" style="width: 160px; height: 160px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-3d-md);">
+        {% else %}
+          <img src="{{ url_for('static', filename='images/sample_dataset/tomato___healthy.jpg') }}" alt="{{ disease.disease_name }}" style="width: 160px; height: 160px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-3d-md);">
+        {% endif %}
+        <div>
+          <span class="disease-crop-tag">🌱 {{ disease.crop_name }} Pathology</span>
+          <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">{{ disease.disease_name }}</h1>
+          <p style="color: var(--text-muted); max-width: 720px; font-size: 1.08rem; font-weight: 500;">{{ disease.description }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed Information Cards Grid -->
+    <div class="info-cards-grid">
+      <!-- Symptoms Card -->
+      <div class="info-card">
+        <div class="info-card-header">
+          <div class="info-card-icon">🔍</div>
+          <h3 data-i18n="symptoms">Symptoms</h3>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.98rem;">{{ disease.symptoms }}</p>
+      </div>
+
+      <!-- Possible Causes Card -->
+      <div class="info-card">
+        <div class="info-card-header">
+          <div class="info-card-icon">🦠</div>
+          <h3 data-i18n="causes">Causes & Pathogen</h3>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.98rem;">{{ disease.causes }}</p>
+      </div>
+
+      <!-- Prevention Card -->
+      <div class="info-card">
+        <div class="info-card-header">
+          <div class="info-card-icon">🛡️</div>
+          <h3 data-i18n="prevention">Prevention Strategies</h3>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.98rem;">{{ disease.prevention }}</p>
+      </div>
+
+      <!-- Management Card -->
+      <div class="info-card">
+        <div class="info-card-header">
+          <div class="info-card-icon">⚙️</div>
+          <h3 data-i18n="management">Field Management</h3>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.98rem;">{{ disease.management }}</p>
+      </div>
+
+      <!-- Organic Solutions Card -->
+      <div class="info-card">
+        <div class="info-card-header">
+          <div class="info-card-icon">🌿</div>
+          <h3 data-i18n="organic_solution">Organic Solutions</h3>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.98rem;">{{ disease.organic_solution }}</p>
+      </div>
+
+      <!-- Nutrient & Fertilizer Info Card -->
+      <div class="info-card">
+        <div class="info-card-header">
+          <div class="info-card-icon">🧪</div>
+          <h3 data-i18n="nutrient_info">Nutrient & Fertilizer Recommendations</h3>
+        </div>
+        <div style="font-size: 0.98rem; color: var(--text-muted);">
+          <p style="margin-bottom: 0.75rem;"><strong>Nutrient Requirements:</strong> {{ disease.nutrient_information }}</p>
+          <p><strong>Fertilizer Strategy:</strong> {{ disease.fertilizer_information }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation CTA -->
+    <div style="text-align: center; margin-top: 3rem;">
+      <a href="{{ url_for('diseases') }}" class="btn-secondary">← Back to Disease Library</a>
+      <a href="{{ url_for('detect') }}" class="btn-cta" style="margin-left: 1rem;">📷 Analyze Crop Leaf</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,590 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if is_gemini and gemini_data %}
+    Gemini AI Diagnostic Report - {{ gemini_data.plant.common_name }} ({{ gemini_data.diagnosis.primary_condition }})
+  {% else %}
+    Master Diagnostic Report - {{ prediction.crop_name }} {{ prediction.disease_name }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    {% if is_gemini and gemini_data %}
+      <!-- ========================================================= -->
+      <!-- GEMINI AI VISION DIAGNOSTIC REPORT DISPLAY -->
+      <!-- ========================================================= -->
+      
+      <!-- PAGE TITLE & REDESIGNED GOOGLE GEMINI AI VISION BADGE -->
+      <div class="section-header" style="margin-bottom: 2.5rem;" data-animate class="fade-up">
+        <h2 class="section-title" style="margin-bottom: 0.4rem;">Crop Health Analysis Report</h2>
+        <p class="section-subtitle" style="margin-bottom: 0.6rem;">Real-time visual pathology & diagnostic guidance</p>
+        
+        <!-- Polished Gemini Technology Badge -->
+        <div class="gemini-tech-badge">
+          <span class="gemini-sparkle">✦</span>
+          <span>AI Vision Analysis with <strong>Google Gemini AI Vision</strong></span>
+          <span style="color: var(--text-muted); font-size: 0.78rem;" class="desktop-only">• Visual Crop Analysis</span>
+        </div>
+      </div>
+
+      <!-- 1. CROP HEALTH ANALYSIS — EXACT 5 SUMMARY CARDS (3 + 2 CENTERED DESKTOP GRID) -->
+      <div class="result-header-card" style="margin-bottom: 3rem;" data-animate class="fade-up">
+        <div class="summary-5-grid">
+          
+          <!-- Card 1: Crop & Species -->
+          <div class="result-stat-item summary-card-1" style="height: auto; min-height: 125px;">
+            <div class="stat-label">Crop & Species</div>
+            <div class="stat-value" style="color: var(--primary); font-size: 1.35rem; line-height: 1.25; overflow-wrap: anywhere;">
+              🌱 {{ gemini_data.plant.common_name }}
+            </div>
+            <div style="font-size: 0.85rem; font-style: italic; color: var(--text-muted); margin-top: 4px;">
+              {{ gemini_data.plant.scientific_name }}
+            </div>
+          </div>
+
+          <!-- Card 2: Condition Identified / Disease -->
+          <div class="result-stat-item summary-card-2" style="height: auto; min-height: 125px;">
+            <div class="stat-label">Condition Identified</div>
+            <div class="stat-value" style="color: var(--text-heading); font-size: 1.35rem; line-height: 1.25; overflow-wrap: anywhere;">
+              🦠 {{ gemini_data.diagnosis.primary_condition }}
+            </div>
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--primary); margin-top: 4px;">
+              Category: {{ gemini_data.diagnosis.category }}
+            </div>
+          </div>
+
+          <!-- Card 3: AI Confidence -->
+          <div class="result-stat-item summary-card-3" style="height: auto; min-height: 125px;">
+            <div class="stat-label">AI Confidence</div>
+            <div class="stat-value" style="color: var(--primary); font-size: 1.35rem; line-height: 1.25;">
+              🎯 {{ gemini_data.diagnosis.confidence }}
+            </div>
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-top: 4px;">
+              Plant ID: {{ gemini_data.plant.confidence }}
+            </div>
+          </div>
+
+          <!-- Card 4: Health Status (Centered in Row 2) -->
+          <div class="result-stat-item summary-card-4" style="height: auto; min-height: 125px; text-align: center;">
+            <div class="stat-label">Health Status</div>
+            <div style="margin-top: 0.5rem;">
+              {% if gemini_data.health.status == 'HEALTHY' %}
+                <span class="status-pill healthy" style="font-size: 0.9rem; padding: 6px 16px;">🟢 HEALTHY</span>
+              {% elif gemini_data.health.status == 'PEST_DAMAGE' %}
+                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px;">🐛 PEST DAMAGE</span>
+              {% elif gemini_data.health.status == 'NUTRIENT_DEFICIENCY' %}
+                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px;">🌾 NUTRIENT DEFICIENCY</span>
+              {% elif gemini_data.health.status == 'ENVIRONMENTAL_STRESS' %}
+                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px;">🌡️ ENVIRONMENTAL STRESS</span>
+              {% elif gemini_data.health.status == 'UNKNOWN' %}
+                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px; background: var(--border-color); color: var(--text-muted);">⚪ UNKNOWN</span>
+              {% else %}
+                <span class="status-pill disease" style="font-size: 0.9rem; padding: 6px 16px;">🔴 DISEASED</span>
+              {% endif %}
+            </div>
+            <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-top: 6px;">
+              Diagnostic Status
+            </div>
+          </div>
+
+          <!-- Card 5: Action Urgency (Centered in Row 2) -->
+          <div class="result-stat-item summary-card-5" style="height: auto; min-height: 125px; text-align: center;">
+            <div class="stat-label">Action Urgency</div>
+            <div style="margin-top: 0.5rem;">
+              {% if gemini_data.urgency == 'CRITICAL' %}
+                <span class="status-pill disease" style="font-size: 0.9rem; padding: 6px 16px; background: rgba(220, 38, 38, 0.2); color: #ef4444; border: 1px solid #ef4444;">
+                  !! CRITICAL
+                </span>
+                <div style="font-size: 0.78rem; font-weight: 600; color: #ef4444; margin-top: 6px;">● Consult Expert Immediately</div>
+              {% elif gemini_data.urgency == 'HIGH' %}
+                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px; background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b;">
+                  ⚠ HIGH
+                </span>
+                <div style="font-size: 0.78rem; font-weight: 600; color: #f59e0b; margin-top: 6px;">● Prompt Attention Advised</div>
+              {% elif gemini_data.urgency == 'MODERATE' %}
+                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px; background: rgba(245, 158, 11, 0.15); color: #d97706; border: 1px solid #d97706;">
+                  ! MODERATE
+                </span>
+                <div style="font-size: 0.78rem; font-weight: 600; color: #d97706; margin-top: 6px;">● Monitor & Act Soon</div>
+              {% elif gemini_data.urgency == 'LOW' %}
+                <span class="status-pill healthy" style="font-size: 0.9rem; padding: 6px 16px;">
+                  ✓ LOW
+                </span>
+                <div style="font-size: 0.78rem; font-weight: 600; color: var(--primary); margin-top: 6px;">● Routine Monitoring</div>
+              {% else %}
+                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px; background: var(--border-color); color: var(--text-muted);">
+                  ? UNKNOWN
+                </span>
+                <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-top: 6px;">● Status Unconfirmed</div>
+              {% endif %}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 2. IMAGE PREVIEW & SEVERITY BADGE -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+        <!-- Uploaded Leaf Preview -->
+        <div class="prob-card" style="text-align: center;" data-animate class="fade-right">
+          <h3 style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--text-heading);">Analyzed Leaf Photo</h3>
+          {% if preview_img %}
+            <img src="{{ url_for('static', filename='uploads/' + preview_img) }}" alt="Uploaded Leaf Preview" class="xai-img" style="max-height: 280px; object-fit: contain; border-radius: var(--radius-md);">
+          {% else %}
+            <div style="padding: 2rem; color: var(--text-muted);">Uploaded Leaf Sample</div>
+          {% endif %}
+        </div>
+
+        <!-- Disease Severity Level Card -->
+        <div class="prob-card" style="display: flex; flex-direction: column; justify-content: center;" data-animate class="fade-left">
+          <h3 style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--text-heading);">Pathology Severity Level</h3>
+          
+          <div style="text-align: center; margin-bottom: 1.25rem;">
+            {% if gemini_data.severity.level == 'HEALTHY' %}
+              <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; display: inline-block;">
+                🟢 Healthy Leaf
+              </span>
+            {% elif gemini_data.severity.level == 'EARLY' %}
+              <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid #f59e0b; display: inline-block;">
+                🟡 Early Stage
+              </span>
+            {% elif gemini_data.severity.level == 'MODERATE' %}
+              <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(217, 119, 6, 0.15); color: #d97706; border: 1px solid #d97706; display: inline-block;">
+                🟠 Moderate Stage
+              </span>
+            {% elif gemini_data.severity.level == 'SEVERE' %}
+              <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(220, 38, 38, 0.15); color: #ef4444; border: 1px solid #ef4444; display: inline-block;">
+                🔴 Severe Stage
+              </span>
+            {% else %}
+              <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: var(--bg-input); color: var(--text-muted); border: 1px solid var(--border-color); display: inline-block;">
+                ⚪ Unknown Severity
+              </span>
+            {% endif %}
+          </div>
+
+          <div style="font-size: 0.95rem; color: var(--text-main); background: var(--bg-main); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); line-height: 1.6;">
+            <strong style="color: var(--text-heading);">Severity Assessment:</strong> {{ gemini_data.severity.reason }}
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. REDESIGNED ACTIONABLE GUIDANCE SECTION WITH STRICT SPACING SYSTEM -->
+      <div class="action-guidance-outer-card" data-animate class="fade-up">
+        
+        <!-- Header with AI-Guided Actions Badge -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.75rem;">
+          <div>
+            <h3 style="font-size: 1.75rem; margin-bottom: 0.35rem; color: var(--text-heading);">⚡ Actionable Guidance</h3>
+            <p style="font-size: 0.98rem; color: var(--text-muted); margin: 0;">Recommended next steps based on your crop health analysis</p>
+          </div>
+          <span style="font-size: 0.8rem; font-weight: 700; padding: 6px 16px; border-radius: 20px; background: var(--primary); color: #ffffff;">
+            AI-Guided Actions
+          </span>
+        </div>
+
+        <!-- Two-Column Layout Container -->
+        <div class="action-guidance-container">
+          
+          <!-- LEFT COLUMN (~68%): WHAT SHOULD I DO NOW? ACTION JOURNEY -->
+          <div style="display: flex; flex-direction: column;">
+            
+            <div class="action-journey-wrapper">
+              <h4 style="font-size: 1.3rem; margin-bottom: 0.35rem; color: var(--text-heading);">What Should I Do Now?</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">Follow these recommended steps based on the current analysis</p>
+
+              <div class="action-cards-list stagger-reveal">
+                {% if gemini_data.immediate_actions %}
+                  {% for action in gemini_data.immediate_actions %}
+                    {% if loop.first %}
+                      <!-- 01 PRIMARY ACTION (LARGER RECOMMENDED DO NOW CARD) -->
+                      <div class="action-card-item" style="border-left: 5px solid var(--primary); background: var(--bg-main);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+                          <div style="display: flex; align-items: center; gap: 12px;">
+                            <span class="action-step-num">01</span>
+                            <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                              ● IMMEDIATE PRIORITY
+                            </span>
+                          </div>
+                          <span style="font-size: 0.78rem; font-weight: 800; padding: 5px 14px; border-radius: 20px; background: #10b981; color: #ffffff;">
+                            DO NOW
+                          </span>
+                        </div>
+                        <h4 style="font-size: 1.1rem; color: var(--text-heading); margin-bottom: 0.5rem;">🔍 Primary Action: Inspect & Isolate</h4>
+                        <p style="font-size: 0.98rem; color: var(--text-main); line-height: 1.65; margin: 0; font-weight: 500;">
+                          {{ action }}
+                        </p>
+                        <div style="margin-top: 1rem; font-size: 0.82rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 6px;">
+                          ⏱ Recommended: Immediately within 24 Hours
+                        </div>
+                      </div>
+                    {% else %}
+                      <!-- FOLLOW-UP ACTION CARDS -->
+                      <div class="action-card-item">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                          <div style="display: flex; align-items: center; gap: 12px;">
+                            <span class="action-step-num">0{{ loop.index }}</span>
+                            <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: var(--bg-input); color: var(--text-muted);">
+                              {% if loop.index == 2 %}Inspection & Monitoring{% elif loop.index == 3 %}Sanitation & Prevention{% else %}Treatment Protocol{% endif %}
+                            </span>
+                          </div>
+                          {% if loop.index == 2 %}
+                            <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(245, 158, 11, 0.15); color: #f59e0b;">24–48 HOURS</span>
+                          {% elif loop.index == 3 %}
+                            <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(59, 130, 246, 0.15); color: #3b82f6;">RECOMMENDED</span>
+                          {% else %}
+                            <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: var(--bg-input); color: var(--text-muted);">IF NEEDED</span>
+                          {% endif %}
+                        </div>
+                        <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0;">
+                          {{ action }}
+                        </p>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                {% else %}
+                  <!-- DEFAULT 4-STEP ACTION JOURNEY CARDS -->
+                  <div class="action-card-item" style="border-left: 5px solid var(--primary); background: var(--bg-main);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+                      <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="action-step-num">01</span>
+                        <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                          ● IMMEDIATE PRIORITY
+                        </span>
+                      </div>
+                      <span style="font-size: 0.78rem; font-weight: 800; padding: 5px 14px; border-radius: 20px; background: #10b981; color: #ffffff;">
+                        DO NOW
+                      </span>
+                    </div>
+                    <h4 style="font-size: 1.1rem; color: var(--text-heading); margin-bottom: 0.4rem;">🔍 Inspect Nearby Leaves</h4>
+                    <p style="font-size: 0.96rem; color: var(--text-main); line-height: 1.6; margin: 0;">
+                      Check surrounding leaves and plants in the same crop row for similar visible spot lesions or chlorosis.
+                    </p>
+                    <div style="margin-top: 0.85rem; font-size: 0.82rem; font-weight: 700; color: var(--primary);">⏱ Recommended: Now</div>
+                  </div>
+
+                  <div class="action-card-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                      <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="action-step-num">02</span>
+                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: rgba(245, 158, 11, 0.15); color: #d97706;">Monitoring</span>
+                      </div>
+                      <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(245, 158, 11, 0.15); color: #f59e0b;">24–48 HOURS</span>
+                    </div>
+                    <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;">👁 Monitor Progress</h4>
+                    <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                      Observe whether spot lesions, concentric ring marks, or foliage discoloration expand over the next 24 to 48 hours.
+                    </p>
+                  </div>
+
+                  <div class="action-card-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                      <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="action-step-num">03</span>
+                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: rgba(59, 130, 246, 0.15); color: #2563eb;">Prevention & Treatment</span>
+                      </div>
+                      <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(59, 130, 246, 0.15); color: #3b82f6;">RECOMMENDED</span>
+                    </div>
+                    <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;">🛡 Apply Organic / Sanitation Measures</h4>
+                    <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                      Remove heavily diseased lower foliage, avoid overhead foliar irrigation, and apply copper-based organic bio-fungicides if appropriate.
+                    </p>
+                  </div>
+
+                  <div class="action-card-item">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                      <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="action-step-num">04</span>
+                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: var(--bg-input); color: var(--text-muted);">Expert Support</span>
+                      </div>
+                      <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: var(--bg-input); color: var(--text-muted);">IF NEEDED</span>
+                    </div>
+                    <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;">👨‍🌾 Seek Expert Support</h4>
+                    <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                      Consult an agricultural extension officer or agronomist if symptoms spread rapidly or severe defoliation occurs.
+                    </p>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RIGHT COLUMN (~32%): ACTION URGENCY, MONITOR FOR & EXPERT HELP CARDS -->
+          <div class="action-right-col">
+            
+            <!-- 1. ACTION URGENCY STATUS CARD -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem; box-shadow: var(--shadow-sm); text-align: center;">
+              <div style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.75rem;">
+                ⚡ ACTION URGENCY
+              </div>
+
+              {% if gemini_data.urgency == 'CRITICAL' %}
+                <div style="font-size: 1.5rem; font-weight: 900; color: #ef4444; margin-bottom: 0.4rem;">CRITICAL</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: #ef4444; margin-bottom: 0.75rem;">● Consult Expert Immediately</div>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                  Pathology risk is high. Prompt isolation and immediate specialist consultation is recommended.
+                </p>
+              {% elif gemini_data.urgency == 'HIGH' %}
+                <div style="font-size: 1.5rem; font-weight: 900; color: #f59e0b; margin-bottom: 0.4rem;">HIGH</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.75rem;">● Prompt Attention Advised</div>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                  Significant leaf pathology detected. Take corrective sanitation or treatment measures soon.
+                </p>
+              {% elif gemini_data.urgency == 'MODERATE' %}
+                <div style="font-size: 1.5rem; font-weight: 900; color: #d97706; margin-bottom: 0.4rem;">MODERATE</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: #d97706; margin-bottom: 0.75rem;">● Attention Recommended</div>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                  Monitor the crop closely and take appropriate preventive actions within 24 to 48 hours.
+                </p>
+              {% elif gemini_data.urgency == 'LOW' %}
+                <div style="font-size: 1.5rem; font-weight: 900; color: var(--primary); margin-bottom: 0.4rem;">LOW</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 0.75rem;">● Routine Monitoring</div>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                  Foliage displays minimal disease symptoms. Continue standard crop monitoring.
+                </p>
+              {% else %}
+                <div style="font-size: 1.5rem; font-weight: 900; color: var(--text-muted); margin-bottom: 0.4rem;">UNKNOWN</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.75rem;">● Status Unconfirmed</div>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
+                  Urgency level could not be conclusively derived from this image.
+                </p>
+              {% endif %}
+            </div>
+
+            <!-- 2. MONITOR FOR CARD -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem; box-shadow: var(--shadow-sm);">
+              <h4 style="font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--text-heading); display: flex; align-items: center; gap: 8px;">
+                <span>👁</span> Monitor For Warning Signs
+              </h4>
+              <ul style="padding-left: 1.2rem; font-size: 0.88rem; color: var(--text-main); line-height: 1.65; margin: 0;">
+                <li>New spot lesions or expanding halos</li>
+                <li>Foliage yellowing (chlorosis)</li>
+                <li>Premature leaf drop or wilt</li>
+                <li>Symptoms appearing on adjacent crop rows</li>
+                <li>Stem or fruit lesion development</li>
+              </ul>
+            </div>
+
+            <!-- 3. WHEN TO SEEK EXPERT HELP CARD -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem; box-shadow: var(--shadow-sm);">
+              <h4 style="font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--text-heading); display: flex; align-items: center; gap: 8px;">
+                <span>👨‍🌾</span> When to Seek Expert Help
+              </h4>
+              <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 0.6rem;">
+                Consult an agricultural professional or extension agent if:
+              </p>
+              <ul style="padding-left: 1.2rem; font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin: 0;">
+                <li>Symptoms spread rapidly across multiple plants</li>
+                <li>AI confidence level is low or uncertain</li>
+                <li>Organic or chemical treatment fails to slow spread</li>
+                <li>Condition causes severe defoliation</li>
+              </ul>
+            </div>
+
+          </div>
+
+      <!-- 4. VISUALLY SEPARATE ORGANIC VS CONVENTIONAL TREATMENT -->
+      <div style="margin-bottom: 3rem;">
+        <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-heading);" data-animate class="fade-up">Management & Treatment Solutions</h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+          <!-- 🌱 Organic Management Card -->
+          <div class="info-card" style="border-top: 4px solid #10b981;" data-animate class="fade-right">
+            <div class="info-card-header">
+              <div class="info-card-icon">🌱</div>
+              <h3 style="color: var(--text-heading);">Organic Management Options</h3>
+            </div>
+            {% if gemini_data.organic_treatment %}
+              <ul style="padding-left: 1.2rem; font-size: 0.96rem; color: var(--text-main); line-height: 1.7;">
+                {% for item in gemini_data.organic_treatment %}
+                  <li style="margin-bottom: 0.5rem;">{{ item }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p style="color: var(--text-muted); font-size: 0.95rem;">No specific organic treatments required.</p>
+            {% endif %}
+          </div>
+
+          <!-- 🧪 Conventional Management Card -->
+          <div class="info-card" style="border-top: 4px solid #3b82f6;" data-animate class="fade-left">
+            <div class="info-card-header">
+              <div class="info-card-icon">🧪</div>
+              <h3 style="color: var(--text-heading);">Conventional Management Options</h3>
+            </div>
+            {% if gemini_data.conventional_treatment %}
+              <ul style="padding-left: 1.2rem; font-size: 0.96rem; color: var(--text-main); line-height: 1.7;">
+                {% for item in gemini_data.conventional_treatment %}
+                  <li style="margin-bottom: 0.5rem;">{{ item }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p style="color: var(--text-muted); font-size: 0.95rem;">No specific chemical treatments required.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. FERTILIZER & NUTRIENT GUIDANCE -->
+      <div style="background: var(--bg-surface); padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--border-color); margin-bottom: 3rem;" data-animate class="fade-up">
+        <div class="info-card-header" style="margin-bottom: 1rem;">
+          <div class="info-card-icon">🌾</div>
+          <h3 style="font-size: 1.4rem; color: var(--text-heading);">Nutrient & Fertilizer Guidance</h3>
+        </div>
+
+        {% if gemini_data.nutrient_analysis.deficiency_suspected or gemini_data.fertilizer_guidance.needed %}
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; font-size: 0.96rem; color: var(--text-main);">
+            <div>
+              <strong style="color: var(--text-heading);">Suspected Deficiency:</strong>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ gemini_data.nutrient_analysis.possible_deficiency or 'Nutrient Correction Recommended' }}</p>
+            </div>
+            <div>
+              <strong style="color: var(--text-heading);">Visible Evidence:</strong>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ gemini_data.nutrient_analysis.visible_evidence or 'Leaf symptoms suggest nutrient imbalance' }}</p>
+            </div>
+            <div>
+              <strong style="color: var(--primary);">Organic Option:</strong>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ gemini_data.fertilizer_guidance.organic_option or 'Compost or organic liquid manure' }}</p>
+            </div>
+            <div>
+              <strong style="color: var(--text-heading);">Conventional Option:</strong>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ gemini_data.fertilizer_guidance.conventional_option or 'Balanced NPK fertilizer formulation' }}</p>
+            </div>
+          </div>
+          {% if gemini_data.fertilizer_guidance.recommendation %}
+            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.95rem; color: var(--text-main);">
+              <strong style="color: var(--text-heading);">Soil Testing Recommendation:</strong> {{ gemini_data.fertilizer_guidance.recommendation }}
+            </div>
+          {% endif %}
+        {% else %}
+          <p style="color: var(--text-muted); font-size: 1rem; margin: 0;">
+            No clear nutrient deficiency can be determined from this image.
+          </p>
+        {% endif %}
+      </div>
+
+      <!-- 6. DETAILED PATHOLOGY CARDS GRID -->
+      <div style="margin-bottom: 3rem;">
+        <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-heading);" data-animate class="fade-up">Detailed Symptoms & Pathology Breakdown</h3>
+        <div class="info-cards-grid stagger-reveal">
+          <!-- Symptoms -->
+          <div class="info-card">
+            <div class="info-card-header">
+              <div class="info-card-icon">🔍</div>
+              <h3 style="color: var(--text-heading);">Visible Symptoms</h3>
+            </div>
+            {% if gemini_data.symptoms %}
+              <ul style="padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-main);">
+                {% for sym in gemini_data.symptoms %}
+                  <li style="margin-bottom: 0.4rem;">{{ sym }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p style="color: var(--text-muted); font-size: 0.95rem;">No abnormal symptoms detected.</p>
+            {% endif %}
+          </div>
+
+          <!-- Possible Causes -->
+          <div class="info-card">
+            <div class="info-card-header">
+              <div class="info-card-icon">🦠</div>
+              <h3 style="color: var(--text-heading);">Possible Causes</h3>
+            </div>
+            {% if gemini_data.possible_causes %}
+              <ul style="padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-main);">
+                {% for cause in gemini_data.possible_causes %}
+                  <li style="margin-bottom: 0.4rem;">{{ cause }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p style="color: var(--text-muted); font-size: 0.95rem;">None specified.</p>
+            {% endif %}
+          </div>
+
+          <!-- Pest Analysis -->
+          <div class="info-card">
+            <div class="info-card-header">
+              <div class="info-card-icon">🐛</div>
+              <h3 style="color: var(--text-heading);">Pest Analysis</h3>
+            </div>
+            <div style="font-size: 0.95rem; color: var(--text-main);">
+              {% if gemini_data.pest_analysis.suspected %}
+                <p style="margin-bottom: 0.5rem;"><strong style="color: var(--status-disease);">Pest Activity Suspected:</strong> {{ gemini_data.pest_analysis.possible_pest }}</p>
+                <p><strong style="color: var(--text-heading);">Evidence:</strong> {{ gemini_data.pest_analysis.evidence }}</p>
+              {% else %}
+                <p style="color: var(--text-muted);">No active pest damage or insect activity visible on foliage.</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Environmental Stress -->
+          <div class="info-card">
+            <div class="info-card-header">
+              <div class="info-card-icon">🌡️</div>
+              <h3 style="color: var(--text-heading);">Environmental Factors</h3>
+            </div>
+            {% if gemini_data.environmental_stress %}
+              <ul style="padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-main);">
+                {% for stress in gemini_data.environmental_stress %}
+                  <li style="margin-bottom: 0.4rem;">{{ stress }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p style="color: var(--text-muted); font-size: 0.95rem;">No severe environmental stress visible.</p>
+            {% endif %}
+          </div>
+
+          <!-- Preventive Measures -->
+          <div class="info-card">
+            <div class="info-card-header">
+              <div class="info-card-icon">🛡️</div>
+              <h3 style="color: var(--text-heading);">Preventive Measures</h3>
+            </div>
+            {% if gemini_data.prevention %}
+              <ul style="padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-main);">
+                {% for prev in gemini_data.prevention %}
+                  <li style="margin-bottom: 0.4rem;">{{ prev }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p style="color: var(--text-muted); font-size: 0.95rem;">Maintain standard good agricultural practices.</p>
+            {% endif %}
+          </div>
+
+          <!-- Diagnostic Limitations -->
+          <div class="info-card">
+            <div class="info-card-header">
+              <div class="info-card-icon">ℹ️</div>
+              <h3 style="color: var(--text-heading);">Analysis Notes</h3>
+            </div>
+            <p style="font-size: 0.94rem; color: var(--text-muted); line-height: 1.6;">
+              {{ gemini_data.limitations }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+    {% else %}
+      <!-- TRADITIONAL PREDICTION FALLBACK -->
+      <div class="section-header" style="margin-bottom: 2rem;">
+        <h2 class="section-title">AgriVision AI Diagnostic Report</h2>
+      </div>
+    {% endif %}
+
+    <!-- 7. MANDATORY AGRICULTURAL DISCLAIMER -->
+    <div style="background: var(--status-warning-bg); border: 1px solid rgba(245, 158, 11, 0.4); padding: 1.75rem 2rem; border-radius: var(--radius-lg); margin-top: 2.5rem; color: var(--text-main);" data-animate class="fade-up">
+      <h4 style="font-size: 1.15rem; margin-bottom: 0.75rem; color: var(--status-warning);">📢 Important Agricultural Disclaimer:</h4>
+      <p style="font-size: 0.96rem; line-height: 1.7; font-weight: 500; margin: 0;">
+        AgriVision AI provides AI-assisted preliminary crop-health information based on visible symptoms. Results may be inaccurate and should not replace laboratory diagnosis or advice from a qualified agricultural professional. Always follow locally approved agricultural product labels and recommendations.
+      </p>
+    </div>
+
+    <!-- Action Bar Buttons -->
+    <div style="margin-top: 3.5rem; text-align: center; display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap;" data-animate class="fade-up">
+      <a href="{{ url_for('detect') }}" class="btn-cta" style="padding: 14px 32px;">📷 Analyze Another Leaf Image</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

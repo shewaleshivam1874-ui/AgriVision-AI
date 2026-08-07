@@ -1,0 +1,29 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+
+# Environment variables
+.env
+
+# Flask & Uploads
+static/uploads/*
+!static/uploads/.gitkeep
+
+# Machine Learning models & checkpoints
+*.h5
+*.keras
+*.ckpt
+*.pt
+*.pth
+
+# Database
+*.sqlite3
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db

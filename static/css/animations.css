@@ -1,0 +1,770 @@
+/* ==========================================================================
+   AgriVision AI - Global Animation & Micro-Interactions System
+   ========================================================================== */
+
+/* Top Scroll Progress Bar */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, #10b981, #059669, #34d399);
+  z-index: 9999;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+}
+
+/* Scroll Reveal Base Utility Classes */
+[data-animate] {
+  opacity: 0;
+  will-change: transform, opacity;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-up {
+  transform: translateY(30px);
+}
+
+.fade-down {
+  transform: translateY(-30px);
+}
+
+.fade-left {
+  transform: translateX(35px);
+}
+
+.fade-right {
+  transform: translateX(-35px);
+}
+
+.scale-in {
+  transform: scale(0.92);
+}
+
+.blur-reveal {
+  filter: blur(8px);
+  transform: translateY(15px);
+}
+
+.stagger-reveal > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Revealed Active State */
+[data-animate].is-visible,
+.stagger-reveal.is-visible > * {
+  opacity: 1;
+  transform: translate(0) scale(1);
+  filter: blur(0);
+}
+
+/* Navbar Scroll Shrink & Shadow */
+.navbar {
+  transition: padding 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar.nav-scrolled {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  background: var(--bg-surface);
+}
+
+/* Navbar Link Underline Animation */
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: width 0.3s ease, left 0.3s ease;
+  border-radius: 2px;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Button & Card Micro-Interactions */
+.btn-cta, .btn-secondary, .btn-primary {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-cta:hover, .btn-secondary:hover, .btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.btn-cta:active, .btn-secondary:active, .btn-primary:active {
+  transform: scale(0.98) translateY(0);
+}
+
+.feature-card, .step-card, .info-card, .result-stat-item, .prob-card {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.feature-card:hover, .step-card:hover, .info-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-3d-lg);
+  border-color: var(--primary);
+}
+
+/* Theme Icon Animation */
+.theme-toggle-btn #themeIcon {
+  display: inline-block;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-toggle-btn:hover #themeIcon {
+  transform: rotate(25deg) scale(1.15);
+}
+
+/* Cursor Glow Effect */
+.cursor-glow {
+  position: fixed;
+  width: 250px;
+  height: 250px;
+  margin-left: -125px;
+  margin-top: -125px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0) 70%);
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.cursor-glow.active {
+  opacity: 1;
+}
+
+/* Glassmorphic 3D Tree Hover Tooltip Card */
+.tree-hover-card {
+  position: absolute;
+  z-index: 1000;
+  width: 280px;
+  padding: 1.25rem;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 14px;
+  color: #f8fafc;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(16, 185, 129, 0.2);
+  pointer-events: auto;
+  opacity: 0;
+  transform: scale(0.94) translateY(8px);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="light"] .tree-hover-card {
+  background: rgba(255, 255, 255, 0.92);
+  color: #0f172a;
+  border-color: rgba(16, 185, 129, 0.4);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 20px rgba(16, 185, 129, 0.15);
+}
+
+.tree-hover-card.active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.tree-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.6rem;
+}
+
+.tree-card-icon {
+  font-size: 1.5rem;
+  padding: 6px;
+  background: rgba(16, 185, 129, 0.2);
+  border-radius: 8px;
+}
+
+.tree-card-title {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--primary-dark);
+}
+
+.tree-card-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #10b981;
+}
+
+.tree-card-desc {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+/* 3D Container Styling & Full Tree Visibility Safety */
+.tree-3d-wrapper {
+  position: relative;
+  width: 100%;
+  height: clamp(360px, 60vh, 540px);
+  border-radius: 20px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.tree-3d-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  display: block;
+  cursor: grab;
+}
+
+.tree-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+}
+
+@media (max-width: 640px) {
+  .tree-3d-wrapper {
+    height: clamp(320px, 50vh, 420px);
+    padding: 0.5rem;
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .tree-3d-wrapper {
+    height: clamp(260px, 75vh, 380px);
+  }
+}
+
+.tree-3d-canvas:active {
+  cursor: grabbing;
+}
+
+
+/* Instruction Overlay Badge */
+.tree-hint-badge {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  color: #a7f3d0;
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  pointer-events: none;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .tree-hint-badge {
+  background: rgba(255, 255, 255, 0.85);
+  color: #065f46;
+}
+
+/* ==========================================================================
+   Gemini Technology Badge Styling
+   ========================================================================== */
+.gemini-tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: var(--bg-card);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 30px;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.gemini-tech-badge:hover {
+  transform: translateY(-1px);
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.gemini-sparkle {
+  color: #10b981;
+  font-size: 0.95rem;
+  animation: pulseSparkle 2s infinite ease-in-out;
+}
+
+@keyframes pulseSparkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.15); }
+}
+
+/* ==========================================================================
+   5 Summary Cards - Centered 3 + 2 Grid Layout System
+   ========================================================================== */
+.summary-5-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.summary-card-1 { grid-column: span 2; }
+.summary-card-2 { grid-column: span 2; }
+.summary-card-3 { grid-column: span 2; }
+.summary-card-4 { grid-column: 2 / span 2; }
+.summary-card-5 { grid-column: 4 / span 2; }
+
+@media (max-width: 1024px) {
+  .summary-5-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .summary-card-1 { grid-column: span 2; }
+  .summary-card-2 { grid-column: span 2; }
+  .summary-card-3 { grid-column: span 2; }
+  .summary-card-4 { grid-column: span 2; }
+  .summary-card-5 { grid-column: 2 / span 2; }
+}
+
+@media (max-width: 640px) {
+  .summary-5-grid {
+    grid-template-columns: 1fr;
+  }
+  .summary-card-1,
+  .summary-card-2,
+  .summary-card-3,
+  .summary-card-4,
+  .summary-card-5 {
+    grid-column: span 1;
+  }
+}
+
+/* ==========================================================================
+   Actionable Guidance Two-Column Layout & Strict Spacing System
+   ========================================================================== */
+.action-guidance-outer-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl, 24px);
+  padding: 32px;
+  box-shadow: var(--shadow-3d-md);
+  margin-bottom: 3.5rem;
+}
+
+@media (max-width: 1024px) {
+  .action-guidance-outer-card {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .action-guidance-outer-card {
+    padding: 18px;
+  }
+}
+
+.action-guidance-container {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+  align-items: start;
+  margin-top: 24px;
+}
+
+@media (max-width: 1024px) {
+  .action-guidance-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.action-journey-wrapper {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl, 20px);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 640px) {
+  .action-journey-wrapper {
+    padding: 16px;
+  }
+}
+
+.action-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.action-card-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg, 16px);
+  padding: 20px 24px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  height: auto;
+}
+
+.action-card-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.action-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.action-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ==========================================================================
+   Hero AI Crop Disease Detection Scanner Visual Component
+   ========================================================================== */
+.hero-scanner-wrapper {
+  position: relative;
+  width: 100%;
+  height: clamp(340px, 50vh, 480px);
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-3d-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.ai-scan-leaf-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;
+  object-position: center center !important;
+  border-radius: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Laser Scanning Line Animation */
+.ai-scan-line {
+  position: absolute;
+  left: 5%;
+  width: 90%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #10b981 30%, #34d399 50%, #10b981 70%, transparent 100%);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.8), 0 0 30px rgba(52, 211, 153, 0.5);
+  z-index: 5;
+  pointer-events: none;
+  animation: scanSweep 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes scanSweep {
+  0% { top: 6%; opacity: 0.85; }
+  100% { top: 90%; opacity: 0.85; }
+}
+
+/* Computer Vision Pulsing Target Markers */
+.ai-target-marker {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #10b981;
+  border-radius: 50%;
+  z-index: 6;
+  pointer-events: none;
+  animation: markerPulse 2s infinite ease-in-out;
+}
+
+.ai-target-marker::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 6px; height: 6px;
+  margin-top: -3px; margin-left: -3px;
+  background: #10b981;
+  border-radius: 50%;
+}
+
+@keyframes markerPulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
+  50% { transform: scale(1.18); opacity: 1; box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+}
+
+/* Reticle Corner Indicators */
+.ai-reticle-corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: #10b981;
+  border-style: solid;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+.reticle-top-left { top: 18px; left: 18px; border-width: 3px 0 0 3px; border-top-left-radius: 6px; }
+.reticle-top-right { top: 18px; right: 18px; border-width: 3px 3px 0 0; border-top-right-radius: 6px; }
+.reticle-bottom-left { bottom: 18px; left: 18px; border-width: 0 0 3px 3px; border-bottom-left-radius: 6px; }
+.reticle-bottom-right { bottom: 18px; right: 18px; border-width: 0 3px 3px 0; border-bottom-right-radius: 6px; }
+
+/* Floating Information Result Cards */
+.ai-hero-floating-card {
+  position: absolute;
+  z-index: 10;
+  padding: 8px 14px;
+  background: var(--bg-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 0 15px rgba(16, 185, 129, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: floatCard 4s ease-in-out infinite alternate;
+}
+
+[data-theme="dark"] .ai-hero-floating-card {
+  background: rgba(26, 31, 37, 0.9);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+[data-theme="light"] .ai-hero-floating-card {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+@keyframes floatCard {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-6px); }
+}
+
+.float-card-1 { top: 24px; left: 24px; animation-delay: 0s; }
+.float-card-2 { top: 24px; right: 24px; animation-delay: 1.2s; }
+.float-card-3 { bottom: 24px; right: 24px; animation-delay: 2.4s; }
+
+/* ==========================================================================
+   How AgriVision AI Works - Professional Workflow Section
+   ========================================================================== */
+.workflow-section-wrapper {
+  position: relative;
+  margin-top: 2.5rem;
+}
+
+.workflow-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  align-items: stretch;
+  z-index: 1;
+}
+
+.workflow-progress-line {
+  position: absolute;
+  top: 55px;
+  left: 12%;
+  width: 76%;
+  height: 3px;
+  background: linear-gradient(90deg, #10b981 0%, #059669 50%, #34d399 100%);
+  z-index: 0;
+  opacity: 0.35;
+  border-radius: 3px;
+}
+
+.workflow-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg, 18px);
+  padding: 1.75rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 340px;
+  z-index: 2;
+}
+
+.workflow-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-3d-lg);
+}
+
+.workflow-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.workflow-step-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.1rem;
+  color: var(--primary);
+}
+
+.workflow-icon-box {
+  font-size: 1.75rem;
+  padding: 8px;
+  background: rgba(16, 185, 129, 0.12);
+  border-radius: 12px;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.workflow-card-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-heading);
+  margin-bottom: 0.6rem;
+}
+
+.workflow-card-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  flex: 1;
+}
+
+.workflow-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.workflow-chip {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--bg-input);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+.workflow-chip.active {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+/* Workflow Bottom Banner CTA */
+.workflow-cta-banner {
+  margin-top: 3rem;
+  padding: 1.75rem 2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl, 20px);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 1024px) {
+  .workflow-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .workflow-progress-line {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .workflow-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .workflow-card {
+    min-height: auto;
+    padding: 1.5rem;
+  }
+  .workflow-cta-banner {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+}
+
+
+
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  [data-animate],
+  .fade-up, .fade-down, .fade-left, .fade-right, .scale-in, .blur-reveal, .stagger-reveal > * {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  .scroll-progress-bar {
+    display: none;
+  }
+  .cursor-glow {
+    display: none;
+  }
+}
+

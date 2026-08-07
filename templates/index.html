@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+
+{% block title %}AgriVision AI - Detect Crop Diseases Early with AI{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container hero-grid">
+    <div data-animate class="fade-right">
+      <div class="hero-badge">
+        <span>🤖 Google Gemini Vision AI & Interactive 3D XAI</span>
+      </div>
+      
+      <h1 class="hero-title">
+        Detect Crop Diseases Early with <span class="text-gradient">AI</span>
+      </h1>
+      
+      <p class="hero-subtitle">
+        Upload a crop leaf image and let AgriVision AI identify possible diseases, explain visible foliage symptoms, estimate disease severity, and provide structured crop management guidance.
+      </p>
+      
+      <div class="hero-actions">
+        <a href="{{ url_for('detect') }}" class="btn-cta" style="padding: 14px 30px; font-size: 1.08rem;">
+          🔍 Analyze a Leaf
+        </a>
+      </div>
+
+      <!-- Trust Badges -->
+      <div style="display: flex; gap: 1.25rem; margin-top: 2.25rem; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.9rem; color: var(--text-main);">
+          <span style="color: var(--primary);">✓</span> Real-Time Vision AI
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.9rem; color: var(--text-main);">
+          <span style="color: var(--primary);">✓</span> Explainable AI Guidance
+        </div>
+        <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.9rem; color: var(--text-main);">
+          <span style="color: var(--primary);">✓</span> Organic & Chemical Solutions
+        </div>
+      </div>
+    </div>
+
+    <!-- Real-Time AI Crop Leaf Scanner Visual Container -->
+    <div data-animate class="fade-left">
+      <div class="hero-scanner-wrapper">
+        <!-- Reticle Bounding Corners -->
+        <div class="ai-reticle-corner reticle-top-left"></div>
+        <div class="ai-reticle-corner reticle-top-right"></div>
+        <div class="ai-reticle-corner reticle-bottom-left"></div>
+        <div class="ai-reticle-corner reticle-bottom-right"></div>
+
+        <!-- Laser Scanning Line Beam -->
+        <div class="ai-scan-line"></div>
+
+        <!-- Computer Vision Pulsing Target Spot Markers -->
+        <div class="ai-target-marker" style="top: 38%; left: 45%;"></div>
+        <div class="ai-target-marker" style="top: 52%; left: 58%;"></div>
+
+        <!-- Realistic Analyzed Leaf Sample Image -->
+        <img src="{{ url_for('static', filename='images/hero_leaf_scan.jpg') }}" alt="AI Crop Disease Leaf Analysis" class="ai-scan-leaf-img">
+
+        <!-- 3 Floating Information Result Cards -->
+        <!-- Floating Card 1: Condition Identified -->
+        <div class="ai-hero-floating-card float-card-1">
+          <span style="font-size: 1.2rem; padding: 4px 8px; background: rgba(16, 185, 129, 0.15); border-radius: 8px;">🦠</span>
+          <div>
+            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--primary);">Condition Identified</div>
+            <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-heading);">Early Blight</div>
+          </div>
+        </div>
+
+        <!-- Floating Card 2: AI Confidence -->
+        <div class="ai-hero-floating-card float-card-2">
+          <span style="font-size: 1.2rem; padding: 4px 8px; background: rgba(16, 185, 129, 0.15); border-radius: 8px;">🎯</span>
+          <div>
+            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--primary);">AI Confidence</div>
+            <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-heading);">94.2%</div>
+          </div>
+        </div>
+
+        <!-- Floating Card 3: Severity Stage -->
+        <div class="ai-hero-floating-card float-card-3">
+          <span style="font-size: 1.2rem; padding: 4px 8px; background: rgba(245, 158, 11, 0.15); border-radius: 8px;">⚡</span>
+          <div>
+            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: #d97706;">Severity Stage</div>
+            <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-heading);">Moderate Stage</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- How AgriVision AI Works Section -->
+<section class="section" style="background: var(--bg-surface);">
+  <div class="container">
+    <div class="section-header" data-animate class="fade-up">
+      <span class="section-tag">Professional AI Workflow</span>
+      <h2 class="section-title">How AgriVision AI Works</h2>
+      <p class="section-subtitle">From image capture to actionable crop-care guidance, AgriVision AI transforms a simple crop image into an easy-to-understand AI-powered health assessment.</p>
+    </div>
+
+    <div class="workflow-section-wrapper">
+      <!-- Horizontal Connecting Progress Line for Desktop -->
+      <div class="workflow-progress-line"></div>
+
+      <div class="workflow-grid stagger-reveal">
+        
+        <!-- Step 01 — Capture or Upload -->
+        <div class="workflow-card">
+          <div class="workflow-card-header">
+            <div class="workflow-step-badge">01</div>
+            <div class="workflow-icon-box">📷</div>
+          </div>
+          <h3 class="workflow-card-title">Upload a Crop Image</h3>
+          <p class="workflow-card-desc">
+            Take a clear photo of the affected crop leaf or upload an existing image from your smartphone or computer.
+          </p>
+          <div class="workflow-chips">
+            <span class="workflow-chip active">JPG, PNG, WEBP</span>
+            <span class="workflow-chip">Clear Lighting</span>
+            <span class="workflow-chip">Drag & Drop</span>
+          </div>
+        </div>
+
+        <!-- Step 02 — AI Vision Analysis -->
+        <div class="workflow-card">
+          <div class="workflow-card-header">
+            <div class="workflow-step-badge">02</div>
+            <div class="workflow-icon-box">🔬</div>
+          </div>
+          <h3 class="workflow-card-title">AI Examines the Leaf</h3>
+          <p class="workflow-card-desc">
+            The AI vision model processes the image to extract visual patterns, chlorosis halos, necrotic spot lesions, and foliage texture details.
+          </p>
+          <div class="workflow-chips">
+            <span class="workflow-chip active">Processing Image</span>
+            <span class="workflow-chip">Extracting Features</span>
+            <span class="workflow-chip">Analyzing Patterns</span>
+          </div>
+        </div>
+
+        <!-- Step 03 — Disease Assessment -->
+        <div class="workflow-card">
+          <div class="workflow-card-header">
+            <div class="workflow-step-badge">03</div>
+            <div class="workflow-icon-box">🛡️</div>
+          </div>
+          <h3 class="workflow-card-title">Identify Potential Disease</h3>
+          <p class="workflow-card-desc">
+            The trained crop classification engine identifies the likely disease or healthy class with confidence metrics and severity staging.
+          </p>
+          <div class="workflow-chips">
+            <span class="workflow-chip active">Early Blight</span>
+            <span class="workflow-chip active">94% Confidence</span>
+            <span class="workflow-chip">Moderate Stage</span>
+          </div>
+        </div>
+
+        <!-- Step 04 — Actionable Guidance -->
+        <div class="workflow-card">
+          <div class="workflow-card-header">
+            <div class="workflow-step-badge">04</div>
+            <div class="workflow-icon-box">📋</div>
+          </div>
+          <h3 class="workflow-card-title">Receive Crop-Care Guidance</h3>
+          <p class="workflow-card-desc">
+            Transforms AI diagnostics into structured farmer action steps, organic sanitation options, chemical guidelines, and fertilizer advice.
+          </p>
+          <div class="workflow-chips">
+            <span class="workflow-chip active">Symptoms & Causes</span>
+            <span class="workflow-chip active">Organic Solutions</span>
+            <span class="workflow-chip">Nutrient Advice</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Banner CTA -->
+      <div class="workflow-cta-banner" data-animate class="fade-up">
+        <div>
+          <h4 style="font-size: 1.25rem; font-weight: 800; color: var(--text-heading); margin-bottom: 0.25rem;">Ready to check your crop?</h4>
+          <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0;">Get instant diagnostic results and organic management protocols.</p>
+        </div>
+        <a href="{{ url_for('detect') }}" class="btn-cta" style="padding: 12px 28px; font-size: 1rem;">
+          Analyze a Crop Leaf →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Key Features Section (10 Cards) -->
+<section class="section">
+  <div class="container">
+    <div class="section-header" data-animate class="fade-up">
+      <span class="section-tag">Platform Capabilities</span>
+      <h2 class="section-title">Key Features of AgriVision AI</h2>
+      <p class="section-subtitle">Designed for agricultural clarity, transparency, and actionable field guidance.</p>
+    </div>
+
+    <div class="features-grid stagger-reveal">
+      <!-- Feature 1 -->
+      <div class="feature-card">
+        <div class="feature-icon">🌿</div>
+        <h3>AI Disease Detection</h3>
+        <p style="color: var(--text-muted);">Identify possible crop diseases using deep learning neural network classification.</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Confidence Analysis</h3>
+        <p style="color: var(--text-muted);">Display the model's prediction confidence score with High, Medium, or Low thresholds.</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card">
+        <div class="feature-icon">🔥</div>
+        <h3>Explainable AI (Grad-CAM)</h3>
+        <p style="color: var(--text-muted);">Use Grad-CAM visual heatmaps to show specific leaf areas that guided the prediction.</p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <h3>Disease Stage Estimation</h3>
+        <p style="color: var(--text-muted);">Show estimated disease progression stage (Early, Developing, Moderate, Advanced, Severe).</p>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Disease Severity & Affected Area</h3>
+        <p style="color: var(--text-muted);">Calculate visible affected leaf spot percentages (0-100%) and severity rating bands.</p>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="feature-card">
+        <div class="feature-icon">📖</div>
+        <h3>Disease Information</h3>
+        <p style="color: var(--text-muted);">Provide detailed information on typical symptoms, causes, and pathogen types.</p>
+      </div>
+
+      <!-- Feature 7 -->
+      <div class="feature-card">
+        <div class="feature-icon">🌱</div>
+        <h3>Organic Management</h3>
+        <p style="color: var(--text-muted);">Display available organic controls, sanitation practices, and bio-fungicides.</p>
+      </div>
+
+      <!-- Feature 8 -->
+      <div class="feature-card">
+        <div class="feature-icon">🧪</div>
+        <h3>Conventional Management</h3>
+        <p style="color: var(--text-muted);">Display conventional treatment options separately with strict safety label warnings.</p>
+      </div>
+
+      <!-- Feature 9 -->
+      <div class="feature-card">
+        <div class="feature-icon">🌾</div>
+        <h3>Nutrient Guidance</h3>
+        <p style="color: var(--text-muted);">Display useful N-P-K nutrient considerations and foliage support factors.</p>
+      </div>
+
+      <!-- Feature 10 -->
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Prevention & Monitoring</h3>
+        <p style="color: var(--text-muted);">Explain preventative practices that reduce disease spread and future crop recurrence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,268 @@
+{
+  "0": {
+    "folder": "Apple___Apple_scab",
+    "crop": "Apple",
+    "disease": "Apple Scab",
+    "status": "Disease Detected",
+    "display_name": "Apple - Apple Scab"
+  },
+  "1": {
+    "folder": "Apple___Black_rot",
+    "crop": "Apple",
+    "disease": "Apple Black Rot",
+    "status": "Disease Detected",
+    "display_name": "Apple - Black Rot"
+  },
+  "2": {
+    "folder": "Apple___Cedar_apple_rust",
+    "crop": "Apple",
+    "disease": "Cedar Apple Rust",
+    "status": "Disease Detected",
+    "display_name": "Apple - Cedar Apple Rust"
+  },
+  "3": {
+    "folder": "Apple___healthy",
+    "crop": "Apple",
+    "disease": "Apple Healthy",
+    "status": "Healthy",
+    "display_name": "Apple - Healthy"
+  },
+  "4": {
+    "folder": "Blueberry___healthy",
+    "crop": "Blueberry",
+    "disease": "Blueberry Healthy",
+    "status": "Healthy",
+    "display_name": "Blueberry - Healthy"
+  },
+  "5": {
+    "folder": "Cherry_(including_sour)___Powdery_mildew",
+    "crop": "Cherry (including sour)",
+    "disease": "Cherry (including sour) Powdery Mildew",
+    "status": "Disease Detected",
+    "display_name": "Cherry (including sour) - Powdery Mildew"
+  },
+  "6": {
+    "folder": "Cherry_(including_sour)___healthy",
+    "crop": "Cherry (including sour)",
+    "disease": "Cherry (including sour) Healthy",
+    "status": "Healthy",
+    "display_name": "Cherry (including sour) - Healthy"
+  },
+  "7": {
+    "folder": "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
+    "crop": "Corn (maize)",
+    "disease": "Corn (maize) Cercospora Leaf Spot Gray Leaf Spot",
+    "status": "Disease Detected",
+    "display_name": "Corn (maize) - Cercospora Leaf Spot Gray Leaf Spot"
+  },
+  "8": {
+    "folder": "Corn_(maize)___Common_rust_",
+    "crop": "Corn (maize)",
+    "disease": "Corn (maize) Common Rust",
+    "status": "Disease Detected",
+    "display_name": "Corn (maize) - Common Rust"
+  },
+  "9": {
+    "folder": "Corn_(maize)___Northern_Leaf_Blight",
+    "crop": "Corn (maize)",
+    "disease": "Corn (maize) Northern Leaf Blight",
+    "status": "Disease Detected",
+    "display_name": "Corn (maize) - Northern Leaf Blight"
+  },
+  "10": {
+    "folder": "Corn_(maize)___healthy",
+    "crop": "Corn (maize)",
+    "disease": "Corn (maize) Healthy",
+    "status": "Healthy",
+    "display_name": "Corn (maize) - Healthy"
+  },
+  "11": {
+    "folder": "Grape___Black_rot",
+    "crop": "Grape",
+    "disease": "Grape Black Rot",
+    "status": "Disease Detected",
+    "display_name": "Grape - Black Rot"
+  },
+  "12": {
+    "folder": "Grape___Esca_(Black_Measles)",
+    "crop": "Grape",
+    "disease": "Grape Esca (Black Measles)",
+    "status": "Disease Detected",
+    "display_name": "Grape - Esca (Black Measles)"
+  },
+  "13": {
+    "folder": "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)",
+    "crop": "Grape",
+    "disease": "Grape Leaf Blight (Isariopsis Leaf Spot)",
+    "status": "Disease Detected",
+    "display_name": "Grape - Leaf Blight (Isariopsis Leaf Spot)"
+  },
+  "14": {
+    "folder": "Grape___healthy",
+    "crop": "Grape",
+    "disease": "Grape Healthy",
+    "status": "Healthy",
+    "display_name": "Grape - Healthy"
+  },
+  "15": {
+    "folder": "Orange___Haunglongbing_(Citrus_greening)",
+    "crop": "Orange",
+    "disease": "Orange Haunglongbing (Citrus Greening)",
+    "status": "Disease Detected",
+    "display_name": "Orange - Haunglongbing (Citrus Greening)"
+  },
+  "16": {
+    "folder": "Peach___Bacterial_spot",
+    "crop": "Peach",
+    "disease": "Peach Bacterial Spot",
+    "status": "Disease Detected",
+    "display_name": "Peach - Bacterial Spot"
+  },
+  "17": {
+    "folder": "Peach___healthy",
+    "crop": "Peach",
+    "disease": "Peach Healthy",
+    "status": "Healthy",
+    "display_name": "Peach - Healthy"
+  },
+  "18": {
+    "folder": "Pepper,_bell___Bacterial_spot",
+    "crop": "Pepper bell",
+    "disease": "Pepper bell Bacterial Spot",
+    "status": "Disease Detected",
+    "display_name": "Pepper bell - Bacterial Spot"
+  },
+  "19": {
+    "folder": "Pepper,_bell___healthy",
+    "crop": "Pepper bell",
+    "disease": "Pepper bell Healthy",
+    "status": "Healthy",
+    "display_name": "Pepper bell - Healthy"
+  },
+  "20": {
+    "folder": "Potato___Early_blight",
+    "crop": "Potato",
+    "disease": "Potato Early Blight",
+    "status": "Disease Detected",
+    "display_name": "Potato - Early Blight"
+  },
+  "21": {
+    "folder": "Potato___Late_blight",
+    "crop": "Potato",
+    "disease": "Potato Late Blight",
+    "status": "Disease Detected",
+    "display_name": "Potato - Late Blight"
+  },
+  "22": {
+    "folder": "Potato___healthy",
+    "crop": "Potato",
+    "disease": "Potato Healthy",
+    "status": "Healthy",
+    "display_name": "Potato - Healthy"
+  },
+  "23": {
+    "folder": "Raspberry___healthy",
+    "crop": "Raspberry",
+    "disease": "Raspberry Healthy",
+    "status": "Healthy",
+    "display_name": "Raspberry - Healthy"
+  },
+  "24": {
+    "folder": "Soybean___healthy",
+    "crop": "Soybean",
+    "disease": "Soybean Healthy",
+    "status": "Healthy",
+    "display_name": "Soybean - Healthy"
+  },
+  "25": {
+    "folder": "Squash___Powdery_mildew",
+    "crop": "Squash",
+    "disease": "Squash Powdery Mildew",
+    "status": "Disease Detected",
+    "display_name": "Squash - Powdery Mildew"
+  },
+  "26": {
+    "folder": "Strawberry___Leaf_scorch",
+    "crop": "Strawberry",
+    "disease": "Strawberry Leaf Scorch",
+    "status": "Disease Detected",
+    "display_name": "Strawberry - Leaf Scorch"
+  },
+  "27": {
+    "folder": "Strawberry___healthy",
+    "crop": "Strawberry",
+    "disease": "Strawberry Healthy",
+    "status": "Healthy",
+    "display_name": "Strawberry - Healthy"
+  },
+  "28": {
+    "folder": "Tomato___Bacterial_spot",
+    "crop": "Tomato",
+    "disease": "Tomato Bacterial Spot",
+    "status": "Disease Detected",
+    "display_name": "Tomato - Bacterial Spot"
+  },
+  "29": {
+    "folder": "Tomato___Early_blight",
+    "crop": "Tomato",
+    "disease": "Tomato Early Blight",
+    "status": "Disease Detected",
+    "display_name": "Tomato - Early Blight"
+  },
+  "30": {
+    "folder": "Tomato___Late_blight",
+    "crop": "Tomato",
+    "disease": "Tomato Late Blight",
+    "status": "Disease Detected",
+    "display_name": "Tomato - Late Blight"
+  },
+  "31": {
+    "folder": "Tomato___Leaf_Mold",
+    "crop": "Tomato",
+    "disease": "Tomato Leaf Mold",
+    "status": "Disease Detected",
+    "display_name": "Tomato - Leaf Mold"
+  },
+  "32": {
+    "folder": "Tomato___Septoria_leaf_spot",
+    "crop": "Tomato",
+    "disease": "Tomato Septoria Leaf Spot",
+    "status": "Disease Detected",
+    "display_name": "Tomato - Septoria Leaf Spot"
+  },
+  "33": {
+    "folder": "Tomato___Spider_mites Two-spotted_spider_mite",
+    "crop": "Tomato",
+    "disease": "Tomato Spider Mites Two-Spotted Spider Mite",
+    "status": "Disease Detected",
+    "display_name": "Tomato - Spider Mites Two-Spotted Spider Mite"
+  },
+  "34": {
+    "folder": "Tomato___Target_Spot",
+    "crop": "Tomato",
+    "disease": "Tomato Target Spot",
+    "status": "Disease Detected",
+    "display_name": "Tomato - Target Spot"
+  },
+  "35": {
+    "folder": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+    "crop": "Tomato",
+    "disease": "Tomato Yellow Leaf Curl Virus",
+    "status": "Disease Detected",
+    "display_name": "Tomato - Tomato Yellow Leaf Curl Virus"
+  },
+  "36": {
+    "folder": "Tomato___Tomato_mosaic_virus",
+    "crop": "Tomato",
+    "disease": "Tomato Mosaic Virus",
+    "status": "Disease Detected",
+    "display_name": "Tomato - Tomato Mosaic Virus"
+  },
+  "37": {
+    "folder": "Tomato___healthy",
+    "crop": "Tomato",
+    "disease": "Tomato Healthy",
+    "status": "Healthy",
+    "display_name": "Tomato - Healthy"
+  }
+}

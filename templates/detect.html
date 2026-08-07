@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Analyze Leaf - AgriVision AI{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container upload-container">
+    <div class="section-header">
+      <span class="section-tag">AI Diagnostics Portal</span>
+      <h2 class="section-title">Analyze Your Crop Leaf</h2>
+      <p class="section-subtitle">Upload a clear image of a crop leaf for AI-powered disease analysis, stage estimation, and Grad-CAM visualization.</p>
+    </div>
+
+    <!-- Expandable Tips for Better Results Banner -->
+    <details class="upload-tip-box" style="cursor: pointer;" open>
+      <summary style="font-weight: 800; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
+        💡 Tips for Better Results (Click to expand/collapse)
+      </summary>
+      <ul style="margin-top: 0.75rem; padding-left: 1.5rem; line-height: 1.7; font-size: 0.94rem;">
+        <li>Use a clear, well-lit image of a single crop leaf.</li>
+        <li>Keep the leaf properly focused to avoid excessive blur.</li>
+        <li>Ensure sufficient natural lighting without extreme glare or dark shadows.</li>
+        <li>Keep the affected diseased region clearly visible.</li>
+        <li>Avoid covering the leaf with fingers, tools, or background clutter.</li>
+        <li>Prefer one dominant leaf per photo for best accuracy.</li>
+        <li>Avoid extremely distant photos where leaf details cannot be seen.</li>
+      </ul>
+    </details>
+
+    <!-- Error & Validation Alert Container -->
+    <div id="uploadErrorAlert" class="alert alert-danger" style="display: none;"></div>
+
+    <!-- Upload Box & 3D Scanner Viewfinder -->
+    <div class="upload-card" id="uploadCard">
+      <input type="file" id="fileInput" class="file-input" accept=".jpg,.jpeg,.png">
+      
+      <div id="dropzoneDefaultState">
+        <div class="upload-icon">📷</div>
+        <h3 class="upload-title" style="font-size: 1.6rem; margin-bottom: 0.5rem;">Upload a Crop Leaf Image</h3>
+        <p class="upload-subtitle" style="color: var(--text-muted); margin-bottom: 1.75rem;">
+          Drag and drop your leaf photo here, or click to browse files (JPG, JPEG, PNG)
+        </p>
+        
+        <button type="button" class="btn-secondary" id="browseBtn" style="padding: 12px 28px;">
+          📁 Browse Files
+        </button>
+      </div>
+
+      <!-- Scanner Viewfinder & Preview -->
+      <div class="preview-wrapper" id="previewWrapper" style="display: none;">
+        <div class="scanner-viewfinder">
+          <img id="previewImg" src="" alt="Uploaded Leaf Preview" class="preview-img">
+          
+          <!-- Animated Laser Scanning Beam & Reticle Corners -->
+          <div class="scanner-beam" id="scannerBeam"></div>
+          <div class="reticle-corner reticle-tl"></div>
+          <div class="reticle-corner reticle-tr"></div>
+          <div class="reticle-corner reticle-bl"></div>
+          <div class="reticle-corner reticle-br"></div>
+          
+          <button type="button" class="btn-remove-img" id="removeImgBtn" title="Remove Image">✕</button>
+        </div>
+
+        <div id="fileMetaInfo" style="margin-top: 1rem; font-weight: 700; font-size: 0.95rem; color: var(--text-main);"></div>
+
+        <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center;">
+          <button type="button" class="btn-secondary" id="changeImgBtn">🔄 Change Image</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real Dataset Sample Quick Test Leaves -->
+    <div class="sample-leaves-section">
+      <div style="font-weight: 800; font-size: 1rem; color: var(--text-heading);">
+        ⚡ Quick Test Real Dataset Sample Leaves:
+      </div>
+      <div class="sample-leaves-grid">
+        <div class="sample-leaf-card" data-sample="{{ url_for('static', filename='images/sample_dataset/tomato___early_blight.jpg') }}">
+          <img src="{{ url_for('static', filename='images/sample_dataset/tomato___early_blight.jpg') }}" alt="Tomato Early Blight" class="sample-leaf-img">
+          <div>
+            <div style="font-weight: 800; font-size: 0.9rem;">Tomato Early Blight</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Dataset Leaf 1</div>
+          </div>
+        </div>
+
+        <div class="sample-leaf-card" data-sample="{{ url_for('static', filename='images/sample_dataset/tomato___healthy.jpg') }}">
+          <img src="{{ url_for('static', filename='images/sample_dataset/tomato___healthy.jpg') }}" alt="Tomato Healthy" class="sample-leaf-img">
+          <div>
+            <div style="font-weight: 800; font-size: 0.9rem;">Tomato Healthy</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Dataset Leaf 2</div>
+          </div>
+        </div>
+
+        <div class="sample-leaf-card" data-sample="{{ url_for('static', filename='images/sample_dataset/potato___late_blight.jpg') }}">
+          <img src="{{ url_for('static', filename='images/sample_dataset/potato___late_blight.jpg') }}" alt="Potato Late Blight" class="sample-leaf-img">
+          <div>
+            <div style="font-weight: 800; font-size: 0.9rem;">Potato Late Blight</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Dataset Leaf 3</div>
+          </div>
+        </div>
+
+        <div class="sample-leaf-card" data-sample="{{ url_for('static', filename='images/sample_dataset/apple___apple_scab.jpg') }}">
+          <img src="{{ url_for('static', filename='images/sample_dataset/apple___apple_scab.jpg') }}" alt="Apple Scab" class="sample-leaf-img">
+          <div>
+            <div style="font-weight: 800; font-size: 0.9rem;">Apple Scab</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Dataset Leaf 4</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="analyze-actions" style="text-align: center; margin-top: 2rem;">
+      <button type="button" id="analyzeBtn" class="btn-cta" style="padding: 16px 44px; font-size: 1.15rem;" disabled>
+        🔬 Analyze Leaf
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Animated 7-Stage AI Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem; color: #ffffff;">Analyzing leaf image...</h3>
+  
+  <div class="scan-progress-box">
+    <div class="scan-step-item active" id="stage1">✓ 1. Validating image format & dimensions</div>
+    <div class="scan-step-item" id="stage2">2. Preprocessing & tensor normalization</div>
+    <div class="scan-step-item" id="stage3">3. Running AI disease detection model</div>
+    <div class="scan-step-item" id="stage4">4. Generating prediction confidence score</div>
+    <div class="scan-step-item" id="stage5">5. Creating Explainable AI Grad-CAM visualization</div>
+    <div class="scan-step-item" id="stage6">6. Querying agricultural disease knowledge database</div>
+    <div class="scan-step-item" id="stage7">7. Preparing master diagnostic report</div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+{% endblock %}
