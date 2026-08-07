@@ -1,6 +1,10 @@
 import os
-import cv2
 import numpy as np
+
+try:
+    import cv2
+except ImportError:
+    cv2 = None
 
 def segment_leaf_and_lesions(cv_bgr_image, output_mask_path=None):
     """
@@ -12,13 +16,14 @@ def segment_leaf_and_lesions(cv_bgr_image, output_mask_path=None):
     - severity_band: 'Very Low', 'Low', 'Moderate', 'High', or 'Severe'
     - mask_path: path to saved visual segmentation overlay
     """
-    if cv_bgr_image is None or cv_bgr_image.size == 0:
+    if cv2 is None or cv_bgr_image is None or cv_bgr_image.size == 0:
         return {
             "affected_percentage": 0.0,
             "healthy_percentage": 100.0,
             "severity_band": "Unknown",
             "mask_path": None
         }
+
 
     h, w = cv_bgr_image.shape[:2]
 
@@ -76,13 +81,15 @@ def segment_leaf_and_lesions(cv_bgr_image, output_mask_path=None):
     red_mask = np.zeros_like(cv_bgr_image)
     red_mask[:, :] = (0, 0, 235)  # Bright red for lesions
     
-    # Apply red mask to lesion pixels
-    lesion_indices = lesion_mask > 0
-    overlay[lesion_indices] = cv2.addWeighted(cv_bgr_image[lesion_indices], 0.4, red_mask[lesion_indices], 0.6, 0)
+    # Apply red mask blend to lesion pixels
+    blended = cv2.addWeighted(cv_bgr_image, 0.4, red_mask, 0.6, 0)
+    lesion_3d = lesion_mask > 0
+    overlay[lesion_3d] = blended[lesion_3d]
 
     # Draw contour outline around lesion areas
     contours, _ = cv2.findContours(lesion_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cv2.drawContours(overlay, contours, -1, (0, 255, 255), 1)  # Yellow contour border
+
 
     if output_mask_path:
         os.makedirs(os.path.dirname(output_mask_path), exist_ok=True)
