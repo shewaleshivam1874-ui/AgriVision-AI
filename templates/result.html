@@ -434,26 +434,26 @@
           <h3 style="font-size: 1.4rem; color: var(--text-heading);">Nutrient & Fertilizer Guidance</h3>
         </div>
 
-        {% if gemini_data.nutrient_analysis.deficiency_suspected or gemini_data.fertilizer_guidance.needed %}
+        {% if (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.deficiency_suspected) or (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.needed) %}
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; font-size: 0.96rem; color: var(--text-main);">
             <div>
               <strong style="color: var(--text-heading);">Suspected Deficiency:</strong>
-              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ gemini_data.nutrient_analysis.possible_deficiency or 'Nutrient Correction Recommended' }}</p>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.possible_deficiency) or 'Nutrient Correction Recommended' }}</p>
             </div>
             <div>
               <strong style="color: var(--text-heading);">Visible Evidence:</strong>
-              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ gemini_data.nutrient_analysis.visible_evidence or 'Leaf symptoms suggest nutrient imbalance' }}</p>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.visible_evidence) or 'Leaf symptoms suggest nutrient imbalance' }}</p>
             </div>
             <div>
               <strong style="color: var(--primary);">Organic Option:</strong>
-              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ gemini_data.fertilizer_guidance.organic_option or 'Compost or organic liquid manure' }}</p>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.organic_option) or 'Compost or organic liquid manure' }}</p>
             </div>
             <div>
               <strong style="color: var(--text-heading);">Conventional Option:</strong>
-              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ gemini_data.fertilizer_guidance.conventional_option or 'Balanced NPK fertilizer formulation' }}</p>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.conventional_option) or 'Balanced NPK fertilizer formulation' }}</p>
             </div>
           </div>
-          {% if gemini_data.fertilizer_guidance.recommendation %}
+          {% if gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.recommendation %}
             <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.95rem; color: var(--text-main);">
               <strong style="color: var(--text-heading);">Soil Testing Recommendation:</strong> {{ gemini_data.fertilizer_guidance.recommendation }}
             </div>
@@ -465,24 +465,25 @@
         {% endif %}
       </div>
 
-      <!-- 6. DETAILED PATHOLOGY CARDS GRID -->
-      <div style="margin-bottom: 3rem;">
-        <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-heading);" data-animate class="fade-up">Detailed Symptoms & Pathology Breakdown</h3>
-        <div class="info-cards-grid stagger-reveal">
-          <!-- Symptoms -->
+      <!-- 6. ADDITIONAL DIAGNOSTIC INSIGHTS -->
+      <div style="margin-bottom: 3rem;" data-animate class="fade-up">
+        <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-heading);">Additional Diagnostic Insights</h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+          <!-- Symptoms Observed -->
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🔍</div>
               <h3 style="color: var(--text-heading);">Visible Symptoms</h3>
             </div>
-            {% if gemini_data.symptoms %}
+            {% if gemini_data.symptoms_observed %}
               <ul style="padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-main);">
-                {% for sym in gemini_data.symptoms %}
-                  <li style="margin-bottom: 0.4rem;">{{ sym }}</li>
+                {% for symptom in gemini_data.symptoms_observed %}
+                  <li style="margin-bottom: 0.4rem;">{{ symptom }}</li>
                 {% endfor %}
               </ul>
             {% else %}
-              <p style="color: var(--text-muted); font-size: 0.95rem;">No abnormal symptoms detected.</p>
+              <p style="color: var(--text-muted); font-size: 0.95rem;">None specified.</p>
             {% endif %}
           </div>
 
@@ -510,7 +511,7 @@
               <h3 style="color: var(--text-heading);">Pest Analysis</h3>
             </div>
             <div style="font-size: 0.95rem; color: var(--text-main);">
-              {% if gemini_data.pest_analysis.suspected %}
+              {% if gemini_data.pest_analysis and gemini_data.pest_analysis.suspected %}
                 <p style="margin-bottom: 0.5rem;"><strong style="color: var(--status-disease);">Pest Activity Suspected:</strong> {{ gemini_data.pest_analysis.possible_pest }}</p>
                 <p><strong style="color: var(--text-heading);">Evidence:</strong> {{ gemini_data.pest_analysis.evidence }}</p>
               {% else %}

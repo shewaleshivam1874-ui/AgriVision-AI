@@ -745,8 +745,28 @@
     flex-direction: column;
     text-align: center;
     align-items: center;
-  }
+/* Quick Tips Accordion Styling */
+details.upload-tip-box summary {
+  list-style: none;
+  cursor: pointer;
+  transition: border-radius 0.2s ease, border-color 0.2s ease;
 }
+details.upload-tip-box summary::-webkit-details-marker {
+  display: none;
+}
+details.upload-tip-box summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+details.upload-tip-box[open] .accordion-chevron {
+  transform: rotate(180deg);
+}
+details.upload-tip-box[open] summary {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-color: transparent !important;
+}
+
 
 
 

@@ -67,7 +67,8 @@ class DatabaseManager:
                 ('confidence_level', 'VARCHAR(50)'),
                 ('image_quality', 'VARCHAR(50)'),
                 ('affected_area_pct', 'FLOAT'),
-                ('severity_band', 'VARCHAR(50)')
+                ('severity_band', 'VARCHAR(50)'),
+                ('full_analysis', 'TEXT')
             ]
 
             for col_name, col_type in migrations:
@@ -125,6 +126,7 @@ class DatabaseManager:
             affected_area_pct REAL,
             severity_band TEXT,
             heatmap_path TEXT,
+            full_analysis TEXT,
             prediction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
         """)
@@ -137,8 +139,10 @@ class DatabaseManager:
             ('confidence_level', 'TEXT'),
             ('image_quality', 'TEXT'),
             ('affected_area_pct', 'REAL'),
-            ('severity_band', 'TEXT')
+            ('severity_band', 'TEXT'),
+            ('full_analysis', 'TEXT')
         ]
+
 
         for col_name, col_type in sqlite_migrations:
             if col_name not in columns:
@@ -308,35 +312,29 @@ class DatabaseManager:
         finally:
             conn.close()
 
-    def get_all_diseases(self, crop_filter=None, search_query=None):
+    def get_all_diseases(self, crop_id=None):
         conn = self.get_connection()
         try:
             cursor = conn.cursor()
-            sql = "SELECT d.*, c.crop_name FROM diseases d JOIN crops c ON d.crop_id = c.crop_id WHERE 1=1"
-            params = []
-
-            if crop_filter and crop_filter.strip() and crop_filter != 'All':
-                sql += " AND LOWER(c.crop_name) = LOWER(?)" if self.use_sqlite else " AND LOWER(c.crop_name) = LOWER(%s)"
-                params.append(crop_filter.strip())
-
-            if search_query and search_query.strip():
-                term = f"%{search_query.strip().lower()}%"
+            if crop_id:
                 placeholder = "?" if self.use_sqlite else "%s"
-                sql += f" AND (LOWER(d.disease_name) LIKE {placeholder} OR LOWER(c.crop_name) LIKE {placeholder} OR LOWER(d.description) LIKE {placeholder})"
-                params.extend([term, term, term])
-
-            sql += " ORDER BY c.crop_name ASC, d.disease_name ASC"
-            cursor.execute(sql, params)
+                sql = f"SELECT d.*, c.crop_name FROM diseases d JOIN crops c ON d.crop_id = c.crop_id WHERE d.crop_id = {placeholder} ORDER BY d.disease_name ASC"
+                cursor.execute(sql, (crop_id,))
+            else:
+                sql = "SELECT d.*, c.crop_name FROM diseases d JOIN crops c ON d.crop_id = c.crop_id ORDER BY d.disease_name ASC"
+                cursor.execute(sql)
             rows = cursor.fetchall()
             return [dict(r) if isinstance(r, sqlite3.Row) else r for r in rows]
         finally:
             conn.close()
 
+
     def get_disease_by_id(self, disease_id):
         conn = self.get_connection()
         try:
             cursor = conn.cursor()
-            sql = "SELECT d.*, c.crop_name FROM diseases d JOIN crops c ON d.crop_id = c.crop_id WHERE d.disease_id = ?" if self.use_sqlite else "SELECT d.*, c.crop_name FROM diseases d JOIN crops c ON d.crop_id = c.crop_id WHERE d.disease_id = %s"
+            placeholder = "?" if self.use_sqlite else "%s"
+            sql = f"SELECT d.*, c.crop_name FROM diseases d JOIN crops c ON d.crop_id = c.crop_id WHERE d.disease_id = {placeholder}"
             cursor.execute(sql, (disease_id,))
             row = cursor.fetchone()
             return dict(row) if isinstance(row, sqlite3.Row) else row
@@ -359,30 +357,39 @@ class DatabaseManager:
         finally:
             conn.close()
 
-    def save_prediction(self, image_path, crop_name, disease_name, confidence, confidence_level=None, image_quality=None, affected_area_pct=None, severity_band=None, heatmap_path=None):
+    def save_prediction(self, image_path, crop_name, disease_name, confidence, confidence_level=None, image_quality=None, affected_area_pct=None, severity_band=None, heatmap_path=None, full_analysis=None):
         """
         Safely insert prediction log into prediction_history.
         Catches any database error without raising an exception to caller.
         """
         conn = None
         try:
+            import json
+            full_analysis_json = None
+            if full_analysis is not None:
+                if isinstance(full_analysis, (dict, list)):
+                    full_analysis_json = json.dumps(full_analysis, ensure_ascii=False)
+                elif isinstance(full_analysis, str):
+                    full_analysis_json = full_analysis
+
             conn = self.get_connection()
             cursor = conn.cursor()
-            placeholder = "(?, ?, ?, ?, ?, ?, ?, ?, ?)" if self.use_sqlite else "(%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            placeholder = "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" if self.use_sqlite else "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             sql = f"""
-                INSERT INTO prediction_history (image_path, crop_name, disease_name, confidence, confidence_level, image_quality, affected_area_pct, severity_band, heatmap_path)
+                INSERT INTO prediction_history (image_path, crop_name, disease_name, confidence, confidence_level, image_quality, affected_area_pct, severity_band, heatmap_path, full_analysis)
                 VALUES {placeholder}
             """
             cursor.execute(sql, (
                 image_path,
                 crop_name,
                 disease_name,
-                float(confidence),
+                float(confidence) if isinstance(confidence, (int, float)) else 90.0,
                 confidence_level or "High Confidence",
                 image_quality or "Good",
                 float(affected_area_pct) if affected_area_pct is not None else 0.0,
                 severity_band or "Moderate",
-                heatmap_path
+                heatmap_path,
+                full_analysis_json
             ))
             if hasattr(conn, 'commit'):
                 conn.commit()
@@ -400,12 +407,23 @@ class DatabaseManager:
     def get_prediction_by_id(self, prediction_id):
         conn = self.get_connection()
         try:
+            import json
             cursor = conn.cursor()
             placeholder = "?" if self.use_sqlite else "%s"
             sql = f"SELECT * FROM prediction_history WHERE prediction_id = {placeholder}"
             cursor.execute(sql, (prediction_id,))
             row = cursor.fetchone()
-            return dict(row) if isinstance(row, sqlite3.Row) else row
+            if not row:
+                return None
+            res = dict(row) if isinstance(row, sqlite3.Row) else dict(row)
+            if res.get('full_analysis') and isinstance(res['full_analysis'], str):
+                try:
+                    res['full_analysis_dict'] = json.loads(res['full_analysis'])
+                except Exception:
+                    res['full_analysis_dict'] = None
+            else:
+                res['full_analysis_dict'] = None
+            return res
         finally:
             conn.close()
 

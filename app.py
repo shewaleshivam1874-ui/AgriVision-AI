@@ -16,15 +16,34 @@ app.config.from_object(Config)
 # Ensure upload directory exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
+from utils.i18n import get_translation, TRANSLATIONS
+
 # ----------------------------------------------------
 # Global Template Context Processor
 # ----------------------------------------------------
 @app.context_processor
 def inject_global_vars():
+    lang = session.get('lang', 'en')
     return {
         'current_year': time.strftime('%Y'),
-        'app_name': 'AgriVision AI'
+        'app_name': 'AgriVision AI',
+        'current_lang': lang,
+        't': lambda key: get_translation(key, lang),
+        'translations_json': TRANSLATIONS.get(lang, TRANSLATIONS['en'])
     }
+
+# ----------------------------------------------------
+# Language Switcher Route
+# ----------------------------------------------------
+@app.route('/set-language/<lang>')
+def set_language(lang):
+    """Set persistent session language (en, mr, hi)."""
+    if lang in ['en', 'mr', 'hi']:
+        session['lang'] = lang
+    referrer = request.referrer
+    if referrer and request.host in referrer:
+        return redirect(referrer)
+    return redirect(url_for('index'))
 
 # ----------------------------------------------------
 # Application Routes
@@ -40,6 +59,7 @@ def index():
 def detect():
     """Analyze Leaf Diagnostic Portal."""
     return render_template('detect.html')
+
 
 @app.route('/api/analyze-leaf', methods=['POST'])
 def analyze_leaf():
@@ -71,9 +91,10 @@ def analyze_leaf():
             'message': 'Unsupported file format. Please upload JPG, JPEG, PNG, or WEBP images.'
         }), 400
 
-    lang = request.form.get('lang') or request.headers.get('Accept-Language') or 'en'
+    lang = session.get('lang') or request.form.get('lang') or 'en'
     if ',' in lang:
         lang = lang.split(',')[0]
+
 
     saved_path = None
     try:
@@ -116,9 +137,28 @@ def analyze_leaf():
                 'message': analysis_result.get('message', 'Please upload a clear close-up image of the affected crop leaf.')
             }), status_code
 
+        # Save complete Gemini AI analysis in prediction_history database table
+        pred_id = None
+        try:
+            pred_id = db_manager.save_prediction(
+                image_path=saved_filename,
+                crop_name=analysis_result['data'].get('plant', {}).get('common_name', 'Tomato'),
+                disease_name=analysis_result['data'].get('diagnosis', {}).get('primary_condition', 'Crop Pathology'),
+                confidence=analysis_result['data'].get('diagnosis', {}).get('confidence', 'HIGH'),
+                confidence_level=analysis_result['data'].get('plant', {}).get('confidence', 'HIGH'),
+                image_quality="Good",
+                affected_area_pct=0.0,
+                severity_band=analysis_result['data'].get('severity', {}).get('level', 'MODERATE'),
+                heatmap_path=None,
+                full_analysis=analysis_result['data']
+            )
+        except Exception as db_err:
+            print(f"[App Warning] DB prediction history save failed: {db_err}")
+
         # Save analysis data and image preview in session
         session['gemini_analysis'] = analysis_result['data']
         session['gemini_preview_img'] = saved_filename
+        session['gemini_pred_id'] = pred_id
 
         return jsonify({
             'success': True,
@@ -156,6 +196,7 @@ def gemini_result():
         preview_img=preview_img,
         is_gemini=True
     )
+
 
 
 @app.route('/predict', methods=['POST'])
@@ -262,10 +303,20 @@ def predict():
 
 @app.route('/result/<int:prediction_id>')
 def result(prediction_id):
-    """Display comprehensive master diagnostic report."""
+    """Display comprehensive master diagnostic report from database history."""
     prediction = db_manager.get_prediction_by_id(prediction_id)
     
-    # Fallback if prediction ID is timestamp or missing from history table
+    if prediction and prediction.get('full_analysis_dict'):
+        return render_template(
+            'result.html',
+            gemini_data=prediction['full_analysis_dict'],
+            preview_img=prediction['image_path'],
+            is_gemini=True,
+            is_history_view=True,
+            prediction_record=prediction
+        )
+
+    # Fallback if prediction ID is timestamp or older record without full_analysis
     if not prediction:
         prediction = {
             'prediction_id': prediction_id,
@@ -286,7 +337,8 @@ def result(prediction_id):
     return render_template(
         'result.html',
         prediction=prediction,
-        disease=disease_info
+        disease=disease_info,
+        is_history_view=True
     )
 
 @app.route('/diseases')
@@ -302,19 +354,43 @@ def disease_details(disease_id):
 
 @app.route('/history')
 def history():
-    """Display user's prediction history logs."""
+    """Display user's prediction history logs with search and severity filter."""
+    search_query = request.args.get('search', '').strip()
+    severity_filter = request.args.get('severity', '').strip()
+
     conn = db_manager.get_connection()
     try:
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM prediction_history ORDER BY prediction_date DESC LIMIT 50")
+        sql = "SELECT * FROM prediction_history WHERE 1=1"
+        params = []
+
+        if search_query:
+            placeholder = "?" if db_manager.use_sqlite else "%s"
+            sql += f" AND (LOWER(crop_name) LIKE {placeholder} OR LOWER(disease_name) LIKE {placeholder})"
+            term = f"%{search_query.lower()}%"
+            params.extend([term, term])
+
+        if severity_filter and severity_filter.lower() != 'all':
+            placeholder = "?" if db_manager.use_sqlite else "%s"
+            sql += f" AND LOWER(severity_band) = LOWER({placeholder})"
+            params.append(severity_filter)
+
+        sql += " ORDER BY prediction_date DESC LIMIT 50"
+        cursor.execute(sql, tuple(params))
         rows = cursor.fetchall()
         records = [dict(r) if hasattr(r, 'keys') else r for r in rows]
-        return render_template('history.html', history_records=records)
+        return render_template(
+            'history.html',
+            history_records=records,
+            search_query=search_query,
+            severity_filter=severity_filter
+        )
     except Exception as e:
         print(f"[History Error]: {e}")
-        return render_template('history.html', history_records=[])
+        return render_template('history.html', history_records=[], search_query=search_query, severity_filter=severity_filter)
     finally:
         conn.close()
+
 
 @app.route('/history/delete/<int:prediction_id>', methods=['POST'])
 def delete_history(prediction_id):

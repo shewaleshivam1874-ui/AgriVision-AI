@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="{{ current_lang }}" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}AgriVision AI - Explainable Crop Disease Detection{% endblock %}</title>
   <meta name="description" content="AgriVision AI - An Explainable AI (XAI) Web Application for Early Crop Disease Detection, Disease Stage Estimation, Leaf Health Analysis, and Crop Management Guidance.">
   
+  <!-- Google Fonts: Inter & Noto Sans Devanagari for English, Marathi, Hindi -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800;900&family=Noto+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
   <!-- CSS Stylesheets -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/variables.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -41,10 +46,10 @@
         <!-- Language Selector Dropdown -->
         <div class="lang-selector">
           <span style="font-size: 1.1rem;">🌐</span>
-          <select id="languageSelect" class="lang-select" aria-label="Select Language">
-            <option value="en">English</option>
-            <option value="hi">हिंदी (Hindi)</option>
-            <option value="mr">मराठी (Marathi)</option>
+          <select id="languageSelect" class="lang-select" aria-label="Select Language" onchange="window.location.href='/set-language/' + this.value">
+            <option value="en" {% if current_lang == 'en' %}selected{% endif %}>English</option>
+            <option value="mr" {% if current_lang == 'mr' %}selected{% endif %}>मराठी</option>
+            <option value="hi" {% if current_lang == 'hi' %}selected{% endif %}>हिंदी</option>
           </select>
         </div>
 
@@ -53,14 +58,15 @@
 
       <!-- Navigation Menu -->
       <ul class="nav-menu">
-        <li><a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" data-i18n="home">Home</a></li>
-        <li><a href="{{ url_for('detect') }}" class="nav-link {% if request.endpoint == 'detect' %}active{% endif %}" data-i18n="detect_disease">Analyze Leaf</a></li>
-        <li><a href="{{ url_for('history') }}" class="nav-link {% if request.endpoint == 'history' %}active{% endif %}">History</a></li>
-        <li><a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}" data-i18n="about">About</a></li>
-        <li><a href="{{ url_for('detect') }}" class="btn-cta" data-i18n="analyze_crop">🔍 Analyze Leaf</a></li>
+        <li><a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">{{ t('home') }}</a></li>
+        <li><a href="{{ url_for('detect') }}" class="nav-link {% if request.endpoint == 'detect' %}active{% endif %}">{{ t('detect_disease') }}</a></li>
+        <li><a href="{{ url_for('history') }}" class="nav-link {% if request.endpoint == 'history' %}active{% endif %}">{{ t('history') }}</a></li>
+        <li><a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}">{{ t('about') }}</a></li>
+        <li><a href="{{ url_for('detect') }}" class="btn-cta">{{ t('analyze_crop') }}</a></li>
       </ul>
     </div>
   </nav>
+
 
   <!-- Flash Messages -->
   <div class="container" style="margin-top: 1.5rem;">

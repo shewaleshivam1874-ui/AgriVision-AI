@@ -8,33 +8,33 @@
   <div class="container hero-grid">
     <div data-animate class="fade-right">
       <div class="hero-badge">
-        <span>🤖 Google Gemini Vision AI & Interactive 3D XAI</span>
+        <span>{{ t('hero_badge') }}</span>
       </div>
       
       <h1 class="hero-title">
-        Detect Crop Diseases Early with <span class="text-gradient">AI</span>
+        {{ t('hero_title_1') }}<span class="text-gradient">{{ t('hero_title_2') }}</span>
       </h1>
       
       <p class="hero-subtitle">
-        Upload a crop leaf image and let AgriVision AI identify possible diseases, explain visible foliage symptoms, estimate disease severity, and provide structured crop management guidance.
+        {{ t('hero_subtitle') }}
       </p>
       
       <div class="hero-actions">
         <a href="{{ url_for('detect') }}" class="btn-cta" style="padding: 14px 30px; font-size: 1.08rem;">
-          🔍 Analyze a Leaf
+          {{ t('btn_analyze_leaf') }}
         </a>
       </div>
 
       <!-- Trust Badges -->
       <div style="display: flex; gap: 1.25rem; margin-top: 2.25rem; flex-wrap: wrap;">
         <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.9rem; color: var(--text-main);">
-          <span style="color: var(--primary);">✓</span> Real-Time Vision AI
+          <span style="color: var(--primary);">✓</span> {{ t('trust_realtime_ai') }}
         </div>
         <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.9rem; color: var(--text-main);">
-          <span style="color: var(--primary);">✓</span> Explainable AI Guidance
+          <span style="color: var(--primary);">✓</span> {{ t('trust_explainable') }}
         </div>
         <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.9rem; color: var(--text-main);">
-          <span style="color: var(--primary);">✓</span> Organic & Chemical Solutions
+          <span style="color: var(--primary);">✓</span> {{ t('trust_solutions') }}
         </div>
       </div>
     </div>
@@ -63,7 +63,7 @@
         <div class="ai-hero-floating-card float-card-1">
           <span style="font-size: 1.2rem; padding: 4px 8px; background: rgba(16, 185, 129, 0.15); border-radius: 8px;">🦠</span>
           <div>
-            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--primary);">Condition Identified</div>
+            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--primary);">{{ t('condition_heading') }}</div>
             <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-heading);">Early Blight</div>
           </div>
         </div>
@@ -72,7 +72,7 @@
         <div class="ai-hero-floating-card float-card-2">
           <span style="font-size: 1.2rem; padding: 4px 8px; background: rgba(16, 185, 129, 0.15); border-radius: 8px;">🎯</span>
           <div>
-            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--primary);">AI Confidence</div>
+            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--primary);">{{ t('confidence_heading') }}</div>
             <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-heading);">94.2%</div>
           </div>
         </div>
@@ -81,8 +81,8 @@
         <div class="ai-hero-floating-card float-card-3">
           <span style="font-size: 1.2rem; padding: 4px 8px; background: rgba(245, 158, 11, 0.15); border-radius: 8px;">⚡</span>
           <div>
-            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: #d97706;">Severity Stage</div>
-            <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-heading);">Moderate Stage</div>
+            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: #d97706;">{{ t('col_severity') }}</div>
+            <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-heading);">Moderate</div>
           </div>
         </div>
       </div>
@@ -90,16 +90,13 @@
   </div>
 </section>
 
-
-
-
 <!-- How AgriVision AI Works Section -->
 <section class="section" style="background: var(--bg-surface);">
   <div class="container">
     <div class="section-header" data-animate class="fade-up">
       <span class="section-tag">Professional AI Workflow</span>
-      <h2 class="section-title">How AgriVision AI Works</h2>
-      <p class="section-subtitle">From image capture to actionable crop-care guidance, AgriVision AI transforms a simple crop image into an easy-to-understand AI-powered health assessment.</p>
+      <h2 class="section-title">{{ t('how_title') }}</h2>
+      <p class="section-subtitle">{{ t('how_subtitle') }}</p>
     </div>
 
     <div class="workflow-section-wrapper">
@@ -114,9 +111,9 @@
             <div class="workflow-step-badge">01</div>
             <div class="workflow-icon-box">📷</div>
           </div>
-          <h3 class="workflow-card-title">Upload a Crop Image</h3>
+          <h3 class="workflow-card-title">{{ t('step_01_title') }}</h3>
           <p class="workflow-card-desc">
-            Take a clear photo of the affected crop leaf or upload an existing image from your smartphone or computer.
+            {{ t('step_01_desc') }}
           </p>
           <div class="workflow-chips">
             <span class="workflow-chip active">JPG, PNG, WEBP</span>
@@ -131,14 +128,13 @@
             <div class="workflow-step-badge">02</div>
             <div class="workflow-icon-box">🔬</div>
           </div>
-          <h3 class="workflow-card-title">AI Examines the Leaf</h3>
+          <h3 class="workflow-card-title">{{ t('step_02_title') }}</h3>
           <p class="workflow-card-desc">
-            The AI vision model processes the image to extract visual patterns, chlorosis halos, necrotic spot lesions, and foliage texture details.
+            {{ t('step_02_desc') }}
           </p>
           <div class="workflow-chips">
-            <span class="workflow-chip active">Processing Image</span>
-            <span class="workflow-chip">Extracting Features</span>
-            <span class="workflow-chip">Analyzing Patterns</span>
+            <span class="workflow-chip active">{{ t('processing_msg') }}</span>
+            <span class="workflow-chip">{{ t('analyzing_symptoms') }}</span>
           </div>
         </div>
 
@@ -148,9 +144,9 @@
             <div class="workflow-step-badge">03</div>
             <div class="workflow-icon-box">🛡️</div>
           </div>
-          <h3 class="workflow-card-title">Identify Potential Disease</h3>
+          <h3 class="workflow-card-title">{{ t('step_03_title') }}</h3>
           <p class="workflow-card-desc">
-            The trained crop classification engine identifies the likely disease or healthy class with confidence metrics and severity staging.
+            {{ t('step_03_desc') }}
           </p>
           <div class="workflow-chips">
             <span class="workflow-chip active">Early Blight</span>
@@ -165,14 +161,13 @@
             <div class="workflow-step-badge">04</div>
             <div class="workflow-icon-box">📋</div>
           </div>
-          <h3 class="workflow-card-title">Receive Crop-Care Guidance</h3>
+          <h3 class="workflow-card-title">{{ t('step_04_title') }}</h3>
           <p class="workflow-card-desc">
-            Transforms AI diagnostics into structured farmer action steps, organic sanitation options, chemical guidelines, and fertilizer advice.
+            {{ t('step_04_desc') }}
           </p>
           <div class="workflow-chips">
-            <span class="workflow-chip active">Symptoms & Causes</span>
-            <span class="workflow-chip active">Organic Solutions</span>
-            <span class="workflow-chip">Nutrient Advice</span>
+            <span class="workflow-chip active">{{ t('organic_mgmt_title') }}</span>
+            <span class="workflow-chip active">{{ t('chemical_mgmt_title') }}</span>
           </div>
         </div>
 
@@ -181,12 +176,17 @@
       <!-- Bottom Banner CTA -->
       <div class="workflow-cta-banner" data-animate class="fade-up">
         <div>
-          <h4 style="font-size: 1.25rem; font-weight: 800; color: var(--text-heading); margin-bottom: 0.25rem;">Ready to check your crop?</h4>
-          <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0;">Get instant diagnostic results and organic management protocols.</p>
+          <h4 style="font-size: 1.25rem; font-weight: 800; color: var(--text-heading); margin-bottom: 0.25rem;">{{ t('workflow_cta_title') }}</h4>
+          <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0;">{{ t('workflow_cta_desc') }}</p>
         </div>
         <a href="{{ url_for('detect') }}" class="btn-cta" style="padding: 12px 28px; font-size: 1rem;">
-          Analyze a Crop Leaf →
+          {{ t('workflow_cta_btn') }}
         </a>
+      </div>
+    </div>
+  </div>
+</section>
+
       </div>
     </div>
   </div>
