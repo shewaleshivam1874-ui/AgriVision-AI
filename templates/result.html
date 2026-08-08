@@ -95,7 +95,7 @@
               </div>
             </div>
             <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); margin-top: 4px;">
-              <span data-i18n="plant_id_label">{{ t('plant_id_label') }}</span> {{ translate_conf(gemini_data.plant.confidence) }}
+              <span data-i18n="plant_id_label">{{ t('plant_id_label') }}</span> <span class="dynamic-confidence" data-raw="{{ gemini_data.plant.confidence }}">{{ translate_conf(gemini_data.plant.confidence) }}</span>
             </div>
           </div>
 
@@ -104,17 +104,17 @@
             <div class="stat-label" data-i18n="card_health_status">{{ t('card_health_status') }}</div>
             <div style="margin-top: 0.5rem;">
               {% if gemini_data.health.status == 'HEALTHY' %}
-                <span class="status-pill healthy" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('HEALTHY') }}</span>
+                <span class="status-pill healthy dynamic-health-status" data-raw="HEALTHY" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('HEALTHY') }}</span>
               {% elif gemini_data.health.status == 'PEST_DAMAGE' %}
-                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('PEST_DAMAGE') }}</span>
+                <span class="status-pill warning dynamic-health-status" data-raw="PEST_DAMAGE" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('PEST_DAMAGE') }}</span>
               {% elif gemini_data.health.status == 'NUTRIENT_DEFICIENCY' %}
-                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('NUTRIENT_DEFICIENCY') }}</span>
+                <span class="status-pill warning dynamic-health-status" data-raw="NUTRIENT_DEFICIENCY" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('NUTRIENT_DEFICIENCY') }}</span>
               {% elif gemini_data.health.status == 'ENVIRONMENTAL_STRESS' %}
-                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('ENVIRONMENTAL_STRESS') }}</span>
+                <span class="status-pill warning dynamic-health-status" data-raw="ENVIRONMENTAL_STRESS" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('ENVIRONMENTAL_STRESS') }}</span>
               {% elif gemini_data.health.status == 'UNKNOWN' %}
-                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px; background: var(--border-color); color: var(--text-muted);">{{ translate_status('UNKNOWN') }}</span>
+                <span class="status-pill warning dynamic-health-status" data-raw="UNKNOWN" style="font-size: 0.9rem; padding: 6px 16px; background: var(--border-color); color: var(--text-muted);">{{ translate_status('UNKNOWN') }}</span>
               {% else %}
-                <span class="status-pill disease" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('DISEASED') }}</span>
+                <span class="status-pill disease dynamic-health-status" data-raw="DISEASED" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('DISEASED') }}</span>
               {% endif %}
             </div>
             <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-top: 6px;" data-i18n="diagnostic_status_label">
@@ -127,27 +127,27 @@
             <div class="stat-label" data-i18n="card_action_urgency">{{ t('card_action_urgency') }}</div>
             <div style="margin-top: 0.5rem;">
               {% if gemini_data.urgency == 'CRITICAL' %}
-                <span class="status-pill disease" style="font-size: 0.9rem; padding: 6px 16px; background: rgba(220, 38, 38, 0.2); color: #ef4444; border: 1px solid #ef4444;">
+                <span class="status-pill disease dynamic-urgency" data-raw="CRITICAL" style="font-size: 0.9rem; padding: 6px 16px; background: rgba(220, 38, 38, 0.2); color: #ef4444; border: 1px solid #ef4444;">
                   {{ translate_urg('CRITICAL') }}
                 </span>
                 <div style="font-size: 0.78rem; font-weight: 600; color: #ef4444; margin-top: 6px;" data-i18n="urgency_critical_sub">{{ t('urgency_critical_sub') }}</div>
               {% elif gemini_data.urgency == 'HIGH' %}
-                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px; background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b;">
+                <span class="status-pill warning dynamic-urgency" data-raw="HIGH" style="font-size: 0.9rem; padding: 6px 16px; background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b;">
                   {{ translate_urg('HIGH') }}
                 </span>
                 <div style="font-size: 0.78rem; font-weight: 600; color: #f59e0b; margin-top: 6px;" data-i18n="urgency_high_sub">{{ t('urgency_high_sub') }}</div>
               {% elif gemini_data.urgency == 'MODERATE' %}
-                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px; background: rgba(245, 158, 11, 0.15); color: #d97706; border: 1px solid #d97706;">
+                <span class="status-pill warning dynamic-urgency" data-raw="MODERATE" style="font-size: 0.9rem; padding: 6px 16px; background: rgba(245, 158, 11, 0.15); color: #d97706; border: 1px solid #d97706;">
                   {{ translate_urg('MODERATE') }}
                 </span>
                 <div style="font-size: 0.78rem; font-weight: 600; color: #d97706; margin-top: 6px;" data-i18n="urgency_mod_sub">{{ t('urgency_mod_sub') }}</div>
               {% elif gemini_data.urgency == 'LOW' %}
-                <span class="status-pill healthy" style="font-size: 0.9rem; padding: 6px 16px;">
+                <span class="status-pill healthy dynamic-urgency" data-raw="LOW" style="font-size: 0.9rem; padding: 6px 16px;">
                   {{ translate_urg('LOW') }}
                 </span>
                 <div style="font-size: 0.78rem; font-weight: 600; color: var(--primary); margin-top: 6px;" data-i18n="urgency_low_sub">{{ t('urgency_low_sub') }}</div>
               {% else %}
-                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px; background: var(--border-color); color: var(--text-muted);">
+                <span class="status-pill warning dynamic-urgency" data-raw="UNKNOWN" style="font-size: 0.9rem; padding: 6px 16px; background: var(--border-color); color: var(--text-muted);">
                   {{ translate_urg('UNKNOWN') }}
                 </span>
                 <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-top: 6px;" data-i18n="urgency_unk_sub">{{ t('urgency_unk_sub') }}</div>
@@ -176,30 +176,30 @@
           
           <div style="text-align: center; margin-bottom: 1.25rem;">
             {% if gemini_data.severity.level == 'HEALTHY' %}
-              <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; display: inline-block;">
+              <span class="dynamic-severity" data-raw="HEALTHY" style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; display: inline-block;">
                 {{ translate_sev('HEALTHY') }}
               </span>
             {% elif gemini_data.severity.level == 'EARLY' %}
-              <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid #f59e0b; display: inline-block;">
+              <span class="dynamic-severity" data-raw="EARLY" style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid #f59e0b; display: inline-block;">
                 {{ translate_sev('EARLY') }}
               </span>
             {% elif gemini_data.severity.level == 'MODERATE' %}
-              <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(217, 119, 6, 0.15); color: #d97706; border: 1px solid #d97706; display: inline-block;">
+              <span class="dynamic-severity" data-raw="MODERATE" style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(217, 119, 6, 0.15); color: #d97706; border: 1px solid #d97706; display: inline-block;">
                 {{ translate_sev('MODERATE') }}
               </span>
             {% elif gemini_data.severity.level == 'SEVERE' %}
-              <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(220, 38, 38, 0.15); color: #ef4444; border: 1px solid #ef4444; display: inline-block;">
+              <span class="dynamic-severity" data-raw="SEVERE" style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(220, 38, 38, 0.15); color: #ef4444; border: 1px solid #ef4444; display: inline-block;">
                 {{ translate_sev('SEVERE') }}
               </span>
             {% else %}
-              <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: var(--bg-input); color: var(--text-muted); border: 1px solid var(--border-color); display: inline-block;">
+              <span class="dynamic-severity" data-raw="UNKNOWN" style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: var(--bg-input); color: var(--text-muted); border: 1px solid var(--border-color); display: inline-block;">
                 {{ translate_sev('UNKNOWN') }}
               </span>
             {% endif %}
           </div>
 
           <div style="font-size: 0.95rem; color: var(--text-main); background: var(--bg-main); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); line-height: 1.6;">
-            <strong style="color: var(--text-heading);" data-i18n="severity_assessment_label">{{ t('severity_assessment_label') }}</strong> {{ gemini_data.severity.reason }}
+            <strong style="color: var(--text-heading);" data-i18n="severity_assessment_label">{{ t('severity_assessment_label') }}</strong> <span class="dynamic-tx" data-raw="{{ gemini_data.severity.reason }}">{{ translate_tx(gemini_data.severity.reason) }}</span>
           </div>
         </div>
       </div>
@@ -246,8 +246,8 @@
                           </span>
                         </div>
                         <h4 style="font-size: 1.1rem; color: var(--text-heading); margin-bottom: 0.5rem;" data-i18n="primary_action_title">{{ t('primary_action_title') }}</h4>
-                        <p style="font-size: 0.98rem; color: var(--text-main); line-height: 1.65; margin: 0; font-weight: 500;">
-                          {{ action }}
+                        <p style="font-size: 0.98rem; color: var(--text-main); line-height: 1.65; margin: 0; font-weight: 500;" class="dynamic-tx" data-raw="{{ action }}">
+                          {{ translate_tx(action) }}
                         </p>
                         <div style="margin-top: 1rem; font-size: 0.82rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 6px;" data-i18n="rec_24_hours">
                           {{ t('rec_24_hours') }}
@@ -271,8 +271,8 @@
                             <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: var(--bg-input); color: var(--text-muted);" data-i18n="time_if_needed">{{ t('time_if_needed') }}</span>
                           {% endif %}
                         </div>
-                        <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0;">
-                          {{ action }}
+                        <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0;" class="dynamic-tx" data-raw="{{ action }}">
+                          {{ translate_tx(action) }}
                         </p>
                       </div>
                     {% endif %}
@@ -435,7 +435,7 @@
             {% if gemini_data.organic_treatment %}
               <ul style="padding-left: 1.2rem; font-size: 0.96rem; color: var(--text-main); line-height: 1.7;">
                 {% for item in gemini_data.organic_treatment %}
-                  <li style="margin-bottom: 0.5rem;">{{ item }}</li>
+                  <li style="margin-bottom: 0.5rem;" class="dynamic-tx" data-raw="{{ item }}">{{ translate_tx(item) }}</li>
                 {% endfor %}
               </ul>
             {% else %}
@@ -452,7 +452,7 @@
             {% if gemini_data.conventional_treatment %}
               <ul style="padding-left: 1.2rem; font-size: 0.96rem; color: var(--text-main); line-height: 1.7;">
                 {% for item in gemini_data.conventional_treatment %}
-                  <li style="margin-bottom: 0.5rem;">{{ item }}</li>
+                  <li style="margin-bottom: 0.5rem;" class="dynamic-tx" data-raw="{{ item }}">{{ translate_tx(item) }}</li>
                 {% endfor %}
               </ul>
             {% else %}
@@ -473,24 +473,24 @@
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 1.5rem; font-size: 0.96rem; color: var(--text-main);">
             <div>
               <strong style="color: var(--text-heading);" data-i18n="suspected_deficiency_label">{{ t('suspected_deficiency_label') }}</strong>
-              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.possible_deficiency) or t('default_nutrient_correction') }}</p>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);" class="dynamic-tx" data-raw="{{ gemini_data.nutrient_analysis.possible_deficiency if (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.possible_deficiency) else t('default_nutrient_correction') }}">{{ translate_tx(gemini_data.nutrient_analysis.possible_deficiency) if (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.possible_deficiency) else t('default_nutrient_correction') }}</p>
             </div>
             <div>
               <strong style="color: var(--text-heading);" data-i18n="visible_evidence_label">{{ t('visible_evidence_label') }}</strong>
-              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.visible_evidence) or t('default_leaf_symptoms') }}</p>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);" class="dynamic-tx" data-raw="{{ gemini_data.nutrient_analysis.visible_evidence if (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.visible_evidence) else t('default_leaf_symptoms') }}">{{ translate_tx(gemini_data.nutrient_analysis.visible_evidence) if (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.visible_evidence) else t('default_leaf_symptoms') }}</p>
             </div>
             <div>
               <strong style="color: var(--primary);" data-i18n="organic_option_label">{{ t('organic_option_label') }}</strong>
-              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.organic_option) or t('default_organic_amendment') }}</p>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);" class="dynamic-tx" data-raw="{{ gemini_data.fertilizer_guidance.organic_option if (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.organic_option) else t('default_organic_amendment') }}">{{ translate_tx(gemini_data.fertilizer_guidance.organic_option) if (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.organic_option) else t('default_organic_amendment') }}</p>
             </div>
             <div>
               <strong style="color: var(--text-heading);" data-i18n="conventional_option_label">{{ t('conventional_option_label') }}</strong>
-              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.conventional_option) or t('default_conventional_npk') }}</p>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);" class="dynamic-tx" data-raw="{{ gemini_data.fertilizer_guidance.conventional_option if (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.conventional_option) else t('default_conventional_npk') }}">{{ translate_tx(gemini_data.fertilizer_guidance.conventional_option) if (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.conventional_option) else t('default_conventional_npk') }}</p>
             </div>
           </div>
           {% if gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.recommendation %}
             <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.95rem; color: var(--text-main);">
-              <strong style="color: var(--text-heading);" data-i18n="soil_testing_rec_label">{{ t('soil_testing_rec_label') }}</strong> {{ gemini_data.fertilizer_guidance.recommendation }}
+              <strong style="color: var(--text-heading);" data-i18n="soil_testing_rec_label">{{ t('soil_testing_rec_label') }}</strong> <span class="dynamic-tx" data-raw="{{ gemini_data.fertilizer_guidance.recommendation }}">{{ translate_tx(gemini_data.fertilizer_guidance.recommendation) }}</span>
             </div>
           {% endif %}
         {% else %}
@@ -511,10 +511,10 @@
               <div class="info-card-icon">🔍</div>
               <h3 style="color: var(--text-heading);" data-i18n="visible_symptoms_title">{{ t('visible_symptoms_title') }}</h3>
             </div>
-            {% if gemini_data.symptoms_observed %}
+            {% if gemini_data.symptoms_observed or gemini_data.symptoms %}
               <ul style="padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-main);">
-                {% for symptom in gemini_data.symptoms_observed %}
-                  <li style="margin-bottom: 0.4rem;">{{ symptom }}</li>
+                {% for symptom in (gemini_data.symptoms_observed or gemini_data.symptoms) %}
+                  <li style="margin-bottom: 0.4rem;" class="dynamic-tx" data-raw="{{ symptom }}">{{ translate_tx(symptom) }}</li>
                 {% endfor %}
               </ul>
             {% else %}
@@ -531,7 +531,7 @@
             {% if gemini_data.possible_causes %}
               <ul style="padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-main);">
                 {% for cause in gemini_data.possible_causes %}
-                  <li style="margin-bottom: 0.4rem;">{{ cause }}</li>
+                  <li style="margin-bottom: 0.4rem;" class="dynamic-tx" data-raw="{{ cause }}">{{ translate_tx(cause) }}</li>
                 {% endfor %}
               </ul>
             {% else %}
@@ -547,8 +547,8 @@
             </div>
             <div style="font-size: 0.95rem; color: var(--text-main);">
               {% if gemini_data.pest_analysis and gemini_data.pest_analysis.suspected %}
-                <p style="margin-bottom: 0.5rem;"><strong style="color: var(--status-disease);" data-i18n="pest_suspected_label">{{ t('pest_suspected_label') }}</strong> {{ gemini_data.pest_analysis.possible_pest }}</p>
-                <p><strong style="color: var(--text-heading);" data-i18n="evidence_label">{{ t('evidence_label') }}</strong> {{ gemini_data.pest_analysis.evidence }}</p>
+                <p style="margin-bottom: 0.5rem;"><strong style="color: var(--status-disease);" data-i18n="pest_suspected_label">{{ t('pest_suspected_label') }}</strong> <span class="dynamic-tx" data-raw="{{ gemini_data.pest_analysis.possible_pest }}">{{ translate_tx(gemini_data.pest_analysis.possible_pest) }}</span></p>
+                <p><strong style="color: var(--text-heading);" data-i18n="evidence_label">{{ t('evidence_label') }}</strong> <span class="dynamic-tx" data-raw="{{ gemini_data.pest_analysis.evidence }}">{{ translate_tx(gemini_data.pest_analysis.evidence) }}</span></p>
               {% else %}
                 <p style="color: var(--text-muted);" data-i18n="no_pest_visible">{{ t('no_pest_visible') }}</p>
               {% endif %}
@@ -564,7 +564,7 @@
             {% if gemini_data.environmental_stress %}
               <ul style="padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-main);">
                 {% for stress in gemini_data.environmental_stress %}
-                  <li style="margin-bottom: 0.4rem;">{{ stress }}</li>
+                  <li style="margin-bottom: 0.4rem;" class="dynamic-tx" data-raw="{{ stress }}">{{ translate_tx(stress) }}</li>
                 {% endfor %}
               </ul>
             {% else %}
@@ -581,7 +581,7 @@
             {% if gemini_data.prevention %}
               <ul style="padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-main);">
                 {% for prev in gemini_data.prevention %}
-                  <li style="margin-bottom: 0.4rem;">{{ prev }}</li>
+                  <li style="margin-bottom: 0.4rem;" class="dynamic-tx" data-raw="{{ prev }}">{{ translate_tx(prev) }}</li>
                 {% endfor %}
               </ul>
             {% else %}
@@ -595,8 +595,8 @@
               <div class="info-card-icon">ℹ️</div>
               <h3 style="color: var(--text-heading);" data-i18n="analysis_notes_title">{{ t('analysis_notes_title') }}</h3>
             </div>
-            <p style="font-size: 0.94rem; color: var(--text-muted); line-height: 1.6;">
-              {{ gemini_data.limitations }}
+            <p style="font-size: 0.94rem; color: var(--text-muted); line-height: 1.6;" class="dynamic-tx" data-raw="{{ gemini_data.limitations }}">
+              {{ translate_tx(gemini_data.limitations) }}
             </p>
           </div>
         </div>

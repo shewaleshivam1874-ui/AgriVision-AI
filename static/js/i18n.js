@@ -1185,6 +1185,281 @@ const urgencyMap = {
   'unknown': { mr: 'अज्ञात (Unknown)', hi: 'अज्ञात (Unknown)', en: 'UNKNOWN' }
 };
 
+const confidenceLevelMap = {
+  'very high': { mr: 'अत्यंत उच्च (Very High)', hi: 'अत्यंत उच्च (Very High)', en: 'Very High' },
+  'high': { mr: 'उच्च (High)', hi: 'उच्च (High)', en: 'High' },
+  'moderate': { mr: 'मध्यम (Moderate)', hi: 'मध्यम (Moderate)', en: 'Moderate' },
+  'medium': { mr: 'मध्यम (Medium)', hi: 'मध्यम (Medium)', en: 'Medium' },
+  'low': { mr: 'कमी (Low)', hi: 'कम (Low)', en: 'Low' }
+};
+
+const phraseTranslations = {
+  // Severity reasons & assessments
+  'visible foliage pathology observed.': {
+    mr: 'पानांवर दृश्य रोगाची लक्षणे व डाग स्पष्टपणे दिसत आहेत.',
+    hi: 'पत्तियों पर रोग के दृश्य लक्षण एवं धब्बे स्पष्ट रूप से दिखाई दे रहे हैं.',
+    en: 'Visible foliage pathology observed.'
+  },
+  'visible foliage pathology observed': {
+    mr: 'पानांवर दृश्य रोगाची लक्षणे व डाग स्पष्टपणे दिसत आहेत.',
+    hi: 'पत्तियों पर रोग के दृश्य लक्षण एवं धब्बे स्पष्ट रूप से दिखाई दे रहे हैं.',
+    en: 'Visible foliage pathology observed.'
+  },
+  'no disease symptoms observed - leaf appears healthy and vigorous': {
+    mr: 'कोणतीही रोग लक्षणे आढळली नाहीत - पान निरोगी व सशक्त दिसत आहे.',
+    hi: 'कोई रोग लक्षण नहीं दिखे - पत्ता स्वस्थ और मजबूत दिखाई देता है.',
+    en: 'No disease symptoms observed - leaf appears healthy and vigorous'
+  },
+  'no disease symptoms observed - leaf appears healthy and vigorous.': {
+    mr: 'कोणतीही रोग लक्षणे आढळली नाहीत - पान निरोगी व सशक्त दिसत आहे.',
+    hi: 'कोई रोग लक्षण नहीं दिखे - पत्ता स्वस्थ और मजबूत दिखाई देता है.',
+    en: 'No disease symptoms observed - leaf appears healthy and vigorous.'
+  },
+  'leaf appears healthy with no visible lesions': {
+    mr: 'कोणतेही डाग नसून पान पूर्णपणे निरोगी दिसत आहे.',
+    hi: 'बिना किसी धब्बे के पत्ती पूरी तरह स्वस्थ दिखाई दे रही है.',
+    en: 'Leaf appears healthy with no visible lesions'
+  },
+
+  // Immediate actions
+  'prune and dispose of infected leaves.': {
+    mr: 'रोगट पाने कापून शेतातून दूर नष्ट करा.',
+    hi: 'संक्रमित पत्तियों को काटकर खेत से दूर नष्ट करें.',
+    en: 'Prune and dispose of infected leaves.'
+  },
+  'prune and dispose of infected leaves': {
+    mr: 'रोगट पाने कापून शेतातून दूर नष्ट करा.',
+    hi: 'संक्रमित पत्तियों को काटकर खेत से दूर नष्ट करें.',
+    en: 'Prune and dispose of infected leaves.'
+  },
+  'apply copper-based organic bio-fungicide.': {
+    mr: 'तांबायुक्त सेंद्रिय बुरशीनाशकाची (कॉपर) फवारणी करा.',
+    hi: 'कॉपर युक्त जैविक कवकनाशी का छिड़काव करें.',
+    en: 'Apply copper-based organic bio-fungicide.'
+  },
+  'apply copper-based organic bio-fungicide': {
+    mr: 'तांबायुक्त सेंद्रिय बुरशीनाशकाची (कॉपर) फवारणी करा.',
+    hi: 'कॉपर युक्त जैविक कवकनाशी का छिड़काव करें.',
+    en: 'Apply copper-based organic bio-fungicide.'
+  },
+  'avoid overhead foliar sprinkler irrigation.': {
+    mr: 'तुषार सिंचन टाळा आणि झाडांच्या मुळाशी पाणी द्या.',
+    hi: 'फव्वारा सिंचाई से बचें और पौधों की जड़ों में पानी दें.',
+    en: 'Avoid overhead foliar sprinkler irrigation.'
+  },
+  'avoid overhead foliar sprinkler irrigation': {
+    mr: 'तुषार सिंचन टाळा आणि झाडांच्या मुळाशी पाणी द्या.',
+    hi: 'फव्वारा सिंचाई से बचें और पौधों की जड़ों में पानी दें.',
+    en: 'Avoid overhead foliar sprinkler irrigation.'
+  },
+  'inspect nearby crop rows for chlorosis.': {
+    mr: 'लगतच्या ओळींमधील झाडांवर पिवळेपणा किंवा डाग तपासा.',
+    hi: 'पास की पंक्तियों के पौधों पर पीलापन या धब्बे जांचें.',
+    en: 'Inspect nearby crop rows for chlorosis.'
+  },
+  'inspect nearby crop rows for chlorosis': {
+    mr: 'लगतच्या ओळींमधील झाडांवर पिवळेपणा किंवा डाग तपासा.',
+    hi: 'पास की पंक्तियों के पौधों पर पीलापन या धब्बे जांचें.',
+    en: 'Inspect nearby crop rows for chlorosis.'
+  },
+  'check surrounding leaves and plants in the same crop row for similar visible spot lesions or chlorosis.': {
+    mr: 'त्याच ओळीतील लगतच्या झाडांवर व पानांवर असे डाग किंवा पिवळेपणा आला आहे का ते तपासा.',
+    hi: 'उसी पंक्ति के आस-पास के पौधों और पत्तियों पर ऐसे धब्बे या पीलापन जांचें.',
+    en: 'Check surrounding leaves and plants in the same crop row for similar visible spot lesions or chlorosis.'
+  },
+  'observe whether spot lesions, concentric ring marks, or foliage discoloration expand over the next 24 to 48 hours.': {
+    mr: 'पुढील २४ ते ४८ तासांत डाग किंवा पिवळेपणा वाढत आहे का याचे निरीक्षण करा.',
+    hi: 'अगले २४ से ४८ घंटों में देखें कि धब्बे या पीलापन और बढ़ तो नहीं रहा.',
+    en: 'Observe whether spot lesions, concentric ring marks, or foliage discoloration expand over the next 24 to 48 hours.'
+  },
+  'remove heavily diseased lower foliage, avoid overhead foliar irrigation, and apply copper-based organic bio-fungicides if appropriate.': {
+    mr: 'जास्त बाधित पाने काढून नष्ट करा, तुषार सिंचन टाळा आणि तांबायुक्त सेंद्रिय बुरशीनाशक वापरा.',
+    hi: 'अधिक संक्रमित निचली पत्तियां हटा दें, फव्वारा सिंचाई से बचें और कॉपर युक्त जैविक कवकनाशी का प्रयोग करें.',
+    en: 'Remove heavily diseased lower foliage, avoid overhead foliar irrigation, and apply copper-based organic bio-fungicides if appropriate.'
+  },
+  'consult an agricultural extension officer or agronomist if symptoms spread rapidly or severe defoliation occurs.': {
+    mr: 'लक्षणे वेगाने पसरत असल्यास किंवा पाने गळत असल्यास जवळच्या कृषी विस्तार अधिकाऱ्यांशी संपर्क साधा.',
+    hi: 'यदि लक्षण तेजी से फैल रहे हों या पत्ते झड़ रहे हों तो नजदीकी कृषि प्रसार अधिकारी से संपर्क करें.',
+    en: 'Consult an agricultural extension officer or agronomist if symptoms spread rapidly or severe defoliation occurs.'
+  },
+
+  // Treatments
+  'apply mancozeb or chlorothalonil fungicide.': {
+    mr: 'मॅनकोझेब किंवा क्लोरोथॅलोनील बुरशीनाशकाची फवारणी करा.',
+    hi: 'मैनकोजेब या क्लोरोथैलोनिल कवकनाशी का छिड़काव करें.',
+    en: 'Apply Mancozeb or Chlorothalonil fungicide.'
+  },
+  'apply chlorothalonil according to package safety instructions.': {
+    mr: 'पाकिटावरील सुरक्षा सूचनांनुसार क्लोरोथॅलोनीलची फवारणी करा.',
+    hi: 'पैकेट पर दिए सुरक्षा निर्देशों के अनुसार क्लोरोथैलोनिल का छिड़काव करें.',
+    en: 'Apply Chlorothalonil according to package safety instructions.'
+  },
+  'apply neem oil spray (0.5%) or bacillus subtilis bio-fungicide.': {
+    mr: 'कडुलिंबाचे तेल (०.५%) किंवा बॅसिलस सबटिलिस जैविक बुरशीनाशक फवारा.',
+    hi: 'नीम का तेल (०.५%) या बैसिलस सबटिलिस जैविक कवकनाशी का छिड़काव करें.',
+    en: 'Apply neem oil spray (0.5%) or Bacillus subtilis bio-fungicide.'
+  },
+  'spray neem oil extract (0.5-1%) or botanical bio-pesticide every 7-10 days': {
+    mr: 'कडुलिंबाचे तेल (०.५-१%) किंवा जैविक कीटकनाशक दर ७-१० दिवसांनी फवारा.',
+    hi: 'नीम का तेल (०.५-१%) या जैविक कीटनाशक हर ७-१० दिन में छिड़कें.',
+    en: 'Spray neem oil extract (0.5-1%) or botanical bio-pesticide every 7-10 days'
+  },
+  'apply trichoderma viride or pseudomonas fluorescens as bio-fungicide foliar spray': {
+    mr: 'ट्रायकोडर्मा विरिडी किंवा स्यूडोमोनास फ्लुओरेसेन्सची जैविक फवारणी करा.',
+    hi: 'ट्राइकोडर्मा विरिडी या स्यूडोमोनास फ्लोरेसेंस का जैविक छिड़काव करें.',
+    en: 'Apply Trichoderma viride or Pseudomonas fluorescens as bio-fungicide foliar spray'
+  },
+  'apply protective fungicide containing chlorothalonil, mancozeb, or copper hydroxide according to label': {
+    mr: 'लेबलच्या निर्देशानुसार मॅनकोझेब, कॉपर किंवा क्लोरोथॅलोनीलची फवारणी करा.',
+    hi: 'लेबल निर्देशों के अनुसार मैनकोजेब, कॉपर या क्लोरोथैलोनिल का छिड़काव करें.',
+    en: 'Apply protective fungicide containing Chlorothalonil, Mancozeb, or Copper Hydroxide according to label'
+  },
+  'for active expanding infections, apply systemic fungicides such as azoxystrobin, difenoconazole, or boscalid': {
+    mr: 'वाढणाऱ्या रोगासाठी अझोक्सीस्ट्रोबिन किंवा डायफेनोकोनाझोल आंतरप्रवाही बुरशीनाशक वापरा.',
+    hi: 'फैलते संक्रमण के लिए एज़ोक्सीस्ट्रोबिन या डाइफेनोकोनाज़ोल कवकनाशी का प्रयोग करें.',
+    en: 'For active expanding infections, apply systemic fungicides such as Azoxystrobin, Difenoconazole, or Boscalid'
+  },
+
+  // Nutrient Guidance
+  'maintain standard good agricultural practices.': {
+    mr: 'चांगल्या कृषी पद्धतींचे (GAP) नियमित पालन करा.',
+    hi: 'उत्कृष्ट कृषि पद्धतियों (GAP) का नियमित पालन करें.',
+    en: 'Maintain standard good agricultural practices.'
+  },
+  'ensure balanced nitrogen and adequate potassium.': {
+    mr: 'योग्य प्रमाणात नत्र आणि पुरेसे पालाश (पोटॅश) द्या.',
+    hi: 'संतुलित नाइट्रोजन और पर्याप्त पोटाश प्रदान करें.',
+    en: 'Ensure balanced nitrogen and adequate potassium.'
+  },
+  'apply well-decomposed organic compost or farmyard manure (fym)': {
+    mr: 'चांगले कुजलेले शेणखत किंवा गांडूळ खत जमिनीत मिसळा.',
+    hi: 'अच्छी सड़ी हुई गोबर की खाद या केंचुआ खाद मिट्टी में मिलाएं.',
+    en: 'Apply well-decomposed organic compost or farmyard manure (FYM)'
+  },
+  'apply balanced n-p-k fertilizer based on soil test': {
+    mr: 'माती परीक्षणानुसार संतुलित एन-पी-के (N-P-K) खतांचा वापर करा.',
+    hi: 'मिट्टी परीक्षण के आधार पर संतुलित एन-पी-के (N-P-K) खाद का प्रयोग करें.',
+    en: 'Apply balanced N-P-K fertilizer based on soil test'
+  },
+  'apply organic vermicompost and foliar seaweed extract': {
+    mr: 'गांडूळ खत आणि समुद्री शैवाल अर्काची (Seaweed) फवारणी करा.',
+    hi: 'केंचुआ खाद और समुद्री शैवाल अर्क (Seaweed) का छिड़काव करें.',
+    en: 'Apply organic vermicompost and foliar seaweed extract'
+  },
+  'apply balanced 19:19:19 water-soluble foliar spray': {
+    mr: '१९:१९:१९ विद्राव्य खताची फवारणी करा.',
+    hi: '१९:१९:१९ घुलनशील खाद का पर्णीय छिड़काव करें.',
+    en: 'Apply balanced 19:19:19 water-soluble foliar spray'
+  },
+
+  // Symptoms
+  'target concentric spot lesions on lower leaves': {
+    mr: 'खालच्या पानांवर गोलाकार वलय असलेले करपा डाग',
+    hi: 'निचली पत्तियों पर गोल छल्लों वाले झुलसा धब्बे',
+    en: 'Target concentric spot lesions on lower leaves'
+  },
+  'concentric dark brown rings on lower foliage (target spot lesions)': {
+    mr: 'खालच्या पानांवर गडद तपकिरी वर्तुळाकार वलय (टार्गेट स्पॉट डाग)',
+    hi: 'निचली पत्तियों पर गहरे भूरे गोल छल्ले (टारगेट स्पॉट धब्बे)',
+    en: 'Concentric dark brown rings on lower foliage (target spot lesions)'
+  },
+  'chlorosis halo surrounding necrotic lesions': {
+    mr: 'वाळलेल्या डागांभोवती पिवळसर वलय (क्लोरोसिस)',
+    hi: 'सूखे धब्बों के चारों ओर पीला छल्ला (क्लोरोसिस)',
+    en: 'Chlorosis halo surrounding necrotic lesions'
+  },
+  'lower leaf yellowing and premature defoliation': {
+    mr: 'खालची पाने पिवळी पडून वेळेआधी गळणे',
+    hi: 'निचली पत्तियों का पीला पड़ना और समय से पहले गिरना',
+    en: 'Lower leaf yellowing and premature defoliation'
+  },
+
+  // Causes
+  'fungal spore propagation in humid conditions': {
+    mr: 'दमट व उबदार हवामानात बुरशीच्या बीजाणूंचा प्रसार',
+    hi: 'नमी और गर्म मौसम में फफूंद बीजाणुओं का फैलाव',
+    en: 'Fungal spore propagation in humid conditions'
+  },
+  'alternaria solani fungal infection favored by warm, humid weather (24-29°c)': {
+    mr: 'उबदार व दमट हवामानामुळे अल्टरनेरिया सोलानी बुरशीचा प्रादुर्भाव (२४-२९°C)',
+    hi: 'गर्म और नम मौसम के कारण अल्टरनेरिया सोलानी कवक संक्रमण (२४-२९°C)',
+    en: 'Alternaria solani fungal infection favored by warm, humid weather (24-29°C)'
+  },
+  'overhead irrigation or rainfall splashing spores from soil onto lower leaves': {
+    mr: 'पावसामुळे किंवा तुषार सिंचनामुळे मातीतील बुरशी पानांवर उडणे',
+    hi: 'बारिश या फव्वारा सिंचाई से मिट्टी के कवक छींटों द्वारा पत्तियों पर पहुंचना',
+    en: 'Overhead irrigation or rainfall splashing spores from soil onto lower leaves'
+  },
+  'dense canopy reducing air circulation and prolonging leaf wetness': {
+    mr: 'दाट झाडांमुळे हवा न खेळणे आणि पानांवर जास्त वेळ ओलावा राहणे',
+    hi: 'घने पौधों के कारण हवा का प्रवाह रुकना और पत्तियों पर देर तक नमी रहना',
+    en: 'Dense canopy reducing air circulation and prolonging leaf wetness'
+  },
+
+  // Pest Analysis
+  'spider mites or thrips not detected': {
+    mr: 'लाल कोळी किंवा थ्रिप्स किडीचा प्रादुर्भाव दिसत नाही',
+    hi: 'लाल मकड़ी या थ्रिप्स कीट का प्रकोप नहीं दिख रहा है',
+    en: 'Spider mites or thrips not detected'
+  },
+  'no active pest damage or insect activity visible on foliage.': {
+    mr: 'पानावर कोणताही कीटक प्रादुर्भाव किंवा नुकसान दिसत नाही.',
+    hi: 'पत्ती पर किसी सक्रिय कीट या कीड़े का नुकसान नहीं दिख रहा है.',
+    en: 'No active pest damage or insect activity visible on foliage.'
+  },
+
+  // Environmental stress
+  'high humidity or wet foliage stress': {
+    mr: 'हवेतील अति आर्द्रता आणि पानांवरील सततचा ओलावा',
+    hi: 'अत्यधिक नमी और पत्तियों पर निरंतर गीलापन',
+    en: 'High humidity or wet foliage stress'
+  },
+  'no severe environmental stress visible.': {
+    mr: 'वातावरणाचा कोणताही गंभीर ताण दिसत नाही.',
+    hi: 'कोई गंभीर वातावरणीय तनाव दिखाई नहीं देता.',
+    en: 'No severe environmental stress visible.'
+  },
+
+  // Prevention
+  'rotate crops with non-solanaceous species': {
+    mr: 'टोमॅटो/बटाटा व्यतिरिक्त इतर पिकांची फेरपालट करा',
+    hi: 'टमाटर/आलू के अलावा अन्य फसलों की हेर-फेर करें',
+    en: 'Rotate crops with non-solanaceous species'
+  },
+  'practice 2-3 year crop rotation with non-host crops': {
+    mr: '२-३ वर्षे इतर कुळातील पिकांची फेरपालट करा',
+    hi: '२-३ साल अन्य गैर-पोषक फसलों की हेर-फेर करें',
+    en: 'Practice 2-3 year crop rotation with non-host crops'
+  },
+  'ensure proper plant spacing for air circulation': {
+    mr: 'हवा खेळती राहण्यासाठी झाडांमध्ये योग्य अंतर ठेवा',
+    hi: 'हवा के आवागमन के लिए पौधों के बीच उचित दूरी रखें',
+    en: 'Ensure proper plant spacing for air circulation'
+  },
+  'water at the soil base using drip irrigation': {
+    mr: 'ठिबक सिंचनाचा वापर करून थेट मुळाशी पाणी द्या',
+    hi: 'ड्रिप सिंचाई द्वारा सीधे पौधों की जड़ों में पानी दें',
+    en: 'Water at the soil base using drip irrigation'
+  },
+  'apply organic mulch around plant bases to prevent soil splashing': {
+    mr: 'माती उडणे रोखण्यासाठी झाडांच्या बुंध्याभोवती आच्छादन (Mulching) करा',
+    hi: 'मिट्टी के छींटों को रोकने के लिए पौधों के चारों ओर मल्चिंग करें',
+    en: 'Apply organic mulch around plant bases to prevent soil splashing'
+  },
+
+  // Limitations
+  'agrivision ai provides ai-assisted preliminary crop health information based on visible symptoms.': {
+    mr: 'एग्रीव्हिजन एआय दृश्य लक्षणांवर आधारित प्राथमिक माहिती प्रदान करते. अंतिम निदानासाठी कृषी तज्ज्ञांचा सल्ला घ्या.',
+    hi: 'एग्रीविज़न एआई दृश्य लक्षणों पर आधारित प्राथमिक जानकारी प्रदान करता है. अंतिम पुष्टि के लिए कृषि विशेषज्ञ की सलाह लें.',
+    en: 'AgriVision AI provides AI-assisted preliminary crop health information based on visible symptoms.'
+  },
+  'agrivision ai provides ai-assisted preliminary crop-health information based on visible symptoms. results may be inaccurate and should not replace laboratory diagnosis or advice from a qualified agricultural professional. always follow locally approved agricultural product labels and recommendations.': {
+    mr: 'एग्रीव्हिजन एआय दृश्य लक्षणांवर आधारित प्राथमिक माहिती प्रदान करते. अंतिम प्रमाणीकरणासाठी व औषध फवारणीच्या योग्य प्रमाणासाठी स्थानिक कृषी तज्ज्ञांचा किंवा कृषी विद्यापीठाचा सल्ला घ्या. औषध फवारताना पाकिटावरील सूचनांचे काटेकोर पालन करा.',
+    hi: 'एग्रीविज़न एआई दृश्य लक्षणों पर आधारित प्राथमिक जानकारी प्रदान करता है। अंतिम पुष्टि एवं दवा छिड़काव की सटीक मात्रा के लिए स्थानीय कृषि विशेषज्ञ या अनुसंधान केंद्र से सलाह लें। हमेशा स्थानीय रूप से स्वीकृत कृषि उत्पाद लेबल के निर्देशों का पालन करें।',
+    en: 'AgriVision AI provides AI-assisted preliminary crop-health information based on visible symptoms. Results may be inaccurate and should not replace laboratory diagnosis or advice from a qualified agricultural professional. Always follow locally approved agricultural product labels and recommendations.'
+  }
+};
+
 
 // =====================================================================
 // GLOBAL HELPER FUNCTIONS
@@ -1268,6 +1543,53 @@ function translateUrgency(urg, lang = 'en') {
   return urg;
 }
 
+function translateConfidence(conf, lang = 'en') {
+  if (!conf) return conf;
+  const l = (lang || 'en').toLowerCase();
+  if (l === 'en') return conf;
+  const k = String(conf).trim().toLowerCase();
+  if (confidenceLevelMap[k]) return confidenceLevelMap[k][l] || conf;
+  for (let key in confidenceLevelMap) {
+    if (k.includes(key)) return confidenceLevelMap[key][l] || conf;
+  }
+  return conf;
+}
+
+function translateText(text, lang = 'en') {
+  if (!text) return text;
+  const l = (lang || 'en').toLowerCase();
+  if (l === 'en') return text;
+  const norm = String(text).trim();
+  const normLower = norm.toLowerCase();
+
+  if (phraseTranslations[normLower]) {
+    return phraseTranslations[normLower][l] || text;
+  }
+
+  const dict = translations[l] || {};
+  const enDict = translations['en'] || {};
+  for (let dictKey in enDict) {
+    if (String(enDict[dictKey]).trim().toLowerCase() === normLower) {
+      return dict[dictKey] || text;
+    }
+  }
+
+  for (let phraseKey in phraseTranslations) {
+    if (phraseKey.includes(normLower) || normLower.includes(phraseKey)) {
+      return phraseTranslations[phraseKey][l] || text;
+    }
+  }
+
+  if (diseaseNameMap[normLower]) return diseaseNameMap[normLower][l] || text;
+  if (cropNameMap[normLower]) return cropNameMap[normLower][l] || text;
+  if (categoryMap[normLower]) return categoryMap[normLower][l] || text;
+  if (healthStatusMap[normLower]) return healthStatusMap[normLower][l] || text;
+  if (severityMap[normLower]) return severityMap[normLower][l] || text;
+  if (urgencyMap[normLower]) return urgencyMap[normLower][l] || text;
+
+  return text;
+}
+
 
 // =====================================================================
 // MASTER CLIENT-SIDE LANGUAGE SWITCHER
@@ -1317,7 +1639,7 @@ function setLanguage(lang) {
     langSelect.value = lang;
   }
 
-  // 5. Update Dynamic Elements (Tags, Pills, Badges)
+  // 5. Update Dynamic Elements (Tags, Pills, Badges, Recommendations)
   document.querySelectorAll('.disease-crop-tag').forEach(tag => {
     const orig = tag.getAttribute('data-raw-crop') || tag.textContent.replace('🌱', '').trim();
     if (!tag.getAttribute('data-raw-crop')) tag.setAttribute('data-raw-crop', orig);
@@ -1325,15 +1647,15 @@ function setLanguage(lang) {
   });
 
   document.querySelectorAll('.dynamic-crop-name').forEach(el => {
-    const orig = el.getAttribute('data-raw') || el.textContent.trim();
+    const orig = el.getAttribute('data-raw') || el.textContent.replace('🌱', '').trim();
     if (!el.getAttribute('data-raw')) el.setAttribute('data-raw', orig);
-    el.textContent = translateCrop(el.getAttribute('data-raw'), lang);
+    el.textContent = '🌱 ' + translateCrop(el.getAttribute('data-raw'), lang);
   });
 
   document.querySelectorAll('.dynamic-disease-name').forEach(el => {
-    const orig = el.getAttribute('data-raw') || el.textContent.trim();
+    const orig = el.getAttribute('data-raw') || el.textContent.replace('🦠', '').trim();
     if (!el.getAttribute('data-raw')) el.setAttribute('data-raw', orig);
-    el.textContent = translateDisease(el.getAttribute('data-raw'), lang);
+    el.textContent = '🦠 ' + translateDisease(el.getAttribute('data-raw'), lang);
   });
 
   document.querySelectorAll('.dynamic-category').forEach(el => {
@@ -1341,6 +1663,36 @@ function setLanguage(lang) {
     if (!el.getAttribute('data-raw')) el.setAttribute('data-raw', orig);
     const catLabel = dict['category_label'] || 'Category:';
     el.textContent = `${catLabel} ${translateCategory(el.getAttribute('data-raw'), lang)}`;
+  });
+
+  document.querySelectorAll('.dynamic-confidence').forEach(el => {
+    const orig = el.getAttribute('data-raw') || el.textContent.trim();
+    if (!el.getAttribute('data-raw')) el.setAttribute('data-raw', orig);
+    el.textContent = translateConfidence(el.getAttribute('data-raw'), lang);
+  });
+
+  document.querySelectorAll('.dynamic-health-status').forEach(el => {
+    const orig = el.getAttribute('data-raw') || el.textContent.trim();
+    if (!el.getAttribute('data-raw')) el.setAttribute('data-raw', orig);
+    el.textContent = translateStatus(el.getAttribute('data-raw'), lang);
+  });
+
+  document.querySelectorAll('.dynamic-severity').forEach(el => {
+    const orig = el.getAttribute('data-raw') || el.textContent.trim();
+    if (!el.getAttribute('data-raw')) el.setAttribute('data-raw', orig);
+    el.textContent = translateSeverity(el.getAttribute('data-raw'), lang);
+  });
+
+  document.querySelectorAll('.dynamic-urgency').forEach(el => {
+    const orig = el.getAttribute('data-raw') || el.textContent.trim();
+    if (!el.getAttribute('data-raw')) el.setAttribute('data-raw', orig);
+    el.textContent = translateUrgency(el.getAttribute('data-raw'), lang);
+  });
+
+  document.querySelectorAll('.dynamic-tx').forEach(el => {
+    const orig = el.getAttribute('data-raw') || el.textContent.trim();
+    if (!el.getAttribute('data-raw')) el.setAttribute('data-raw', orig);
+    el.textContent = translateText(el.getAttribute('data-raw'), lang);
   });
 
   // 6. Asynchronously sync active language with Flask session
@@ -1377,3 +1729,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+

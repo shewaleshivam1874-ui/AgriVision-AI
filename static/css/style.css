@@ -561,9 +561,11 @@ th {
 
 .section-header {
   text-align: center;
-  max-width: 720px;
+  max-width: 860px;
   margin: 0 auto clamp(1.75rem, 4vw, 3rem);
   padding-inline: 0.5rem;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .section-tag {
@@ -1939,12 +1941,15 @@ textarea.form-control {
 .jump-nav-bar {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 8px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 8px 0 16px;
-  margin-bottom: 1.5rem;
-  scrollbar-width: none;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 6px 4px 12px;
+  margin: 1rem auto 1.5rem;
+  overflow: visible;
 }
 
 .jump-nav-bar::-webkit-scrollbar {
@@ -1954,6 +1959,7 @@ textarea.form-control {
 .jump-nav-link {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   padding: 6px 14px;
   background: var(--bg-surface);
@@ -1965,6 +1971,8 @@ textarea.form-control {
   white-space: nowrap;
   transition: var(--transition);
   box-shadow: var(--shadow-sm);
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .jump-nav-link:hover {
