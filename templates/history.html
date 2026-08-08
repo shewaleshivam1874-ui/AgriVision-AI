@@ -11,83 +11,145 @@
       <p class="section-subtitle">{{ t('history_subtitle') }}</p>
     </div>
 
-    <!-- Search & Filter Controls -->
-    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: clamp(1rem, 3vw, 1.25rem); margin-bottom: 2.25rem; box-shadow: var(--shadow-sm);" data-animate class="fade-up">
+    <!-- 1. Dashboard Statistics Counter Summary Bar -->
+    {% if history_records %}
+      {% set total_count = history_records | length %}
+      {% set ns = namespace(healthy_count=0, moderate_count=0, high_count=0) %}
+      {% for rec in history_records %}
+        {% set rec_sev = (rec.severity_band or '') | upper %}
+        {% if 'HEALTHY' in rec_sev or 'HEALTHY' in rec.disease_name | upper %}
+          {% set ns.healthy_count = ns.healthy_count + 1 %}
+        {% elif 'CRITICAL' in rec_sev or 'HIGH' in rec_sev or 'SEVERE' in rec_sev %}
+          {% set ns.high_count = ns.high_count + 1 %}
+        {% else %}
+          {% set ns.moderate_count = ns.moderate_count + 1 %}
+        {% endif %}
+      {% endfor %}
+
+      <div class="stat-counter-grid stagger-reveal" data-animate class="fade-up">
+        <!-- Stat Card 1: Total -->
+        <div class="dashboard-stat-card">
+          <div class="dashboard-stat-icon" style="background: rgba(34, 197, 94, 0.15); color: var(--primary);">📊</div>
+          <div class="dashboard-stat-info">
+            <span class="dashboard-stat-number">{{ total_count }}</span>
+            <span class="dashboard-stat-label">Total Analyzed</span>
+          </div>
+        </div>
+
+        <!-- Stat Card 2: Healthy -->
+        <div class="dashboard-stat-card">
+          <div class="dashboard-stat-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">🟢</div>
+          <div class="dashboard-stat-info">
+            <span class="dashboard-stat-number">{{ ns.healthy_count }}</span>
+            <span class="dashboard-stat-label">Healthy Leaf</span>
+          </div>
+        </div>
+
+        <!-- Stat Card 3: Moderate / Watch -->
+        <div class="dashboard-stat-card">
+          <div class="dashboard-stat-icon" style="background: rgba(245, 158, 11, 0.15); color: #d97706;">🟠</div>
+          <div class="dashboard-stat-info">
+            <span class="dashboard-stat-number">{{ ns.moderate_count }}</span>
+            <span class="dashboard-stat-label">Moderate / Watch</span>
+          </div>
+        </div>
+
+        <!-- Stat Card 4: High / Critical -->
+        <div class="dashboard-stat-card">
+          <div class="dashboard-stat-icon" style="background: rgba(220, 38, 38, 0.15); color: #ef4444;">🔴</div>
+          <div class="dashboard-stat-info">
+            <span class="dashboard-stat-number">{{ ns.high_count }}</span>
+            <span class="dashboard-stat-label">Urgent Priority</span>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- 2. Search & Severity Filter Bar -->
+    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: clamp(1rem, 2.5vw, 1.35rem); margin-bottom: 2.25rem; box-shadow: var(--shadow-sm);" data-animate class="fade-up">
       <form method="GET" action="{{ url_for('history') }}" class="history-filter-form">
         <div class="history-search-col">
-          <input type="text" name="search" value="{{ search_query or '' }}" placeholder="🔍 Search by crop or disease name..." class="form-input" style="width: 100%; padding: 10px 14px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main);">
+          <input type="text" name="search" value="{{ search_query or '' }}" placeholder="🔍 Search by crop or disease name..." class="form-input" style="width: 100%; min-height: 44px; border-radius: var(--radius-md);">
         </div>
         
         <div class="history-actions-col">
-          <label style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); white-space: nowrap;">Severity Filter:</label>
-          <select name="severity" onchange="this.form.submit()" class="lang-select" style="padding: 10px 14px; border-radius: var(--radius-md); background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); min-height: 42px;">
+          <label style="font-size: 0.86rem; font-weight: 700; color: var(--text-muted); white-space: nowrap;">Severity:</label>
+          <select name="severity" onchange="this.form.submit()" class="lang-select" style="padding: 10px 14px; border-radius: var(--radius-md); background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); min-height: 44px; font-weight: 700;">
             <option value="all" {% if not severity_filter or severity_filter.lower() == 'all' %}selected{% endif %}>All Severities</option>
-            <option value="healthy" {% if severity_filter and severity_filter.lower() == 'healthy' %}selected{% endif %}>Healthy</option>
-            <option value="low" {% if severity_filter and severity_filter.lower() == 'low' %}selected{% endif %}>Low Severity</option>
-            <option value="moderate" {% if severity_filter and severity_filter.lower() == 'moderate' %}selected{% endif %}>Moderate Severity</option>
-            <option value="high" {% if severity_filter and severity_filter.lower() == 'high' %}selected{% endif %}>High Severity</option>
-            <option value="critical" {% if severity_filter and severity_filter.lower() == 'critical' %}selected{% endif %}>Critical / Severe</option>
+            <option value="healthy" {% if severity_filter and severity_filter.lower() == 'healthy' %}selected{% endif %}>🟢 Healthy</option>
+            <option value="low" {% if severity_filter and severity_filter.lower() == 'low' %}selected{% endif %}>🟡 Low Severity</option>
+            <option value="moderate" {% if severity_filter and severity_filter.lower() == 'moderate' %}selected{% endif %}>🟠 Moderate</option>
+            <option value="high" {% if severity_filter and severity_filter.lower() == 'high' %}selected{% endif %}>🔴 High Severity</option>
+            <option value="critical" {% if severity_filter and severity_filter.lower() == 'critical' %}selected{% endif %}>🚨 Critical</option>
           </select>
 
-          <button type="submit" class="btn-cta" style="padding: 10px 20px; font-size: 0.92rem; min-height: 42px;">Filter</button>
+          <button type="submit" class="btn-cta" style="padding: 10px 20px; font-size: 0.92rem; min-height: 44px;">Filter</button>
           {% if search_query or (severity_filter and severity_filter.lower() != 'all') %}
-            <a href="{{ url_for('history') }}" class="btn-secondary" style="padding: 10px 16px; font-size: 0.92rem; min-height: 42px;">Reset</a>
+            <a href="{{ url_for('history') }}" class="btn-secondary" style="padding: 10px 16px; font-size: 0.92rem; min-height: 44px;">Reset</a>
           {% endif %}
         </div>
       </form>
     </div>
 
+    <!-- 3. History Records Cards Grid -->
     {% if history_records %}
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: clamp(1.25rem, 3vw, 2rem);" class="stagger-reveal">
       {% for record in history_records %}
       <div class="disease-card" style="display: flex; flex-direction: column; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.25s ease, box-shadow 0.25s ease;">
         
-        <!-- Leaf Thumbnail Container (preserves ratio with fallback) -->
-        <div style="width: 100%; height: 210px; background: var(--bg-input); position: relative; overflow: hidden;">
+        <!-- Leaf Thumbnail Container -->
+        <div style="width: 100%; height: 200px; background: var(--bg-input); position: relative; overflow: hidden;">
           <img src="{{ url_for('static', filename='uploads/' + record.image_path) }}" 
                alt="{{ record.crop_name }} {{ record.disease_name }}" 
                class="disease-card-img" 
                style="width: 100%; height: 100%; object-fit: cover; object-position: center center;"
                onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/hero_leaf_scan.jpg') }}';">
           <div style="position: absolute; top: 12px; left: 12px;">
-            <span class="disease-crop-tag" style="background: rgba(0,0,0,0.65); color: #ffffff; backdrop-filter: blur(4px); padding: 4px 10px; border-radius: 8px; font-size: 0.82rem; font-weight: 700;">
+            <span class="disease-crop-tag" style="background: rgba(0,0,0,0.68); color: #ffffff; backdrop-filter: blur(4px); padding: 4px 10px; border-radius: 8px; font-size: 0.8rem; font-weight: 700;">
               🌱 {{ record.crop_name }}
             </span>
           </div>
         </div>
         
-        <div class="disease-card-body" style="padding: 1.5rem; display: flex; flex-direction: column; flex: 1;">
-          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 0.4rem;">
+        <div class="disease-card-body" style="padding: 1.35rem; display: flex; flex-direction: column; flex: 1;">
+          <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 0.35rem;">
             📅 {{ record.prediction_date }}
           </div>
 
-          <h3 class="disease-card-title" style="font-size: 1.2rem; font-weight: 800; color: var(--text-heading); margin-bottom: 0.75rem;">
+          <h3 class="disease-card-title" style="font-size: 1.2rem; font-weight: 800; color: var(--text-heading); margin-bottom: 0.75rem; line-height: 1.3;">
             {{ record.disease_name }}
           </h3>
           
           <!-- Confidence & Severity Badges -->
-          <div style="margin-bottom: 1.25rem; display: flex; gap: 8px; flex-wrap: wrap;">
-            <span class="status-pill {% if 'Healthy' in record.disease_name %}healthy{% else %}disease{% endif %}" style="font-size: 0.82rem;">
-              🎯 {{ record.confidence }}% {{ t('confidence_heading') }}
-            </span>
+          <div style="margin-bottom: 1.25rem; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+              <span class="status-pill {% if 'Healthy' in record.disease_name %}healthy{% else %}disease{% endif %}" style="font-size: 0.8rem;">
+                🎯 {{ record.confidence }}% Confidence
+              </span>
 
-            {% set sev = record.severity_band or 'Moderate' %}
-            {% if 'CRITICAL' in sev.upper() or 'HIGH' in sev.upper() %}
-              <span class="status-pill disease" style="font-size: 0.82rem;">⚡ {{ sev }}</span>
-            {% elif 'LOW' in sev.upper() or 'HEALTHY' in sev.upper() %}
-              <span class="status-pill healthy" style="font-size: 0.82rem;">✓ {{ sev }}</span>
-            {% else %}
-              <span class="status-pill warning" style="font-size: 0.82rem;">⚡ {{ sev }}</span>
-            {% endif %}
+              {% set sev = record.severity_band or 'Moderate' %}
+              {% if 'CRITICAL' in sev.upper() or 'HIGH' in sev.upper() %}
+                <span class="status-pill disease" style="font-size: 0.8rem;">⚡ {{ sev }}</span>
+              {% elif 'LOW' in sev.upper() or 'HEALTHY' in sev.upper() %}
+                <span class="status-pill healthy" style="font-size: 0.8rem;">✓ {{ sev }}</span>
+              {% else %}
+                <span class="status-pill warning" style="font-size: 0.8rem;">⚡ {{ sev }}</span>
+              {% endif %}
+            </div>
+
+            <!-- Mini Progress Meter -->
+            <div class="meter-track" style="height: 6px;">
+              <div class="meter-fill {% if 'CRITICAL' in (record.severity_band or '') | upper %}danger{% elif 'HIGH' in (record.severity_band or '') | upper %}warning{% endif %}" style="width: {{ record.confidence if record.confidence | float(0) > 0 else 90 }}%;"></div>
+            </div>
           </div>
 
           <!-- Action Buttons -->
           <div style="margin-top: auto; display: flex; gap: 0.75rem;">
-            <a href="{{ url_for('result', prediction_id=record.prediction_id) }}" class="btn-cta" style="flex: 1; justify-content: center; padding: 11px; font-size: 0.95rem;">
-              View Full Analysis →
+            <a href="{{ url_for('result', prediction_id=record.prediction_id) }}" class="btn-cta" style="flex: 1; justify-content: center; padding: 10px; font-size: 0.92rem;">
+              View Full Report →
             </a>
             <form action="{{ url_for('delete_history', prediction_id=record.prediction_id) }}" method="POST" style="margin: 0;" onsubmit="return confirm('Are you sure you want to delete this prediction record?');">
-              <button type="submit" class="btn-secondary" style="padding: 11px 14px; color: #ef4444; border-color: rgba(239, 68, 68, 0.3);" title="Delete Record">
+              <button type="submit" class="btn-secondary" style="padding: 10px 14px; color: #ef4444; border-color: rgba(239, 68, 68, 0.3); min-height: 42px;" title="Delete Record">
                 🗑️
               </button>
             </form>
@@ -97,11 +159,12 @@
       {% endfor %}
     </div>
     {% else %}
-    <div style="text-align: center; padding: 4rem 2rem; background: var(--bg-surface); border-radius: var(--radius-xl); border: 1px solid var(--border-color);">
+    <!-- User-Friendly Empty State -->
+    <div style="text-align: center; padding: 4rem 2rem; background: var(--bg-surface); border-radius: var(--radius-xl); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
       <div style="font-size: 3.5rem; margin-bottom: 1rem;">📜</div>
       <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem; color: var(--text-heading);">{{ t('empty_history') }}</h3>
       <p style="color: var(--text-muted); max-width: 480px; margin: 0 auto 1.75rem; font-size: 1.02rem;">
-        Upload a crop leaf image to start tracking disease pathology metrics.
+        Upload a crop leaf photograph to initiate real-time AI diagnosis and start tracking pathology records.
       </p>
       <a href="{{ url_for('detect') }}" class="btn-cta" style="padding: 14px 32px; font-size: 1.05rem;">
         {{ t('btn_analyze_leaf') }}
@@ -111,4 +174,5 @@
   </div>
 </section>
 {% endblock %}
+
 

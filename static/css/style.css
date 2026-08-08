@@ -1846,3 +1846,220 @@ textarea.form-control {
     scroll-behavior: auto !important;
   }
 }
+
+/* ----------------------------------------------------
+   17. User-Friendly Dashboard & Diagnostic Report Components
+   ---------------------------------------------------- */
+
+/* Dashboard Quick Action Toolbar */
+.report-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  padding: 10px 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.report-action-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-tool {
+  background: var(--bg-input);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition);
+  touch-action: manipulation;
+  min-height: 38px;
+}
+
+.btn-tool:hover {
+  background: var(--bg-hover);
+  color: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.btn-tool:active {
+  transform: translateY(0);
+}
+
+/* Jump Navigation Anchor Bar */
+.jump-nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 0 16px;
+  margin-bottom: 1.5rem;
+  scrollbar-width: none;
+}
+
+.jump-nav-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.jump-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 100px;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.jump-nav-link:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--bg-hover);
+  transform: translateY(-1px);
+}
+
+/* Visual Confidence & Severity Progress Meter */
+.confidence-meter-container {
+  margin-top: 8px;
+  width: 100%;
+}
+
+.meter-track {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-input);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.meter-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #10b981, #22c55e);
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.meter-fill.warning {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.meter-fill.danger {
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* History Dashboard Statistics Counter Bar */
+.stat-counter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: clamp(0.85rem, 2vw, 1.25rem);
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.dashboard-stat-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: clamp(1rem, 2.5vw, 1.35rem);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: var(--transition);
+  min-width: 0;
+}
+
+.dashboard-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary);
+}
+
+.dashboard-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  flex-shrink: 0;
+}
+
+.dashboard-stat-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dashboard-stat-number {
+  font-size: clamp(1.3rem, 3vw, 1.65rem);
+  font-weight: 900;
+  color: var(--text-heading);
+  line-height: 1.1;
+  font-family: var(--font-heading);
+}
+
+.dashboard-stat-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+/* Print Styles for Professional Offline Reports */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .navbar,
+  .footer,
+  .report-action-bar,
+  .jump-nav-bar,
+  .btn-cta,
+  .btn-secondary,
+  .btn-tool,
+  .toast-container {
+    display: none !important;
+  }
+
+  .section {
+    padding: 0 !important;
+  }
+
+  .result-header-card,
+  .action-guidance-outer-card,
+  .info-card {
+    box-shadow: none !important;
+    border: 1px solid #cccccc !important;
+    page-break-inside: avoid;
+  }
+}
+

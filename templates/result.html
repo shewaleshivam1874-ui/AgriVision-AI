@@ -17,7 +17,7 @@
       <!-- ========================================================= -->
       
       <!-- PAGE TITLE & REDESIGNED GOOGLE GEMINI AI VISION BADGE -->
-      <div class="section-header" style="margin-bottom: 2.5rem;" data-animate class="fade-up">
+      <div class="section-header" style="margin-bottom: 1.5rem;" data-animate class="fade-up">
         <h2 class="section-title" style="margin-bottom: 0.4rem;">Crop Health Analysis Report</h2>
         <p class="section-subtitle" style="margin-bottom: 0.6rem;">Real-time visual pathology & diagnostic guidance</p>
         
@@ -27,10 +27,37 @@
           <span>AI Vision Analysis with <strong>Google Gemini AI Vision</strong></span>
           <span style="color: var(--text-muted); font-size: 0.78rem;" class="desktop-only">• Visual Crop Analysis</span>
         </div>
+
+        <!-- User-Friendly Quick Action Toolbar -->
+        <div class="report-action-bar">
+          <div class="report-action-group">
+            <button type="button" class="btn-tool" onclick="printReport()" title="Print or Save PDF Report">
+              🖨️ <span>Print Report</span>
+            </button>
+            <button type="button" class="btn-tool" onclick="copyDiagnosticSummary('{{ gemini_data.plant.common_name }}', '{{ gemini_data.diagnosis.primary_condition }}', '{{ gemini_data.diagnosis.confidence }}', '{{ gemini_data.urgency }}')" title="Copy Diagnostic Summary to Clipboard">
+              📋 <span>Copy Summary</span>
+            </button>
+          </div>
+          <div class="report-action-group">
+            <a href="{{ url_for('detect') }}" class="btn-tool" style="color: var(--primary); font-weight: 800;" title="Analyze a New Leaf">
+              📷 <span>New Analysis</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Interactive Section Quick Jump Navigation -->
+        <div class="jump-nav-bar" style="margin-top: 1rem;">
+          <a href="javascript:void(0)" onclick="scrollToSection('sectionOverview')" class="jump-nav-link">📊 Overview</a>
+          <a href="javascript:void(0)" onclick="scrollToSection('sectionVisual')" class="jump-nav-link">📸 Photo & Severity</a>
+          <a href="javascript:void(0)" onclick="scrollToSection('sectionActions')" class="jump-nav-link">⚡ Actions</a>
+          <a href="javascript:void(0)" onclick="scrollToSection('sectionTreatments')" class="jump-nav-link">🧪 Treatments</a>
+          <a href="javascript:void(0)" onclick="scrollToSection('sectionNutrients')" class="jump-nav-link">🌾 Soil & Fertilizer</a>
+          <a href="javascript:void(0)" onclick="scrollToSection('sectionInsights')" class="jump-nav-link">🔍 Insights</a>
+        </div>
       </div>
 
-      <!-- 1. CROP HEALTH ANALYSIS — EXACT 5 SUMMARY CARDS (3 + 2 CENTERED DESKTOP GRID) -->
-      <div class="result-header-card" style="margin-bottom: 3rem;" data-animate class="fade-up">
+      <!-- 1. CROP HEALTH ANALYSIS — EXACT 5 SUMMARY CARDS -->
+      <div class="result-header-card" id="sectionOverview" style="margin-bottom: 2.5rem;" data-animate class="fade-up">
         <div class="summary-5-grid">
           
           <!-- Card 1: Crop & Species -->
@@ -61,7 +88,13 @@
             <div class="stat-value" style="color: var(--primary); font-size: 1.35rem; line-height: 1.25;">
               🎯 {{ gemini_data.diagnosis.confidence }}
             </div>
-            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-top: 4px;">
+            <div class="confidence-meter-container">
+              <div class="meter-track">
+                {% set conf_num = gemini_data.diagnosis.confidence | replace('%', '') | trim %}
+                <div class="meter-fill" style="width: {{ conf_num if conf_num | float(0) > 0 else 90 }}%;"></div>
+              </div>
+            </div>
+            <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); margin-top: 4px;">
               Plant ID: {{ gemini_data.plant.confidence }}
             </div>
           </div>
@@ -126,7 +159,7 @@
       </div>
 
       <!-- 2. IMAGE PREVIEW & SEVERITY BADGE -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: clamp(1.25rem, 3vw, 2rem); margin-bottom: 3rem;">
+      <div id="sectionVisual" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: clamp(1.25rem, 3vw, 2rem); margin-bottom: 3rem;">
         <!-- Uploaded Leaf Preview -->
         <div class="prob-card" style="text-align: center;" data-animate class="fade-right">
           <h3 style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--text-heading);">Analyzed Leaf Photo</h3>
@@ -172,7 +205,7 @@
       </div>
 
       <!-- 3. REDESIGNED ACTIONABLE GUIDANCE SECTION WITH STRICT SPACING SYSTEM -->
-      <div class="action-guidance-outer-card" data-animate class="fade-up">
+      <div class="action-guidance-outer-card" id="sectionActions" data-animate class="fade-up">
         
         <!-- Header with AI-Guided Actions Badge -->
         <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.75rem;">
@@ -389,7 +422,7 @@
       </div>
 
       <!-- 4. VISUALLY SEPARATE ORGANIC VS CONVENTIONAL TREATMENT -->
-      <div style="margin-bottom: 3rem;">
+      <div id="sectionTreatments" style="margin-bottom: 3rem;">
         <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-heading);" data-animate class="fade-up">Management & Treatment Solutions</h3>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: clamp(1.25rem, 3vw, 2rem);">
@@ -430,7 +463,7 @@
       </div>
 
       <!-- 5. FERTILIZER & NUTRIENT GUIDANCE -->
-      <div style="background: var(--bg-surface); padding: clamp(1.25rem, 3vw, 2rem); border-radius: var(--radius-xl); border: 1px solid var(--border-color); margin-bottom: 3rem;" data-animate class="fade-up">
+      <div id="sectionNutrients" style="background: var(--bg-surface); padding: clamp(1.25rem, 3vw, 2rem); border-radius: var(--radius-xl); border: 1px solid var(--border-color); margin-bottom: 3rem;" data-animate class="fade-up">
         <div class="info-card-header" style="margin-bottom: 1rem;">
           <div class="info-card-icon">🌾</div>
           <h3 style="font-size: 1.4rem; color: var(--text-heading);">Nutrient & Fertilizer Guidance</h3>
@@ -468,7 +501,7 @@
       </div>
 
       <!-- 6. ADDITIONAL DIAGNOSTIC INSIGHTS -->
-      <div style="margin-bottom: 3rem;" data-animate class="fade-up">
+      <div id="sectionInsights" style="margin-bottom: 3rem;" data-animate class="fade-up">
         <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-heading);">Additional Diagnostic Insights</h3>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1.5rem;">

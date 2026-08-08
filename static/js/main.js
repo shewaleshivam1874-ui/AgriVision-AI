@@ -161,3 +161,49 @@ function initContactFormValidation() {
     }
   });
 }
+
+/**
+ * Diagnostic Dashboard Print Trigger
+ */
+function printReport() {
+  window.print();
+}
+
+/**
+ * Diagnostic Dashboard Copy Summary to Clipboard
+ */
+function copyDiagnosticSummary(cropName, condition, confidence, urgency) {
+  const summaryText = `AgriVision AI Diagnostic Report:\n• Crop: ${cropName}\n• Condition: ${condition}\n• Confidence: ${confidence}\n• Action Urgency: ${urgency}\n• Generated: ${new Date().toLocaleDateString()}`;
+  
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(summaryText)
+      .then(() => showToast('Diagnostic summary copied to clipboard!', 'success'))
+      .catch(() => showToast('Failed to copy summary to clipboard.', 'error'));
+  } else {
+    // Fallback for non-https contexts
+    const textArea = document.createElement('textarea');
+    textArea.value = summaryText;
+    textArea.style.position = 'fixed';
+    textArea.style.opacity = '0';
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      showToast('Diagnostic summary copied to clipboard!', 'success');
+    } catch (err) {
+      showToast('Failed to copy summary.', 'error');
+    }
+    document.body.removeChild(textArea);
+  }
+}
+
+/**
+ * Smooth Jump Navigation
+ */
+function scrollToSection(sectionId) {
+  const target = document.getElementById(sectionId);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
