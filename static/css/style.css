@@ -2073,3 +2073,13 @@ textarea.form-control {
   }
 }
 
+/* ----------------------------------------------------
+   18. Default 125% Scaling for 16:10 Devices
+   ---------------------------------------------------- */
+@media (min-width: 1024px) and (min-aspect-ratio: 156/100) and (max-aspect-ratio: 165/100) {
+  body {
+    zoom: 1.25;
+  }
+}
+
+
