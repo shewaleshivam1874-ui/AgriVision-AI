@@ -1,45 +1,45 @@
 {% extends "base.html" %}
 
-{% block title %}Contact Support - AgriVision AI{% endblock %}
+{% block title %}{{ t('contact') }} - {{ t('app_name') }}{% endblock %}
 
 {% block content %}
 <section class="section">
   <div class="container" style="max-width: 820px;">
     <div class="section-header">
-      <span class="section-tag">Get In Touch</span>
-      <h2 class="section-title">Contact & Feedback</h2>
-      <p class="section-subtitle">Have questions regarding AI leaf diagnosis, model accuracy, or dataset integration? Send us a message.</p>
+      <span class="section-tag" data-i18n="contact_tag">{{ t('contact_tag') }}</span>
+      <h2 class="section-title" data-i18n="contact_title">{{ t('contact_title') }}</h2>
+      <p class="section-subtitle" data-i18n="contact_subtitle">{{ t('contact_subtitle') }}</p>
     </div>
 
     <div style="background: var(--bg-card); padding: clamp(1.5rem, 5vw, 3rem) clamp(1rem, 4vw, 2.5rem); border-radius: var(--radius-xl); border: 1px solid var(--border-color); box-shadow: var(--shadow-md); width: 100%;">
       <form id="contactForm" action="{{ url_for('contact') }}" method="POST">
         <!-- Full Name -->
         <div class="form-group">
-          <label for="name" class="form-label">Full Name *</label>
-          <input type="text" id="name" name="name" class="form-control" placeholder="Enter your full name" required>
+          <label for="name" class="form-label" data-i18n="form_name">{{ t('form_name') }}</label>
+          <input type="text" id="name" name="name" class="form-control" placeholder="{{ t('form_name_placeholder') }}" data-i18n-placeholder="form_name_placeholder" required>
         </div>
 
         <!-- Email Address -->
         <div class="form-group">
-          <label for="email" class="form-label">Email Address *</label>
-          <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com" required>
+          <label for="email" class="form-label" data-i18n="form_email">{{ t('form_email') }}</label>
+          <input type="email" id="email" name="email" class="form-control" placeholder="{{ t('form_email_placeholder') }}" data-i18n-placeholder="form_email_placeholder" required>
         </div>
 
         <!-- Subject -->
         <div class="form-group">
-          <label for="subject" class="form-label">Subject</label>
-          <input type="text" id="subject" name="subject" class="form-control" placeholder="e.g. Model feedback or general inquiry">
+          <label for="subject" class="form-label" data-i18n="form_subject">{{ t('form_subject') }}</label>
+          <input type="text" id="subject" name="subject" class="form-control" placeholder="{{ t('form_subject_placeholder') }}" data-i18n-placeholder="form_subject_placeholder">
         </div>
 
         <!-- Message -->
         <div class="form-group">
-          <label for="message" class="form-label">Your Message *</label>
-          <textarea id="message" name="message" class="form-control" placeholder="Describe your question or feedback..." required></textarea>
+          <label for="message" class="form-label" data-i18n="form_message">{{ t('form_message') }}</label>
+          <textarea id="message" name="message" class="form-control" placeholder="{{ t('form_message_placeholder') }}" data-i18n-placeholder="form_message_placeholder" required></textarea>
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="btn-cta" style="width: 100%; justify-content: center; padding: 14px; font-size: 1.08rem;">
-          ✉️ Send Message
+        <button type="submit" class="btn-cta" style="width: 100%; justify-content: center; padding: 14px; font-size: 1.08rem;" data-i18n="send_btn">
+          {{ t('send_btn') }}
         </button>
       </form>
     </div>

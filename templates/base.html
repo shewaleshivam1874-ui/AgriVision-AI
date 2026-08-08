@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}AgriVision AI - Explainable Crop Disease Detection{% endblock %}</title>
-  <meta name="description" content="AgriVision AI - An Explainable AI (XAI) Web Application for Early Crop Disease Detection, Disease Stage Estimation, Leaf Health Analysis, and Crop Management Guidance.">
+  <title>{% block title %}{{ t('app_name') }} - {{ t('app_subtitle') }}{% endblock %}</title>
+  <meta name="description" content="AgriVision AI - Multilingual Explainable AI (XAI) Application for Early Crop Disease Detection, Visual Heatmaps, Disease Stage Estimation, Leaf Health Analysis, and Crop Management Guidance.">
   
   <!-- Google Fonts: Inter & Noto Sans Devanagari for English, Marathi, Hindi -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,42 +31,41 @@
       <a href="{{ url_for('index') }}" class="nav-logo">
         <div class="nav-logo-icon">🌿</div>
         <div>
-          <div style="line-height: 1.1;">AgriVision <span style="color: var(--primary);">AI</span></div>
-          <div style="font-size: 0.72rem; font-weight: 600; color: var(--text-muted); display: block;" class="desktop-only">Explainable Crop Disease Detection</div>
+          <div style="line-height: 1.1;"><span data-i18n="app_name">{{ t('app_name') }}</span></div>
+          <div style="font-size: 0.72rem; font-weight: 600; color: var(--text-muted); display: block;" class="desktop-only" data-i18n="app_subtitle">{{ t('app_subtitle') }}</div>
         </div>
       </a>
 
       <!-- Controls (Theme + Lang + Hamburger) -->
       <div class="nav-controls">
         <!-- Sun/Moon Light Dark Mode Toggle -->
-        <button type="button" id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle Light/Dark Mode" title="Toggle Light/Dark Mode">
+        <button type="button" id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle Light/Dark Mode" title="Toggle Light/Dark Mode" data-i18n-title="toggle_theme" data-i18n-aria-label="toggle_theme">
           <span id="themeIcon">🌙</span>
         </button>
 
-        <!-- Language Selector Dropdown -->
+        <!-- Language Selector Dropdown with Instant Localization -->
         <div class="lang-selector">
           <span style="font-size: 1.1rem;">🌐</span>
-          <select id="languageSelect" class="lang-select" aria-label="Select Language" onchange="window.location.href='/set-language/' + this.value">
+          <select id="languageSelect" class="lang-select" aria-label="Select Language" onchange="setLanguage(this.value)">
             <option value="en" {% if current_lang == 'en' %}selected{% endif %}>English</option>
             <option value="mr" {% if current_lang == 'mr' %}selected{% endif %}>मराठी</option>
             <option value="hi" {% if current_lang == 'hi' %}selected{% endif %}>हिंदी</option>
           </select>
         </div>
 
-        <button class="nav-toggle" aria-label="Toggle Navigation Menu">☰</button>
+        <button class="nav-toggle" aria-label="Toggle Navigation Menu" data-i18n-aria-label="menu_toggle">☰</button>
       </div>
 
       <!-- Navigation Menu -->
       <ul class="nav-menu">
-        <li><a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">{{ t('home') }}</a></li>
-        <li><a href="{{ url_for('detect') }}" class="nav-link {% if request.endpoint == 'detect' %}active{% endif %}">{{ t('detect_disease') }}</a></li>
-        <li><a href="{{ url_for('history') }}" class="nav-link {% if request.endpoint == 'history' %}active{% endif %}">{{ t('history') }}</a></li>
-        <li><a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}">{{ t('about') }}</a></li>
-        <li><a href="{{ url_for('detect') }}" class="btn-cta">{{ t('analyze_crop') }}</a></li>
+        <li><a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" data-i18n="home">{{ t('home') }}</a></li>
+        <li><a href="{{ url_for('detect') }}" class="nav-link {% if request.endpoint == 'detect' %}active{% endif %}" data-i18n="detect_disease">{{ t('detect_disease') }}</a></li>
+        <li><a href="{{ url_for('history') }}" class="nav-link {% if request.endpoint == 'history' %}active{% endif %}" data-i18n="history">{{ t('history') }}</a></li>
+        <li><a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}" data-i18n="about">{{ t('about') }}</a></li>
+        <li><a href="{{ url_for('detect') }}" class="btn-cta" data-i18n="analyze_crop">{{ t('analyze_crop') }}</a></li>
       </ul>
     </div>
   </nav>
-
 
   <!-- Flash Messages -->
   {% with messages = get_flashed_messages(with_categories=true) %}
@@ -92,45 +91,44 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <h3>🌿 AgriVision AI</h3>
-          <p>An Explainable AI (XAI) web application designed for early crop leaf disease detection, visual attention heatmaps, disease stage estimation, and agricultural diagnosis support.</p>
+          <h3>🌿 <span data-i18n="app_name">{{ t('app_name') }}</span></h3>
+          <p data-i18n="footer_brand_desc">{{ t('footer_brand_desc') }}</p>
         </div>
 
         <div class="footer-col">
-          <h4>Navigation</h4>
+          <h4 data-i18n="footer_nav_heading">{{ t('footer_nav_heading') }}</h4>
           <ul class="footer-links">
-            <li><a href="{{ url_for('index') }}" data-i18n="home">Home</a></li>
-            <li><a href="{{ url_for('detect') }}" data-i18n="detect_disease">Analyze Leaf</a></li>
-            <li><a href="{{ url_for('history') }}">Prediction History</a></li>
-            <li><a href="{{ url_for('about') }}" data-i18n="about">About AgriVision AI</a></li>
-            <li><a href="{{ url_for('contact') }}" data-i18n="contact">Contact Support</a></li>
+            <li><a href="{{ url_for('index') }}" data-i18n="home">{{ t('home') }}</a></li>
+            <li><a href="{{ url_for('detect') }}" data-i18n="detect_disease">{{ t('detect_disease') }}</a></li>
+            <li><a href="{{ url_for('history') }}" data-i18n="history">{{ t('history') }}</a></li>
+            <li><a href="{{ url_for('about') }}" data-i18n="about">{{ t('about') }}</a></li>
+            <li><a href="{{ url_for('contact') }}" data-i18n="contact">{{ t('contact') }}</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4>Capabilities</h4>
+          <h4 data-i18n="footer_cap_heading">{{ t('footer_cap_heading') }}</h4>
           <ul class="footer-links">
-            <li><a href="{{ url_for('detect') }}">Real-Time AI Leaf Analysis</a></li>
-            <li><a href="{{ url_for('detect') }}">Disease Severity Estimation</a></li>
-            <li><a href="{{ url_for('detect') }}">Grad-CAM Visual Heatmaps</a></li>
-            <li><a href="{{ url_for('detect') }}">Organic & Chemical Guidance</a></li>
+            <li><a href="{{ url_for('detect') }}" data-i18n="cap_leaf_analysis">{{ t('cap_leaf_analysis') }}</a></li>
+            <li><a href="{{ url_for('detect') }}" data-i18n="cap_severity_est">{{ t('cap_severity_est') }}</a></li>
+            <li><a href="{{ url_for('detect') }}" data-i18n="cap_heatmaps">{{ t('cap_heatmaps') }}</a></li>
+            <li><a href="{{ url_for('detect') }}" data-i18n="cap_guidance">{{ t('cap_guidance') }}</a></li>
           </ul>
         </div>
 
-
         <div class="footer-col">
-          <h4>Technologies</h4>
+          <h4 data-i18n="footer_tech_heading">{{ t('footer_tech_heading') }}</h4>
           <ul class="footer-links">
-            <li><a href="#">Google Gemini Vision AI</a></li>
-            <li><a href="#">Computer Vision Leaf Scanner</a></li>
-            <li><a href="#">Python Flask Backend</a></li>
-            <li><a href="#">Explainable AI Guidance</a></li>
+            <li><a href="{{ url_for('about') }}" data-i18n="tech_gemini">{{ t('tech_gemini') }}</a></li>
+            <li><a href="{{ url_for('detect') }}" data-i18n="tech_vision_scanner">{{ t('tech_vision_scanner') }}</a></li>
+            <li><a href="{{ url_for('about') }}" data-i18n="tech_flask">{{ t('tech_flask') }}</a></li>
+            <li><a href="{{ url_for('about') }}" data-i18n="tech_xai">{{ t('tech_xai') }}</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; {{ current_year }} AgriVision AI. All rights reserved. Designed for explainable precision agriculture.</p>
+        <p>&copy; {{ current_year }} <span data-i18n="app_name">{{ t('app_name') }}</span>. <span data-i18n="footer_rights">{{ t('footer_rights') }}</span></p>
       </div>
     </div>
   </footer>
@@ -142,4 +140,3 @@
   {% block extra_js %}{% endblock %}
 </body>
 </html>
-

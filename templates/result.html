@@ -2,9 +2,9 @@
 
 {% block title %}
   {% if is_gemini and gemini_data %}
-    Gemini AI Diagnostic Report - {{ gemini_data.plant.common_name }} ({{ gemini_data.diagnosis.primary_condition }})
+    {{ t('report_title') }} - {{ translate_crop(gemini_data.plant.common_name) }} ({{ translate_disease(gemini_data.diagnosis.primary_condition) }})
   {% else %}
-    Master Diagnostic Report - {{ prediction.crop_name }} {{ prediction.disease_name }}
+    {{ t('report_title') }} - {{ translate_crop(prediction.crop_name) }} {{ translate_disease(prediction.disease_name) }}
   {% endif %}
 {% endblock %}
 
@@ -18,41 +18,41 @@
       
       <!-- PAGE TITLE & REDESIGNED GOOGLE GEMINI AI VISION BADGE -->
       <div class="section-header" style="margin-bottom: 1.5rem;" data-animate class="fade-up">
-        <h2 class="section-title" style="margin-bottom: 0.4rem;">Crop Health Analysis Report</h2>
-        <p class="section-subtitle" style="margin-bottom: 0.6rem;">Real-time visual pathology & diagnostic guidance</p>
+        <h2 class="section-title" style="margin-bottom: 0.4rem;" data-i18n="report_title">{{ t('report_title') }}</h2>
+        <p class="section-subtitle" style="margin-bottom: 0.6rem;" data-i18n="report_subtitle">{{ t('report_subtitle') }}</p>
         
         <!-- Polished Gemini Technology Badge -->
         <div class="gemini-tech-badge">
           <span class="gemini-sparkle">✦</span>
-          <span>AI Vision Analysis with <strong>Google Gemini AI Vision</strong></span>
-          <span style="color: var(--text-muted); font-size: 0.78rem;" class="desktop-only">• Visual Crop Analysis</span>
+          <span data-i18n="gemini_badge_text">{{ t('gemini_badge_text') }}</span>
+          <span style="color: var(--text-muted); font-size: 0.78rem;" class="desktop-only" data-i18n="gemini_badge_sub">{{ t('gemini_badge_sub') }}</span>
         </div>
 
         <!-- User-Friendly Quick Action Toolbar -->
         <div class="report-action-bar">
           <div class="report-action-group">
-            <button type="button" class="btn-tool" onclick="printReport()" title="Print or Save PDF Report">
-              🖨️ <span>Print Report</span>
+            <button type="button" class="btn-tool" onclick="printReport()" title="{{ t('btn_print_report') }}" data-i18n-title="btn_print_report">
+              🖨️ <span data-i18n="btn_print_report">{{ t('btn_print_report') }}</span>
             </button>
-            <button type="button" class="btn-tool" onclick="copyDiagnosticSummary('{{ gemini_data.plant.common_name }}', '{{ gemini_data.diagnosis.primary_condition }}', '{{ gemini_data.diagnosis.confidence }}', '{{ gemini_data.urgency }}')" title="Copy Diagnostic Summary to Clipboard">
-              📋 <span>Copy Summary</span>
+            <button type="button" class="btn-tool" onclick="copyDiagnosticSummary('{{ translate_crop(gemini_data.plant.common_name) }}', '{{ translate_disease(gemini_data.diagnosis.primary_condition) }}', '{{ gemini_data.diagnosis.confidence }}', '{{ translate_urg(gemini_data.urgency) }}')" title="{{ t('btn_copy_summary') }}" data-i18n-title="btn_copy_summary">
+              📋 <span data-i18n="btn_copy_summary">{{ t('btn_copy_summary') }}</span>
             </button>
           </div>
           <div class="report-action-group">
-            <a href="{{ url_for('detect') }}" class="btn-tool" style="color: var(--primary); font-weight: 800;" title="Analyze a New Leaf">
-              📷 <span>New Analysis</span>
+            <a href="{{ url_for('detect') }}" class="btn-tool" style="color: var(--primary); font-weight: 800;" title="{{ t('btn_new_analysis') }}" data-i18n-title="btn_new_analysis">
+              📷 <span data-i18n="btn_new_analysis">{{ t('btn_new_analysis') }}</span>
             </a>
           </div>
         </div>
 
         <!-- Interactive Section Quick Jump Navigation -->
         <div class="jump-nav-bar" style="margin-top: 1rem;">
-          <a href="javascript:void(0)" onclick="scrollToSection('sectionOverview')" class="jump-nav-link">📊 Overview</a>
-          <a href="javascript:void(0)" onclick="scrollToSection('sectionVisual')" class="jump-nav-link">📸 Photo & Severity</a>
-          <a href="javascript:void(0)" onclick="scrollToSection('sectionActions')" class="jump-nav-link">⚡ Actions</a>
-          <a href="javascript:void(0)" onclick="scrollToSection('sectionTreatments')" class="jump-nav-link">🧪 Treatments</a>
-          <a href="javascript:void(0)" onclick="scrollToSection('sectionNutrients')" class="jump-nav-link">🌾 Soil & Fertilizer</a>
-          <a href="javascript:void(0)" onclick="scrollToSection('sectionInsights')" class="jump-nav-link">🔍 Insights</a>
+          <a href="javascript:void(0)" onclick="scrollToSection('sectionOverview')" class="jump-nav-link" data-i18n="jump_overview">{{ t('jump_overview') }}</a>
+          <a href="javascript:void(0)" onclick="scrollToSection('sectionVisual')" class="jump-nav-link" data-i18n="jump_visual">{{ t('jump_visual') }}</a>
+          <a href="javascript:void(0)" onclick="scrollToSection('sectionActions')" class="jump-nav-link" data-i18n="jump_actions">{{ t('jump_actions') }}</a>
+          <a href="javascript:void(0)" onclick="scrollToSection('sectionTreatments')" class="jump-nav-link" data-i18n="jump_treatments">{{ t('jump_treatments') }}</a>
+          <a href="javascript:void(0)" onclick="scrollToSection('sectionNutrients')" class="jump-nav-link" data-i18n="jump_nutrients">{{ t('jump_nutrients') }}</a>
+          <a href="javascript:void(0)" onclick="scrollToSection('sectionInsights')" class="jump-nav-link" data-i18n="jump_insights">{{ t('jump_insights') }}</a>
         </div>
       </div>
 
@@ -62,9 +62,9 @@
           
           <!-- Card 1: Crop & Species -->
           <div class="result-stat-item summary-card-1" style="height: auto; min-height: 125px;">
-            <div class="stat-label">Crop & Species</div>
-            <div class="stat-value" style="color: var(--primary); font-size: 1.35rem; line-height: 1.25; overflow-wrap: anywhere;">
-              🌱 {{ gemini_data.plant.common_name }}
+            <div class="stat-label" data-i18n="card_crop_species">{{ t('card_crop_species') }}</div>
+            <div class="stat-value dynamic-crop-name" data-raw="{{ gemini_data.plant.common_name }}" style="color: var(--primary); font-size: 1.35rem; line-height: 1.25; overflow-wrap: anywhere;">
+              🌱 {{ translate_crop(gemini_data.plant.common_name) }}
             </div>
             <div style="font-size: 0.85rem; font-style: italic; color: var(--text-muted); margin-top: 4px;">
               {{ gemini_data.plant.scientific_name }}
@@ -73,18 +73,18 @@
 
           <!-- Card 2: Condition Identified / Disease -->
           <div class="result-stat-item summary-card-2" style="height: auto; min-height: 125px;">
-            <div class="stat-label">Condition Identified</div>
-            <div class="stat-value" style="color: var(--text-heading); font-size: 1.35rem; line-height: 1.25; overflow-wrap: anywhere;">
-              🦠 {{ gemini_data.diagnosis.primary_condition }}
+            <div class="stat-label" data-i18n="card_condition">{{ t('card_condition') }}</div>
+            <div class="stat-value dynamic-disease-name" data-raw="{{ gemini_data.diagnosis.primary_condition }}" style="color: var(--text-heading); font-size: 1.35rem; line-height: 1.25; overflow-wrap: anywhere;">
+              🦠 {{ translate_disease(gemini_data.diagnosis.primary_condition) }}
             </div>
-            <div style="font-size: 0.8rem; font-weight: 700; color: var(--primary); margin-top: 4px;">
-              Category: {{ gemini_data.diagnosis.category }}
+            <div class="dynamic-category" data-raw="{{ gemini_data.diagnosis.category }}" style="font-size: 0.8rem; font-weight: 700; color: var(--primary); margin-top: 4px;">
+              {{ t('category_label') }} {{ translate_cat(gemini_data.diagnosis.category) }}
             </div>
           </div>
 
           <!-- Card 3: AI Confidence -->
           <div class="result-stat-item summary-card-3" style="height: auto; min-height: 125px;">
-            <div class="stat-label">AI Confidence</div>
+            <div class="stat-label" data-i18n="card_confidence">{{ t('card_confidence') }}</div>
             <div class="stat-value" style="color: var(--primary); font-size: 1.35rem; line-height: 1.25;">
               🎯 {{ gemini_data.diagnosis.confidence }}
             </div>
@@ -95,62 +95,62 @@
               </div>
             </div>
             <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); margin-top: 4px;">
-              Plant ID: {{ gemini_data.plant.confidence }}
+              <span data-i18n="plant_id_label">{{ t('plant_id_label') }}</span> {{ translate_conf(gemini_data.plant.confidence) }}
             </div>
           </div>
 
           <!-- Card 4: Health Status (Centered in Row 2) -->
           <div class="result-stat-item summary-card-4" style="height: auto; min-height: 125px; text-align: center;">
-            <div class="stat-label">Health Status</div>
+            <div class="stat-label" data-i18n="card_health_status">{{ t('card_health_status') }}</div>
             <div style="margin-top: 0.5rem;">
               {% if gemini_data.health.status == 'HEALTHY' %}
-                <span class="status-pill healthy" style="font-size: 0.9rem; padding: 6px 16px;">🟢 HEALTHY</span>
+                <span class="status-pill healthy" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('HEALTHY') }}</span>
               {% elif gemini_data.health.status == 'PEST_DAMAGE' %}
-                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px;">🐛 PEST DAMAGE</span>
+                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('PEST_DAMAGE') }}</span>
               {% elif gemini_data.health.status == 'NUTRIENT_DEFICIENCY' %}
-                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px;">🌾 NUTRIENT DEFICIENCY</span>
+                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('NUTRIENT_DEFICIENCY') }}</span>
               {% elif gemini_data.health.status == 'ENVIRONMENTAL_STRESS' %}
-                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px;">🌡️ ENVIRONMENTAL STRESS</span>
+                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('ENVIRONMENTAL_STRESS') }}</span>
               {% elif gemini_data.health.status == 'UNKNOWN' %}
-                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px; background: var(--border-color); color: var(--text-muted);">⚪ UNKNOWN</span>
+                <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px; background: var(--border-color); color: var(--text-muted);">{{ translate_status('UNKNOWN') }}</span>
               {% else %}
-                <span class="status-pill disease" style="font-size: 0.9rem; padding: 6px 16px;">🔴 DISEASED</span>
+                <span class="status-pill disease" style="font-size: 0.9rem; padding: 6px 16px;">{{ translate_status('DISEASED') }}</span>
               {% endif %}
             </div>
-            <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-top: 6px;">
-              Diagnostic Status
+            <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-top: 6px;" data-i18n="diagnostic_status_label">
+              {{ t('diagnostic_status_label') }}
             </div>
           </div>
 
           <!-- Card 5: Action Urgency (Centered in Row 2) -->
           <div class="result-stat-item summary-card-5" style="height: auto; min-height: 125px; text-align: center;">
-            <div class="stat-label">Action Urgency</div>
+            <div class="stat-label" data-i18n="card_action_urgency">{{ t('card_action_urgency') }}</div>
             <div style="margin-top: 0.5rem;">
               {% if gemini_data.urgency == 'CRITICAL' %}
                 <span class="status-pill disease" style="font-size: 0.9rem; padding: 6px 16px; background: rgba(220, 38, 38, 0.2); color: #ef4444; border: 1px solid #ef4444;">
-                  !! CRITICAL
+                  {{ translate_urg('CRITICAL') }}
                 </span>
-                <div style="font-size: 0.78rem; font-weight: 600; color: #ef4444; margin-top: 6px;">● Consult Expert Immediately</div>
+                <div style="font-size: 0.78rem; font-weight: 600; color: #ef4444; margin-top: 6px;" data-i18n="urgency_critical_sub">{{ t('urgency_critical_sub') }}</div>
               {% elif gemini_data.urgency == 'HIGH' %}
                 <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px; background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b;">
-                  ⚠ HIGH
+                  {{ translate_urg('HIGH') }}
                 </span>
-                <div style="font-size: 0.78rem; font-weight: 600; color: #f59e0b; margin-top: 6px;">● Prompt Attention Advised</div>
+                <div style="font-size: 0.78rem; font-weight: 600; color: #f59e0b; margin-top: 6px;" data-i18n="urgency_high_sub">{{ t('urgency_high_sub') }}</div>
               {% elif gemini_data.urgency == 'MODERATE' %}
                 <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px; background: rgba(245, 158, 11, 0.15); color: #d97706; border: 1px solid #d97706;">
-                  ! MODERATE
+                  {{ translate_urg('MODERATE') }}
                 </span>
-                <div style="font-size: 0.78rem; font-weight: 600; color: #d97706; margin-top: 6px;">● Monitor & Act Soon</div>
+                <div style="font-size: 0.78rem; font-weight: 600; color: #d97706; margin-top: 6px;" data-i18n="urgency_mod_sub">{{ t('urgency_mod_sub') }}</div>
               {% elif gemini_data.urgency == 'LOW' %}
                 <span class="status-pill healthy" style="font-size: 0.9rem; padding: 6px 16px;">
-                  ✓ LOW
+                  {{ translate_urg('LOW') }}
                 </span>
-                <div style="font-size: 0.78rem; font-weight: 600; color: var(--primary); margin-top: 6px;">● Routine Monitoring</div>
+                <div style="font-size: 0.78rem; font-weight: 600; color: var(--primary); margin-top: 6px;" data-i18n="urgency_low_sub">{{ t('urgency_low_sub') }}</div>
               {% else %}
                 <span class="status-pill warning" style="font-size: 0.9rem; padding: 6px 16px; background: var(--border-color); color: var(--text-muted);">
-                  ? UNKNOWN
+                  {{ translate_urg('UNKNOWN') }}
                 </span>
-                <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-top: 6px;">● Status Unconfirmed</div>
+                <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-muted); margin-top: 6px;" data-i18n="urgency_unk_sub">{{ t('urgency_unk_sub') }}</div>
               {% endif %}
             </div>
           </div>
@@ -162,44 +162,44 @@
       <div id="sectionVisual" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: clamp(1.25rem, 3vw, 2rem); margin-bottom: 3rem;">
         <!-- Uploaded Leaf Preview -->
         <div class="prob-card" style="text-align: center;" data-animate class="fade-right">
-          <h3 style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--text-heading);">Analyzed Leaf Photo</h3>
+          <h3 style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--text-heading);" data-i18n="analyzed_leaf_photo">{{ t('analyzed_leaf_photo') }}</h3>
           {% if preview_img %}
-            <img src="{{ url_for('static', filename='uploads/' + preview_img) }}" alt="Uploaded Leaf Preview" class="xai-img" style="max-height: 280px; width: 100%; object-fit: contain; border-radius: var(--radius-md);">
+            <img src="{{ url_for('static', filename='uploads/' + preview_img) }}" alt="{{ t('analyzed_leaf_photo') }}" class="xai-img" style="max-height: 280px; width: 100%; object-fit: contain; border-radius: var(--radius-md);">
           {% else %}
-            <div style="padding: 2rem; color: var(--text-muted);">Uploaded Leaf Sample</div>
+            <div style="padding: 2rem; color: var(--text-muted);" data-i18n="leaf_sample_placeholder">{{ t('leaf_sample_placeholder') }}</div>
           {% endif %}
         </div>
 
         <!-- Disease Severity Level Card -->
         <div class="prob-card" style="display: flex; flex-direction: column; justify-content: center;" data-animate class="fade-left">
-          <h3 style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--text-heading);">Pathology Severity Level</h3>
+          <h3 style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--text-heading);" data-i18n="pathology_severity_title">{{ t('pathology_severity_title') }}</h3>
           
           <div style="text-align: center; margin-bottom: 1.25rem;">
             {% if gemini_data.severity.level == 'HEALTHY' %}
               <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; display: inline-block;">
-                🟢 Healthy Leaf
+                {{ translate_sev('HEALTHY') }}
               </span>
             {% elif gemini_data.severity.level == 'EARLY' %}
               <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid #f59e0b; display: inline-block;">
-                🟡 Early Stage
+                {{ translate_sev('EARLY') }}
               </span>
             {% elif gemini_data.severity.level == 'MODERATE' %}
               <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(217, 119, 6, 0.15); color: #d97706; border: 1px solid #d97706; display: inline-block;">
-                🟠 Moderate Stage
+                {{ translate_sev('MODERATE') }}
               </span>
             {% elif gemini_data.severity.level == 'SEVERE' %}
               <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: rgba(220, 38, 38, 0.15); color: #ef4444; border: 1px solid #ef4444; display: inline-block;">
-                🔴 Severe Stage
+                {{ translate_sev('SEVERE') }}
               </span>
             {% else %}
               <span style="font-size: 1.4rem; font-weight: 800; padding: 10px 22px; border-radius: 50px; background: var(--bg-input); color: var(--text-muted); border: 1px solid var(--border-color); display: inline-block;">
-                ⚪ Unknown Severity
+                {{ translate_sev('UNKNOWN') }}
               </span>
             {% endif %}
           </div>
 
           <div style="font-size: 0.95rem; color: var(--text-main); background: var(--bg-main); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); line-height: 1.6;">
-            <strong style="color: var(--text-heading);">Severity Assessment:</strong> {{ gemini_data.severity.reason }}
+            <strong style="color: var(--text-heading);" data-i18n="severity_assessment_label">{{ t('severity_assessment_label') }}</strong> {{ gemini_data.severity.reason }}
           </div>
         </div>
       </div>
@@ -210,11 +210,11 @@
         <!-- Header with AI-Guided Actions Badge -->
         <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.75rem;">
           <div>
-            <h3 style="font-size: 1.75rem; margin-bottom: 0.35rem; color: var(--text-heading);">⚡ Actionable Guidance</h3>
-            <p style="font-size: 0.98rem; color: var(--text-muted); margin: 0;">Recommended next steps based on your crop health analysis</p>
+            <h3 style="font-size: 1.75rem; margin-bottom: 0.35rem; color: var(--text-heading);" data-i18n="actionable_guidance_title">{{ t('actionable_guidance_title') }}</h3>
+            <p style="font-size: 0.98rem; color: var(--text-muted); margin: 0;" data-i18n="actionable_guidance_sub">{{ t('actionable_guidance_sub') }}</p>
           </div>
-          <span style="font-size: 0.8rem; font-weight: 700; padding: 6px 16px; border-radius: 20px; background: var(--primary); color: #ffffff;">
-            AI-Guided Actions
+          <span style="font-size: 0.8rem; font-weight: 700; padding: 6px 16px; border-radius: 20px; background: var(--primary); color: #ffffff;" data-i18n="ai_guided_actions_badge">
+            {{ t('ai_guided_actions_badge') }}
           </span>
         </div>
 
@@ -225,8 +225,8 @@
           <div style="display: flex; flex-direction: column;">
             
             <div class="action-journey-wrapper">
-              <h4 style="font-size: 1.3rem; margin-bottom: 0.35rem; color: var(--text-heading);">What Should I Do Now?</h4>
-              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">Follow these recommended steps based on the current analysis</p>
+              <h4 style="font-size: 1.3rem; margin-bottom: 0.35rem; color: var(--text-heading);" data-i18n="what_do_now_title">{{ t('what_do_now_title') }}</h4>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;" data-i18n="what_do_now_sub">{{ t('what_do_now_sub') }}</p>
 
               <div class="action-cards-list stagger-reveal">
                 {% if gemini_data.immediate_actions %}
@@ -237,20 +237,20 @@
                         <div class="action-card-header-flex">
                           <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                             <span class="action-step-num">01</span>
-                            <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981;">
-                              ● IMMEDIATE PRIORITY
+                            <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981;" data-i18n="immediate_priority">
+                              {{ t('immediate_priority') }}
                             </span>
                           </div>
-                          <span style="font-size: 0.78rem; font-weight: 800; padding: 5px 14px; border-radius: 20px; background: #10b981; color: #ffffff;">
-                            DO NOW
+                          <span style="font-size: 0.78rem; font-weight: 800; padding: 5px 14px; border-radius: 20px; background: #10b981; color: #ffffff;" data-i18n="do_now">
+                            {{ t('do_now') }}
                           </span>
                         </div>
-                        <h4 style="font-size: 1.1rem; color: var(--text-heading); margin-bottom: 0.5rem;">🔍 Primary Action: Inspect & Isolate</h4>
+                        <h4 style="font-size: 1.1rem; color: var(--text-heading); margin-bottom: 0.5rem;" data-i18n="primary_action_title">{{ t('primary_action_title') }}</h4>
                         <p style="font-size: 0.98rem; color: var(--text-main); line-height: 1.65; margin: 0; font-weight: 500;">
                           {{ action }}
                         </p>
-                        <div style="margin-top: 1rem; font-size: 0.82rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 6px;">
-                          ⏱ Recommended: Immediately within 24 Hours
+                        <div style="margin-top: 1rem; font-size: 0.82rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 6px;" data-i18n="rec_24_hours">
+                          {{ t('rec_24_hours') }}
                         </div>
                       </div>
                     {% else %}
@@ -260,15 +260,15 @@
                           <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                             <span class="action-step-num">0{{ loop.index }}</span>
                             <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: var(--bg-input); color: var(--text-muted);">
-                              {% if loop.index == 2 %}Inspection & Monitoring{% elif loop.index == 3 %}Sanitation & Prevention{% else %}Treatment Protocol{% endif %}
+                              {% if loop.index == 2 %}{{ t('step_inspection_monitoring') }}{% elif loop.index == 3 %}{{ t('step_sanitation_prevention') }}{% else %}{{ t('step_treatment_protocol') }}{% endif %}
                             </span>
                           </div>
                           {% if loop.index == 2 %}
-                            <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(245, 158, 11, 0.15); color: #f59e0b;">24–48 HOURS</span>
+                            <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(245, 158, 11, 0.15); color: #f59e0b;" data-i18n="time_24_48_hours">{{ t('time_24_48_hours') }}</span>
                           {% elif loop.index == 3 %}
-                            <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(59, 130, 246, 0.15); color: #3b82f6;">RECOMMENDED</span>
+                            <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(59, 130, 246, 0.15); color: #3b82f6;" data-i18n="time_recommended">{{ t('time_recommended') }}</span>
                           {% else %}
-                            <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: var(--bg-input); color: var(--text-muted);">IF NEEDED</span>
+                            <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: var(--bg-input); color: var(--text-muted);" data-i18n="time_if_needed">{{ t('time_if_needed') }}</span>
                           {% endif %}
                         </div>
                         <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0;">
@@ -283,32 +283,32 @@
                     <div class="action-card-header-flex">
                       <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                         <span class="action-step-num">01</span>
-                        <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981;">
-                          ● IMMEDIATE PRIORITY
+                        <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981;" data-i18n="immediate_priority">
+                          {{ t('immediate_priority') }}
                         </span>
                       </div>
-                      <span style="font-size: 0.78rem; font-weight: 800; padding: 5px 14px; border-radius: 20px; background: #10b981; color: #ffffff;">
-                        DO NOW
+                      <span style="font-size: 0.78rem; font-weight: 800; padding: 5px 14px; border-radius: 20px; background: #10b981; color: #ffffff;" data-i18n="do_now">
+                        {{ t('do_now') }}
                       </span>
                     </div>
-                    <h4 style="font-size: 1.1rem; color: var(--text-heading); margin-bottom: 0.4rem;">🔍 Inspect Nearby Leaves</h4>
-                    <p style="font-size: 0.96rem; color: var(--text-main); line-height: 1.6; margin: 0;">
-                      Check surrounding leaves and plants in the same crop row for similar visible spot lesions or chlorosis.
+                    <h4 style="font-size: 1.1rem; color: var(--text-heading); margin-bottom: 0.4rem;" data-i18n="default_act_1_title">{{ t('default_act_1_title') }}</h4>
+                    <p style="font-size: 0.96rem; color: var(--text-main); line-height: 1.6; margin: 0;" data-i18n="default_act_1_desc">
+                      {{ t('default_act_1_desc') }}
                     </p>
-                    <div style="margin-top: 0.85rem; font-size: 0.82rem; font-weight: 700; color: var(--primary);">⏱ Recommended: Now</div>
+                    <div style="margin-top: 0.85rem; font-size: 0.82rem; font-weight: 700; color: var(--primary);" data-i18n="default_act_1_rec">{{ t('default_act_1_rec') }}</div>
                   </div>
 
                   <div class="action-card-item">
                     <div class="action-card-header-flex">
                       <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                         <span class="action-step-num">02</span>
-                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: rgba(245, 158, 11, 0.15); color: #d97706;">Monitoring</span>
+                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: rgba(245, 158, 11, 0.15); color: #d97706;" data-i18n="step_inspection_monitoring">{{ t('step_inspection_monitoring') }}</span>
                       </div>
-                      <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(245, 158, 11, 0.15); color: #f59e0b;">24–48 HOURS</span>
+                      <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(245, 158, 11, 0.15); color: #f59e0b;" data-i18n="time_24_48_hours">{{ t('time_24_48_hours') }}</span>
                     </div>
-                    <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;">👁 Monitor Progress</h4>
-                    <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
-                      Observe whether spot lesions, concentric ring marks, or foliage discoloration expand over the next 24 to 48 hours.
+                    <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;" data-i18n="default_act_2_title">{{ t('default_act_2_title') }}</h4>
+                    <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin: 0;" data-i18n="default_act_2_desc">
+                      {{ t('default_act_2_desc') }}
                     </p>
                   </div>
 
@@ -316,13 +316,13 @@
                     <div class="action-card-header-flex">
                       <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                         <span class="action-step-num">03</span>
-                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: rgba(59, 130, 246, 0.15); color: #2563eb;">Prevention & Treatment</span>
+                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: rgba(59, 130, 246, 0.15); color: #2563eb;" data-i18n="step_sanitation_prevention">{{ t('step_sanitation_prevention') }}</span>
                       </div>
-                      <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(59, 130, 246, 0.15); color: #3b82f6;">RECOMMENDED</span>
+                      <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(59, 130, 246, 0.15); color: #3b82f6;" data-i18n="time_recommended">{{ t('time_recommended') }}</span>
                     </div>
-                    <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;">🛡 Apply Organic / Sanitation Measures</h4>
-                    <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
-                      Remove heavily diseased lower foliage, avoid overhead foliar irrigation, and apply copper-based organic bio-fungicides if appropriate.
+                    <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;" data-i18n="default_act_3_title">{{ t('default_act_3_title') }}</h4>
+                    <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin: 0;" data-i18n="default_act_3_desc">
+                      {{ t('default_act_3_desc') }}
                     </p>
                   </div>
 
@@ -330,13 +330,13 @@
                     <div class="action-card-header-flex">
                       <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                         <span class="action-step-num">04</span>
-                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: var(--bg-input); color: var(--text-muted);">Expert Support</span>
+                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: var(--bg-input); color: var(--text-muted);" data-i18n="step_expert_support">{{ t('step_expert_support') }}</span>
                       </div>
-                      <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: var(--bg-input); color: var(--text-muted);">IF NEEDED</span>
+                      <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: var(--bg-input); color: var(--text-muted);" data-i18n="time_if_needed">{{ t('time_if_needed') }}</span>
                     </div>
-                    <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;">👨‍🌾 Seek Expert Support</h4>
-                    <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
-                      Consult an agricultural extension officer or agronomist if symptoms spread rapidly or severe defoliation occurs.
+                    <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;" data-i18n="default_act_4_title">{{ t('default_act_4_title') }}</h4>
+                    <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin: 0;" data-i18n="default_act_4_desc">
+                      {{ t('default_act_4_desc') }}
                     </p>
                   </div>
                 {% endif %}
@@ -350,39 +350,39 @@
             
             <!-- 1. ACTION URGENCY STATUS CARD -->
             <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem; box-shadow: var(--shadow-sm); text-align: center;">
-              <div style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.75rem;">
-                ⚡ ACTION URGENCY
+              <div style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.75rem;" data-i18n="card_action_urgency">
+                ⚡ {{ t('card_action_urgency') }}
               </div>
 
               {% if gemini_data.urgency == 'CRITICAL' %}
-                <div style="font-size: 1.5rem; font-weight: 900; color: #ef4444; margin-bottom: 0.4rem;">CRITICAL</div>
-                <div style="font-size: 0.85rem; font-weight: 700; color: #ef4444; margin-bottom: 0.75rem;">● Consult Expert Immediately</div>
-                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
-                  Pathology risk is high. Prompt isolation and immediate specialist consultation is recommended.
+                <div style="font-size: 1.5rem; font-weight: 900; color: #ef4444; margin-bottom: 0.4rem;" data-i18n="urgency_critical_title">{{ t('urgency_critical_title') }}</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: #ef4444; margin-bottom: 0.75rem;" data-i18n="urgency_critical_sub">{{ t('urgency_critical_sub') }}</div>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;" data-i18n="urgency_critical_desc">
+                  {{ t('urgency_critical_desc') }}
                 </p>
               {% elif gemini_data.urgency == 'HIGH' %}
-                <div style="font-size: 1.5rem; font-weight: 900; color: #f59e0b; margin-bottom: 0.4rem;">HIGH</div>
-                <div style="font-size: 0.85rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.75rem;">● Prompt Attention Advised</div>
-                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
-                  Significant leaf pathology detected. Take corrective sanitation or treatment measures soon.
+                <div style="font-size: 1.5rem; font-weight: 900; color: #f59e0b; margin-bottom: 0.4rem;" data-i18n="urgency_high_title">{{ t('urgency_high_title') }}</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.75rem;" data-i18n="urgency_high_sub">{{ t('urgency_high_sub') }}</div>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;" data-i18n="urgency_high_desc">
+                  {{ t('urgency_high_desc') }}
                 </p>
               {% elif gemini_data.urgency == 'MODERATE' %}
-                <div style="font-size: 1.5rem; font-weight: 900; color: #d97706; margin-bottom: 0.4rem;">MODERATE</div>
-                <div style="font-size: 0.85rem; font-weight: 700; color: #d97706; margin-bottom: 0.75rem;">● Attention Recommended</div>
-                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
-                  Monitor the crop closely and take appropriate preventive actions within 24 to 48 hours.
+                <div style="font-size: 1.5rem; font-weight: 900; color: #d97706; margin-bottom: 0.4rem;" data-i18n="urgency_mod_title">{{ t('urgency_mod_title') }}</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: #d97706; margin-bottom: 0.75rem;" data-i18n="urgency_mod_sub">{{ t('urgency_mod_sub') }}</div>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;" data-i18n="urgency_mod_desc">
+                  {{ t('urgency_mod_desc') }}
                 </p>
               {% elif gemini_data.urgency == 'LOW' %}
-                <div style="font-size: 1.5rem; font-weight: 900; color: var(--primary); margin-bottom: 0.4rem;">LOW</div>
-                <div style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 0.75rem;">● Routine Monitoring</div>
-                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
-                  Foliage displays minimal disease symptoms. Continue standard crop monitoring.
+                <div style="font-size: 1.5rem; font-weight: 900; color: var(--primary); margin-bottom: 0.4rem;" data-i18n="urgency_low_title">{{ t('urgency_low_title') }}</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 0.75rem;" data-i18n="urgency_low_sub">{{ t('urgency_low_sub') }}</div>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;" data-i18n="urgency_low_desc">
+                  {{ t('urgency_low_desc') }}
                 </p>
               {% else %}
-                <div style="font-size: 1.5rem; font-weight: 900; color: var(--text-muted); margin-bottom: 0.4rem;">UNKNOWN</div>
-                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.75rem;">● Status Unconfirmed</div>
-                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;">
-                  Urgency level could not be conclusively derived from this image.
+                <div style="font-size: 1.5rem; font-weight: 900; color: var(--text-muted); margin-bottom: 0.4rem;" data-i18n="urgency_unk_title">{{ t('urgency_unk_title') }}</div>
+                <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.75rem;" data-i18n="urgency_unk_sub">{{ t('urgency_unk_sub') }}</div>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;" data-i18n="urgency_unk_desc">
+                  {{ t('urgency_unk_desc') }}
                 </p>
               {% endif %}
             </div>
@@ -390,30 +390,30 @@
             <!-- 2. MONITOR FOR CARD -->
             <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem; box-shadow: var(--shadow-sm);">
               <h4 style="font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--text-heading); display: flex; align-items: center; gap: 8px;">
-                <span>👁</span> Monitor For Warning Signs
+                <span>👁</span> <span data-i18n="monitor_signs_title">{{ t('monitor_signs_title') }}</span>
               </h4>
               <ul style="padding-left: 1.2rem; font-size: 0.88rem; color: var(--text-main); line-height: 1.65; margin: 0;">
-                <li>New spot lesions or expanding halos</li>
-                <li>Foliage yellowing (chlorosis)</li>
-                <li>Premature leaf drop or wilt</li>
-                <li>Symptoms appearing on adjacent crop rows</li>
-                <li>Stem or fruit lesion development</li>
+                <li data-i18n="sign_1">{{ t('sign_1') }}</li>
+                <li data-i18n="sign_2">{{ t('sign_2') }}</li>
+                <li data-i18n="sign_3">{{ t('sign_3') }}</li>
+                <li data-i18n="sign_4">{{ t('sign_4') }}</li>
+                <li data-i18n="sign_5">{{ t('sign_5') }}</li>
               </ul>
             </div>
 
             <!-- 3. WHEN TO SEEK EXPERT HELP CARD -->
             <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 1.5rem; box-shadow: var(--shadow-sm);">
               <h4 style="font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--text-heading); display: flex; align-items: center; gap: 8px;">
-                <span>👨‍🌾</span> When to Seek Expert Help
+                <span>👨‍🌾</span> <span data-i18n="expert_help_title">{{ t('expert_help_title') }}</span>
               </h4>
-              <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 0.6rem;">
-                Consult an agricultural professional or extension agent if:
+              <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 0.6rem;" data-i18n="expert_help_intro">
+                {{ t('expert_help_intro') }}
               </p>
               <ul style="padding-left: 1.2rem; font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin: 0;">
-                <li>Symptoms spread rapidly across multiple plants</li>
-                <li>AI confidence level is low or uncertain</li>
-                <li>Organic or chemical treatment fails to slow spread</li>
-                <li>Condition causes severe defoliation</li>
+                <li data-i18n="expert_help_1">{{ t('expert_help_1') }}</li>
+                <li data-i18n="expert_help_2">{{ t('expert_help_2') }}</li>
+                <li data-i18n="expert_help_3">{{ t('expert_help_3') }}</li>
+                <li data-i18n="expert_help_4">{{ t('expert_help_4') }}</li>
               </ul>
             </div>
 
@@ -423,14 +423,14 @@
 
       <!-- 4. VISUALLY SEPARATE ORGANIC VS CONVENTIONAL TREATMENT -->
       <div id="sectionTreatments" style="margin-bottom: 3rem;">
-        <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-heading);" data-animate class="fade-up">Management & Treatment Solutions</h3>
+        <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-heading);" data-animate class="fade-up" data-i18n="treatments_title">{{ t('treatments_title') }}</h3>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: clamp(1.25rem, 3vw, 2rem);">
           <!-- 🌱 Organic Management Card -->
           <div class="info-card" style="border-top: 4px solid #10b981;" data-animate class="fade-right">
             <div class="info-card-header">
               <div class="info-card-icon">🌱</div>
-              <h3 style="color: var(--text-heading);">Organic Management Options</h3>
+              <h3 style="color: var(--text-heading);" data-i18n="organic_mgmt_title">{{ t('organic_mgmt_title') }}</h3>
             </div>
             {% if gemini_data.organic_treatment %}
               <ul style="padding-left: 1.2rem; font-size: 0.96rem; color: var(--text-main); line-height: 1.7;">
@@ -439,7 +439,7 @@
                 {% endfor %}
               </ul>
             {% else %}
-              <p style="color: var(--text-muted); font-size: 0.95rem;">No specific organic treatments required.</p>
+              <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="no_organic_req">{{ t('no_organic_req') }}</p>
             {% endif %}
           </div>
 
@@ -447,7 +447,7 @@
           <div class="info-card" style="border-top: 4px solid #3b82f6;" data-animate class="fade-left">
             <div class="info-card-header">
               <div class="info-card-icon">🧪</div>
-              <h3 style="color: var(--text-heading);">Conventional Management Options</h3>
+              <h3 style="color: var(--text-heading);" data-i18n="conventional_mgmt_title">{{ t('conventional_mgmt_title') }}</h3>
             </div>
             {% if gemini_data.conventional_treatment %}
               <ul style="padding-left: 1.2rem; font-size: 0.96rem; color: var(--text-main); line-height: 1.7;">
@@ -456,7 +456,7 @@
                 {% endfor %}
               </ul>
             {% else %}
-              <p style="color: var(--text-muted); font-size: 0.95rem;">No specific chemical treatments required.</p>
+              <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="no_conventional_req">{{ t('no_conventional_req') }}</p>
             {% endif %}
           </div>
         </div>
@@ -466,50 +466,50 @@
       <div id="sectionNutrients" style="background: var(--bg-surface); padding: clamp(1.25rem, 3vw, 2rem); border-radius: var(--radius-xl); border: 1px solid var(--border-color); margin-bottom: 3rem;" data-animate class="fade-up">
         <div class="info-card-header" style="margin-bottom: 1rem;">
           <div class="info-card-icon">🌾</div>
-          <h3 style="font-size: 1.4rem; color: var(--text-heading);">Nutrient & Fertilizer Guidance</h3>
+          <h3 style="font-size: 1.4rem; color: var(--text-heading);" data-i18n="fertilizer_title">{{ t('fertilizer_title') }}</h3>
         </div>
 
         {% if (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.deficiency_suspected) or (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.needed) %}
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 1.5rem; font-size: 0.96rem; color: var(--text-main);">
             <div>
-              <strong style="color: var(--text-heading);">Suspected Deficiency:</strong>
-              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.possible_deficiency) or 'Nutrient Correction Recommended' }}</p>
+              <strong style="color: var(--text-heading);" data-i18n="suspected_deficiency_label">{{ t('suspected_deficiency_label') }}</strong>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.possible_deficiency) or t('default_nutrient_correction') }}</p>
             </div>
             <div>
-              <strong style="color: var(--text-heading);">Visible Evidence:</strong>
-              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.visible_evidence) or 'Leaf symptoms suggest nutrient imbalance' }}</p>
+              <strong style="color: var(--text-heading);" data-i18n="visible_evidence_label">{{ t('visible_evidence_label') }}</strong>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.visible_evidence) or t('default_leaf_symptoms') }}</p>
             </div>
             <div>
-              <strong style="color: var(--primary);">Organic Option:</strong>
-              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.organic_option) or 'Compost or organic liquid manure' }}</p>
+              <strong style="color: var(--primary);" data-i18n="organic_option_label">{{ t('organic_option_label') }}</strong>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.organic_option) or t('default_organic_amendment') }}</p>
             </div>
             <div>
-              <strong style="color: var(--text-heading);">Conventional Option:</strong>
-              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.conventional_option) or 'Balanced NPK fertilizer formulation' }}</p>
+              <strong style="color: var(--text-heading);" data-i18n="conventional_option_label">{{ t('conventional_option_label') }}</strong>
+              <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.conventional_option) or t('default_conventional_npk') }}</p>
             </div>
           </div>
           {% if gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.recommendation %}
             <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.95rem; color: var(--text-main);">
-              <strong style="color: var(--text-heading);">Soil Testing Recommendation:</strong> {{ gemini_data.fertilizer_guidance.recommendation }}
+              <strong style="color: var(--text-heading);" data-i18n="soil_testing_rec_label">{{ t('soil_testing_rec_label') }}</strong> {{ gemini_data.fertilizer_guidance.recommendation }}
             </div>
           {% endif %}
         {% else %}
-          <p style="color: var(--text-muted); font-size: 1rem; margin: 0;">
-            No clear nutrient deficiency can be determined from this image.
+          <p style="color: var(--text-muted); font-size: 1rem; margin: 0;" data-i18n="no_nutrient_deficiency">
+            {{ t('no_nutrient_deficiency') }}
           </p>
         {% endif %}
       </div>
 
       <!-- 6. ADDITIONAL DIAGNOSTIC INSIGHTS -->
       <div id="sectionInsights" style="margin-bottom: 3rem;" data-animate class="fade-up">
-        <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-heading);">Additional Diagnostic Insights</h3>
+        <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-heading);" data-i18n="insights_title">{{ t('insights_title') }}</h3>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1.5rem;">
           <!-- Symptoms Observed -->
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🔍</div>
-              <h3 style="color: var(--text-heading);">Visible Symptoms</h3>
+              <h3 style="color: var(--text-heading);" data-i18n="visible_symptoms_title">{{ t('visible_symptoms_title') }}</h3>
             </div>
             {% if gemini_data.symptoms_observed %}
               <ul style="padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-main);">
@@ -518,7 +518,7 @@
                 {% endfor %}
               </ul>
             {% else %}
-              <p style="color: var(--text-muted); font-size: 0.95rem;">None specified.</p>
+              <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="none_specified">{{ t('none_specified') }}</p>
             {% endif %}
           </div>
 
@@ -526,7 +526,7 @@
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🦠</div>
-              <h3 style="color: var(--text-heading);">Possible Causes</h3>
+              <h3 style="color: var(--text-heading);" data-i18n="possible_causes_title">{{ t('possible_causes_title') }}</h3>
             </div>
             {% if gemini_data.possible_causes %}
               <ul style="padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-main);">
@@ -535,7 +535,7 @@
                 {% endfor %}
               </ul>
             {% else %}
-              <p style="color: var(--text-muted); font-size: 0.95rem;">None specified.</p>
+              <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="none_specified">{{ t('none_specified') }}</p>
             {% endif %}
           </div>
 
@@ -543,14 +543,14 @@
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🐛</div>
-              <h3 style="color: var(--text-heading);">Pest Analysis</h3>
+              <h3 style="color: var(--text-heading);" data-i18n="pest_analysis_title">{{ t('pest_analysis_title') }}</h3>
             </div>
             <div style="font-size: 0.95rem; color: var(--text-main);">
               {% if gemini_data.pest_analysis and gemini_data.pest_analysis.suspected %}
-                <p style="margin-bottom: 0.5rem;"><strong style="color: var(--status-disease);">Pest Activity Suspected:</strong> {{ gemini_data.pest_analysis.possible_pest }}</p>
-                <p><strong style="color: var(--text-heading);">Evidence:</strong> {{ gemini_data.pest_analysis.evidence }}</p>
+                <p style="margin-bottom: 0.5rem;"><strong style="color: var(--status-disease);" data-i18n="pest_suspected_label">{{ t('pest_suspected_label') }}</strong> {{ gemini_data.pest_analysis.possible_pest }}</p>
+                <p><strong style="color: var(--text-heading);" data-i18n="evidence_label">{{ t('evidence_label') }}</strong> {{ gemini_data.pest_analysis.evidence }}</p>
               {% else %}
-                <p style="color: var(--text-muted);">No active pest damage or insect activity visible on foliage.</p>
+                <p style="color: var(--text-muted);" data-i18n="no_pest_visible">{{ t('no_pest_visible') }}</p>
               {% endif %}
             </div>
           </div>
@@ -559,7 +559,7 @@
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🌡️</div>
-              <h3 style="color: var(--text-heading);">Environmental Factors</h3>
+              <h3 style="color: var(--text-heading);" data-i18n="environmental_factors_title">{{ t('environmental_factors_title') }}</h3>
             </div>
             {% if gemini_data.environmental_stress %}
               <ul style="padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-main);">
@@ -568,7 +568,7 @@
                 {% endfor %}
               </ul>
             {% else %}
-              <p style="color: var(--text-muted); font-size: 0.95rem;">No severe environmental stress visible.</p>
+              <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="no_env_stress">{{ t('no_env_stress') }}</p>
             {% endif %}
           </div>
 
@@ -576,7 +576,7 @@
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">🛡️</div>
-              <h3 style="color: var(--text-heading);">Preventive Measures</h3>
+              <h3 style="color: var(--text-heading);" data-i18n="preventive_measures_title">{{ t('preventive_measures_title') }}</h3>
             </div>
             {% if gemini_data.prevention %}
               <ul style="padding-left: 1.2rem; font-size: 0.95rem; color: var(--text-main);">
@@ -585,7 +585,7 @@
                 {% endfor %}
               </ul>
             {% else %}
-              <p style="color: var(--text-muted); font-size: 0.95rem;">Maintain standard good agricultural practices.</p>
+              <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="standard_gap_rec">{{ t('standard_gap_rec') }}</p>
             {% endif %}
           </div>
 
@@ -593,7 +593,7 @@
           <div class="info-card">
             <div class="info-card-header">
               <div class="info-card-icon">ℹ️</div>
-              <h3 style="color: var(--text-heading);">Analysis Notes</h3>
+              <h3 style="color: var(--text-heading);" data-i18n="analysis_notes_title">{{ t('analysis_notes_title') }}</h3>
             </div>
             <p style="font-size: 0.94rem; color: var(--text-muted); line-height: 1.6;">
               {{ gemini_data.limitations }}
@@ -605,21 +605,21 @@
     {% else %}
       <!-- TRADITIONAL PREDICTION FALLBACK -->
       <div class="section-header" style="margin-bottom: 2rem;">
-        <h2 class="section-title">AgriVision AI Diagnostic Report</h2>
+        <h2 class="section-title" data-i18n="report_title">{{ t('report_title') }}</h2>
       </div>
     {% endif %}
 
     <!-- 7. MANDATORY AGRICULTURAL DISCLAIMER -->
     <div style="background: var(--status-warning-bg); border: 1px solid rgba(245, 158, 11, 0.4); padding: 1.75rem 2rem; border-radius: var(--radius-lg); margin-top: 2.5rem; color: var(--text-main);" data-animate class="fade-up">
-      <h4 style="font-size: 1.15rem; margin-bottom: 0.75rem; color: var(--status-warning);">📢 Important Agricultural Disclaimer:</h4>
-      <p style="font-size: 0.96rem; line-height: 1.7; font-weight: 500; margin: 0;">
-        AgriVision AI provides AI-assisted preliminary crop-health information based on visible symptoms. Results may be inaccurate and should not replace laboratory diagnosis or advice from a qualified agricultural professional. Always follow locally approved agricultural product labels and recommendations.
+      <h4 style="font-size: 1.15rem; margin-bottom: 0.75rem; color: var(--status-warning);" data-i18n="disclaimer_heading">{{ t('disclaimer_heading') }}</h4>
+      <p style="font-size: 0.96rem; line-height: 1.7; font-weight: 500; margin: 0;" data-i18n="disclaimer_notice">
+        {{ t('disclaimer_notice') }}
       </p>
     </div>
 
     <!-- Action Bar Buttons -->
     <div style="margin-top: 3.5rem; text-align: center; display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap;" data-animate class="fade-up">
-      <a href="{{ url_for('detect') }}" class="btn-cta" style="padding: 14px 32px;">📷 Analyze Another Leaf Image</a>
+      <a href="{{ url_for('detect') }}" class="btn-cta" style="padding: 14px 32px;" data-i18n="btn_analyze_another">{{ t('btn_analyze_another') }}</a>
     </div>
   </div>
 </section>

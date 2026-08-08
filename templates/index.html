@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}AgriVision AI - Detect Crop Diseases Early with AI{% endblock %}
+{% block title %}{{ t('app_name') }} - {{ t('hero_title_1') }}{{ t('hero_title_2') }}{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
@@ -8,19 +8,19 @@
   <div class="container hero-grid">
     <div data-animate class="fade-right">
       <div class="hero-badge">
-        <span>{{ t('hero_badge') }}</span>
+        <span data-i18n="hero_badge">{{ t('hero_badge') }}</span>
       </div>
       
       <h1 class="hero-title">
-        {{ t('hero_title_1') }}<span class="text-gradient">{{ t('hero_title_2') }}</span>
+        <span data-i18n="hero_title_1">{{ t('hero_title_1') }}</span><span class="text-gradient" data-i18n="hero_title_2">{{ t('hero_title_2') }}</span>
       </h1>
       
-      <p class="hero-subtitle">
+      <p class="hero-subtitle" data-i18n="hero_subtitle">
         {{ t('hero_subtitle') }}
       </p>
       
       <div class="hero-actions">
-        <a href="{{ url_for('detect') }}" class="btn-cta" style="padding: 14px 30px; font-size: 1.08rem;">
+        <a href="{{ url_for('detect') }}" class="btn-cta" style="padding: 14px 30px; font-size: 1.08rem;" data-i18n="btn_analyze_leaf">
           {{ t('btn_analyze_leaf') }}
         </a>
       </div>
@@ -28,13 +28,13 @@
       <!-- Trust Badges -->
       <div style="display: flex; gap: 1.25rem; margin-top: 2.25rem; flex-wrap: wrap;">
         <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.9rem; color: var(--text-main);">
-          <span style="color: var(--primary);">✓</span> {{ t('trust_realtime_ai') }}
+          <span style="color: var(--primary);">✓</span> <span data-i18n="trust_realtime_ai">{{ t('trust_realtime_ai') }}</span>
         </div>
         <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.9rem; color: var(--text-main);">
-          <span style="color: var(--primary);">✓</span> {{ t('trust_explainable') }}
+          <span style="color: var(--primary);">✓</span> <span data-i18n="trust_explainable">{{ t('trust_explainable') }}</span>
         </div>
         <div style="display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.9rem; color: var(--text-main);">
-          <span style="color: var(--primary);">✓</span> {{ t('trust_solutions') }}
+          <span style="color: var(--primary);">✓</span> <span data-i18n="trust_solutions">{{ t('trust_solutions') }}</span>
         </div>
       </div>
     </div>
@@ -63,8 +63,8 @@
         <div class="ai-hero-floating-card float-card-1">
           <span style="font-size: 1.2rem; padding: 4px 8px; background: rgba(16, 185, 129, 0.15); border-radius: 8px;">🦠</span>
           <div>
-            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--primary);">{{ t('condition_heading') }}</div>
-            <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-heading);">Early Blight</div>
+            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--primary);" data-i18n="card_condition">{{ t('card_condition') }}</div>
+            <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-heading);" data-i18n="floating_condition_val">{{ t('floating_condition_val') }}</div>
           </div>
         </div>
 
@@ -72,7 +72,7 @@
         <div class="ai-hero-floating-card float-card-2">
           <span style="font-size: 1.2rem; padding: 4px 8px; background: rgba(16, 185, 129, 0.15); border-radius: 8px;">🎯</span>
           <div>
-            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--primary);">{{ t('confidence_heading') }}</div>
+            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--primary);" data-i18n="card_confidence">{{ t('card_confidence') }}</div>
             <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-heading);">94.2%</div>
           </div>
         </div>
@@ -81,8 +81,8 @@
         <div class="ai-hero-floating-card float-card-3">
           <span style="font-size: 1.2rem; padding: 4px 8px; background: rgba(245, 158, 11, 0.15); border-radius: 8px;">⚡</span>
           <div>
-            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: #d97706;">{{ t('col_severity') }}</div>
-            <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-heading);">Moderate</div>
+            <div style="font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: #d97706;" data-i18n="col_severity">{{ t('col_severity') }}</div>
+            <div style="font-size: 0.88rem; font-weight: 800; color: var(--text-heading);" data-i18n="floating_severity_val">{{ t('floating_severity_val') }}</div>
           </div>
         </div>
       </div>
@@ -94,9 +94,9 @@
 <section class="section" style="background: linear-gradient(180deg, transparent 0%, var(--bg-surface) 6%, var(--bg-surface) 94%, transparent 100%);">
   <div class="container">
     <div class="section-header" data-animate class="fade-up">
-      <span class="section-tag">Professional AI Workflow</span>
-      <h2 class="section-title">{{ t('how_title') }}</h2>
-      <p class="section-subtitle">{{ t('how_subtitle') }}</p>
+      <span class="section-tag" data-i18n="how_tag">{{ t('how_tag') }}</span>
+      <h2 class="section-title" data-i18n="how_title">{{ t('how_title') }}</h2>
+      <p class="section-subtitle" data-i18n="how_subtitle">{{ t('how_subtitle') }}</p>
     </div>
 
     <div class="workflow-section-wrapper">
@@ -111,14 +111,14 @@
             <div class="workflow-step-badge">01</div>
             <div class="workflow-icon-box">📷</div>
           </div>
-          <h3 class="workflow-card-title">{{ t('step_01_title') }}</h3>
-          <p class="workflow-card-desc">
+          <h3 class="workflow-card-title" data-i18n="step_01_title">{{ t('step_01_title') }}</h3>
+          <p class="workflow-card-desc" data-i18n="step_01_desc">
             {{ t('step_01_desc') }}
           </p>
           <div class="workflow-chips">
-            <span class="workflow-chip active">JPG, PNG, WEBP</span>
-            <span class="workflow-chip">Clear Lighting</span>
-            <span class="workflow-chip">Drag & Drop</span>
+            <span class="workflow-chip active" data-i18n="chip_formats">{{ t('chip_formats') }}</span>
+            <span class="workflow-chip" data-i18n="chip_lighting">{{ t('chip_lighting') }}</span>
+            <span class="workflow-chip" data-i18n="chip_drag_drop">{{ t('chip_drag_drop') }}</span>
           </div>
         </div>
 
@@ -128,13 +128,13 @@
             <div class="workflow-step-badge">02</div>
             <div class="workflow-icon-box">🔬</div>
           </div>
-          <h3 class="workflow-card-title">{{ t('step_02_title') }}</h3>
-          <p class="workflow-card-desc">
+          <h3 class="workflow-card-title" data-i18n="step_02_title">{{ t('step_02_title') }}</h3>
+          <p class="workflow-card-desc" data-i18n="step_02_desc">
             {{ t('step_02_desc') }}
           </p>
           <div class="workflow-chips">
-            <span class="workflow-chip active">{{ t('processing_msg') }}</span>
-            <span class="workflow-chip">{{ t('analyzing_symptoms') }}</span>
+            <span class="workflow-chip active" data-i18n="chip_processing">{{ t('chip_processing') }}</span>
+            <span class="workflow-chip" data-i18n="chip_symptoms">{{ t('chip_symptoms') }}</span>
           </div>
         </div>
 
@@ -144,14 +144,14 @@
             <div class="workflow-step-badge">03</div>
             <div class="workflow-icon-box">🛡️</div>
           </div>
-          <h3 class="workflow-card-title">{{ t('step_03_title') }}</h3>
-          <p class="workflow-card-desc">
+          <h3 class="workflow-card-title" data-i18n="step_03_title">{{ t('step_03_title') }}</h3>
+          <p class="workflow-card-desc" data-i18n="step_03_desc">
             {{ t('step_03_desc') }}
           </p>
           <div class="workflow-chips">
-            <span class="workflow-chip active">Early Blight</span>
-            <span class="workflow-chip active">94% Confidence</span>
-            <span class="workflow-chip">Moderate Stage</span>
+            <span class="workflow-chip active" data-i18n="chip_disease_name">{{ t('chip_disease_name') }}</span>
+            <span class="workflow-chip active" data-i18n="chip_confidence">{{ t('chip_confidence') }}</span>
+            <span class="workflow-chip" data-i18n="chip_moderate">{{ t('chip_moderate') }}</span>
           </div>
         </div>
 
@@ -161,13 +161,13 @@
             <div class="workflow-step-badge">04</div>
             <div class="workflow-icon-box">📋</div>
           </div>
-          <h3 class="workflow-card-title">{{ t('step_04_title') }}</h3>
-          <p class="workflow-card-desc">
+          <h3 class="workflow-card-title" data-i18n="step_04_title">{{ t('step_04_title') }}</h3>
+          <p class="workflow-card-desc" data-i18n="step_04_desc">
             {{ t('step_04_desc') }}
           </p>
           <div class="workflow-chips">
-            <span class="workflow-chip active">{{ t('organic_mgmt_title') }}</span>
-            <span class="workflow-chip active">{{ t('chemical_mgmt_title') }}</span>
+            <span class="workflow-chip active" data-i18n="organic_mgmt_title">{{ t('organic_mgmt_title') }}</span>
+            <span class="workflow-chip active" data-i18n="chemical_mgmt_title">{{ t('chemical_mgmt_title') }}</span>
           </div>
         </div>
 
@@ -176,10 +176,10 @@
       <!-- Bottom Banner CTA -->
       <div class="workflow-cta-banner" data-animate class="fade-up">
         <div>
-          <h4 style="font-size: 1.25rem; font-weight: 800; color: var(--text-heading); margin-bottom: 0.25rem;">{{ t('workflow_cta_title') }}</h4>
-          <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0;">{{ t('workflow_cta_desc') }}</p>
+          <h4 style="font-size: 1.25rem; font-weight: 800; color: var(--text-heading); margin-bottom: 0.25rem;" data-i18n="workflow_cta_title">{{ t('workflow_cta_title') }}</h4>
+          <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0;" data-i18n="workflow_cta_desc">{{ t('workflow_cta_desc') }}</p>
         </div>
-        <a href="{{ url_for('detect') }}" class="btn-cta" style="padding: 12px 28px; font-size: 1rem;">
+        <a href="{{ url_for('detect') }}" class="btn-cta" style="padding: 12px 28px; font-size: 1rem;" data-i18n="workflow_cta_btn">
           {{ t('workflow_cta_btn') }}
         </a>
       </div>
@@ -191,80 +191,80 @@
 <section class="section">
   <div class="container">
     <div class="section-header" data-animate class="fade-up">
-      <span class="section-tag">Platform Capabilities</span>
-      <h2 class="section-title">Key Features of AgriVision AI</h2>
-      <p class="section-subtitle">Designed for agricultural clarity, transparency, and actionable field guidance.</p>
+      <span class="section-tag" data-i18n="features_tag">{{ t('features_tag') }}</span>
+      <h2 class="section-title" data-i18n="features_title">{{ t('features_title') }}</h2>
+      <p class="section-subtitle" data-i18n="features_subtitle">{{ t('features_subtitle') }}</p>
     </div>
 
     <div class="features-grid stagger-reveal">
       <!-- Feature 1 -->
       <div class="feature-card">
         <div class="feature-icon">🌿</div>
-        <h3>AI Disease Detection</h3>
-        <p style="color: var(--text-muted);">Identify possible crop diseases using deep learning neural network classification.</p>
+        <h3 data-i18n="feat_1_title">{{ t('feat_1_title') }}</h3>
+        <p style="color: var(--text-muted);" data-i18n="feat_1_desc">{{ t('feat_1_desc') }}</p>
       </div>
 
       <!-- Feature 2 -->
       <div class="feature-card">
         <div class="feature-icon">📊</div>
-        <h3>Confidence Analysis</h3>
-        <p style="color: var(--text-muted);">Display the model's prediction confidence score with High, Medium, or Low thresholds.</p>
+        <h3 data-i18n="feat_2_title">{{ t('feat_2_title') }}</h3>
+        <p style="color: var(--text-muted);" data-i18n="feat_2_desc">{{ t('feat_2_desc') }}</p>
       </div>
 
       <!-- Feature 3 -->
       <div class="feature-card">
         <div class="feature-icon">🔥</div>
-        <h3>Explainable AI (Grad-CAM)</h3>
-        <p style="color: var(--text-muted);">Use Grad-CAM visual heatmaps to show specific leaf areas that guided the prediction.</p>
+        <h3 data-i18n="feat_3_title">{{ t('feat_3_title') }}</h3>
+        <p style="color: var(--text-muted);" data-i18n="feat_3_desc">{{ t('feat_3_desc') }}</p>
       </div>
 
       <!-- Feature 4 -->
       <div class="feature-card">
         <div class="feature-icon">📈</div>
-        <h3>Disease Stage Estimation</h3>
-        <p style="color: var(--text-muted);">Show estimated disease progression stage (Early, Developing, Moderate, Advanced, Severe).</p>
+        <h3 data-i18n="feat_4_title">{{ t('feat_4_title') }}</h3>
+        <p style="color: var(--text-muted);" data-i18n="feat_4_desc">{{ t('feat_4_desc') }}</p>
       </div>
 
       <!-- Feature 5 -->
       <div class="feature-card">
         <div class="feature-icon">🎯</div>
-        <h3>Disease Severity & Affected Area</h3>
-        <p style="color: var(--text-muted);">Calculate visible affected leaf spot percentages (0-100%) and severity rating bands.</p>
+        <h3 data-i18n="feat_5_title">{{ t('feat_5_title') }}</h3>
+        <p style="color: var(--text-muted);" data-i18n="feat_5_desc">{{ t('feat_5_desc') }}</p>
       </div>
 
       <!-- Feature 6 -->
       <div class="feature-card">
         <div class="feature-icon">📖</div>
-        <h3>Disease Information</h3>
-        <p style="color: var(--text-muted);">Provide detailed information on typical symptoms, causes, and pathogen types.</p>
+        <h3 data-i18n="feat_6_title">{{ t('feat_6_title') }}</h3>
+        <p style="color: var(--text-muted);" data-i18n="feat_6_desc">{{ t('feat_6_desc') }}</p>
       </div>
 
       <!-- Feature 7 -->
       <div class="feature-card">
         <div class="feature-icon">🌱</div>
-        <h3>Organic Management</h3>
-        <p style="color: var(--text-muted);">Display available organic controls, sanitation practices, and bio-fungicides.</p>
+        <h3 data-i18n="feat_7_title">{{ t('feat_7_title') }}</h3>
+        <p style="color: var(--text-muted);" data-i18n="feat_7_desc">{{ t('feat_7_desc') }}</p>
       </div>
 
       <!-- Feature 8 -->
       <div class="feature-card">
         <div class="feature-icon">🧪</div>
-        <h3>Conventional Management</h3>
-        <p style="color: var(--text-muted);">Display conventional treatment options separately with strict safety label warnings.</p>
+        <h3 data-i18n="feat_8_title">{{ t('feat_8_title') }}</h3>
+        <p style="color: var(--text-muted);" data-i18n="feat_8_desc">{{ t('feat_8_desc') }}</p>
       </div>
 
       <!-- Feature 9 -->
       <div class="feature-card">
         <div class="feature-icon">🌾</div>
-        <h3>Nutrient Guidance</h3>
-        <p style="color: var(--text-muted);">Display useful N-P-K nutrient considerations and foliage support factors.</p>
+        <h3 data-i18n="feat_9_title">{{ t('feat_9_title') }}</h3>
+        <p style="color: var(--text-muted);" data-i18n="feat_9_desc">{{ t('feat_9_desc') }}</p>
       </div>
 
       <!-- Feature 10 -->
       <div class="feature-card">
         <div class="feature-icon">🛡️</div>
-        <h3>Prevention & Monitoring</h3>
-        <p style="color: var(--text-muted);">Explain preventative practices that reduce disease spread and future crop recurrence.</p>
+        <h3 data-i18n="feat_10_title">{{ t('feat_10_title') }}</h3>
+        <p style="color: var(--text-muted);" data-i18n="feat_10_desc">{{ t('feat_10_desc') }}</p>
       </div>
     </div>
   </div>

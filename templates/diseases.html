@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Disease Library - AgriVision AI{% endblock %}
+{% block title %}{{ t('nav_diseases') or 'Disease Library' }} - {{ t('app_name') }}{% endblock %}
 
 {% block content %}
 <section class="section">
   <div class="container">
     <div class="section-header">
-      <span class="section-tag">Agricultural Knowledge Base</span>
-      <h2 class="section-title">Crop Disease Library</h2>
-      <p class="section-subtitle">Search, filter, and explore symptoms, causes, and prevention strategies across supported crops.</p>
+      <span class="section-tag" data-i18n="knowledge_base_tag">{{ t('knowledge_base_tag') or 'Agricultural Knowledge Base' }}</span>
+      <h2 class="section-title" data-i18n="disease_library_title">{{ t('disease_library_title') or 'Crop Disease Library' }}</h2>
+      <p class="section-subtitle" data-i18n="disease_library_subtitle">{{ t('disease_library_subtitle') or 'Search, filter, and explore symptoms, causes, and prevention strategies across supported crops.' }}</p>
     </div>
 
     <!-- Filter Bar -->
@@ -16,14 +16,14 @@
       <!-- Search Input -->
       <div class="search-box">
         <span class="search-icon">🔍</span>
-        <input type="text" id="diseaseSearchInput" class="search-input" placeholder="Search by disease name, symptoms, or crop..." value="{{ search_query }}">
+        <input type="text" id="diseaseSearchInput" class="search-input" placeholder="{{ t('search_placeholder') }}" data-i18n-placeholder="search_placeholder" value="{{ search_query }}">
       </div>
 
       <!-- Crop Chips -->
       <div class="crop-filter-chips">
-        <button type="button" class="filter-chip {% if selected_crop == 'All' %}active{% endif %}" data-crop="All">All Crops</button>
+        <button type="button" class="filter-chip {% if selected_crop == 'All' %}active{% endif %}" data-crop="All" data-i18n="all_crops">{{ t('all_crops') or 'All Crops' }}</button>
         {% for crop in crops %}
-          <button type="button" class="filter-chip {% if selected_crop == crop.crop_name %}active{% endif %}" data-crop="{{ crop.crop_name }}">{{ crop.crop_name }}</button>
+          <button type="button" class="filter-chip {% if selected_crop == crop.crop_name %}active{% endif %}" data-crop="{{ crop.crop_name }}">{{ translate_crop(crop.crop_name) }}</button>
         {% endfor %}
       </div>
     </div>
@@ -33,19 +33,19 @@
       {% for disease in diseases %}
       <div class="disease-card" data-crop="{{ disease.crop_name }}">
         {% if disease.reference_image %}
-          <img src="{{ url_for('static', filename=disease.reference_image) }}" alt="{{ disease.disease_name }}" class="disease-card-img">
+          <img src="{{ url_for('static', filename=disease.reference_image) }}" alt="{{ translate_crop(disease.crop_name) }} {{ translate_disease(disease.disease_name) }}" class="disease-card-img">
         {% else %}
-          <img src="{{ url_for('static', filename='images/sample_dataset/tomato___healthy.jpg') }}" alt="{{ disease.disease_name }}" class="disease-card-img">
+          <img src="{{ url_for('static', filename='images/sample_dataset/tomato___healthy.jpg') }}" alt="{{ translate_crop(disease.crop_name) }} {{ translate_disease(disease.disease_name) }}" class="disease-card-img">
         {% endif %}
         
         <div class="disease-card-body">
-          <span class="disease-crop-tag">🌱 {{ disease.crop_name }}</span>
-          <h3 class="disease-card-title">{{ disease.disease_name }}</h3>
+          <span class="disease-crop-tag" data-raw-crop="{{ disease.crop_name }}">🌱 {{ translate_crop(disease.crop_name) }}</span>
+          <h3 class="disease-card-title dynamic-disease-name" data-raw="{{ disease.disease_name }}">{{ translate_disease(disease.disease_name) }}</h3>
           <p class="disease-card-desc">{{ disease.description | truncate(110) }}</p>
 
           <div style="margin-top: auto;">
             <a href="{{ url_for('disease_details', disease_id=disease.disease_id) }}" class="btn-secondary" style="width: 100%; justify-content: center;">
-              📖 View Details
+              📖 <span data-i18n="view_details">{{ t('view_details') or 'View Details' }}</span>
             </a>
           </div>
         </div>
@@ -53,8 +53,8 @@
       {% else %}
       <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; color: var(--text-muted);">
         <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
-        <h3>No diseases found matching your search.</h3>
-        <p>Try searching for a different keyword or crop filter.</p>
+        <h3 data-i18n="no_diseases_found">{{ t('no_diseases_found') or 'No diseases found matching your search.' }}</h3>
+        <p data-i18n="no_diseases_desc">{{ t('no_diseases_desc') or 'Try searching for a different keyword or crop filter.' }}</p>
       </div>
       {% endfor %}
     </div>

@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}About AgriVision AI - Explainable Crop Disease Detection{% endblock %}
+{% block title %}{{ t('about') }} - {{ t('app_name') }}{% endblock %}
 
 {% block content %}
 <section class="section">
   <div class="container">
     <div class="section-header" data-animate class="fade-up">
-      <span class="section-tag">About AgriVision AI</span>
-      <h2 class="section-title">Explainable AI for Precision Agriculture</h2>
-      <p class="section-subtitle">Bridging deep learning computer vision and transparent diagnostic guidance for early crop health management.</p>
+      <span class="section-tag" data-i18n="about_tag">{{ t('about_tag') }}</span>
+      <h2 class="section-title" data-i18n="about_title">{{ t('about_title') }}</h2>
+      <p class="section-subtitle" data-i18n="about_subtitle">{{ t('about_subtitle') }}</p>
     </div>
 
     <!-- 1. About AgriVision AI & Our Mission (Polished Two-Part Section) -->
@@ -16,30 +16,30 @@
       <!-- Part 1: Platform Overview -->
       <div class="result-header-card" style="margin-bottom: 0; padding: clamp(1.5rem, 3vw, 2.25rem); display: flex; flex-direction: column; justify-content: flex-start; border-top: 4px solid var(--primary); transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;">
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.85rem;">
-          <span style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 12px; border-radius: 6px; background: rgba(34, 197, 94, 0.15); color: var(--primary);">
-            PLATFORM OVERVIEW
+          <span style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 12px; border-radius: 6px; background: rgba(34, 197, 94, 0.15); color: var(--primary);" data-i18n="platform_overview_tag">
+            {{ t('platform_overview_tag') }}
           </span>
         </div>
-        <h3 style="font-size: clamp(1.35rem, 2.5vw, 1.75rem); font-weight: 800; color: var(--text-heading); margin-bottom: 1rem; line-height: 1.3;">
-          About AgriVision AI
+        <h3 style="font-size: clamp(1.35rem, 2.5vw, 1.75rem); font-weight: 800; color: var(--text-heading); margin-bottom: 1rem; line-height: 1.3;" data-i18n="platform_overview_title">
+          {{ t('platform_overview_title') }}
         </h3>
-        <p style="font-size: clamp(0.98rem, 1.2vw, 1.05rem); color: var(--text-main); line-height: 1.75; margin: 0; font-weight: 400;">
-          AgriVision AI is an intelligent agricultural crop-health assistance system designed for early crop disease identification, visual pathology explanation, and structured disease management support.
+        <p style="font-size: clamp(0.98rem, 1.2vw, 1.05rem); color: var(--text-main); line-height: 1.75; margin: 0; font-weight: 400;" data-i18n="platform_overview_desc">
+          {{ t('platform_overview_desc') }}
         </p>
       </div>
 
       <!-- Part 2: Core Objective & Mission -->
       <div class="result-header-card" style="margin-bottom: 0; padding: clamp(1.5rem, 3vw, 2.25rem); display: flex; flex-direction: column; justify-content: flex-start; border-top: 4px solid #10b981; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;">
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.85rem;">
-          <span style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 12px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981;">
-            CORE OBJECTIVE
+          <span style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 12px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981;" data-i18n="core_objective_tag">
+            {{ t('core_objective_tag') }}
           </span>
         </div>
-        <h3 style="font-size: clamp(1.35rem, 2.5vw, 1.75rem); font-weight: 800; color: var(--text-heading); margin-bottom: 1rem; line-height: 1.3;">
-          Our Mission
+        <h3 style="font-size: clamp(1.35rem, 2.5vw, 1.75rem); font-weight: 800; color: var(--text-heading); margin-bottom: 1rem; line-height: 1.3;" data-i18n="our_mission">
+          {{ t('our_mission') }}
         </h3>
-        <p style="font-size: clamp(0.98rem, 1.2vw, 1.05rem); color: var(--text-main); line-height: 1.75; margin: 0; font-weight: 400;">
-          To empower farmers, agronomists, and agricultural extension officers with transparent, accessible, and explainable AI insights to identify foliage diseases early, preserve crop yields, and reduce unnecessary chemical pesticide overuse.
+        <p style="font-size: clamp(0.98rem, 1.2vw, 1.05rem); color: var(--text-main); line-height: 1.75; margin: 0; font-weight: 400;" data-i18n="our_mission_desc">
+          {{ t('our_mission_desc') }}
         </p>
       </div>
     </div>
@@ -49,20 +49,20 @@
       <div class="info-card" data-animate class="fade-right">
         <div class="info-card-header">
           <div class="info-card-icon">🧠</div>
-          <h3>How AI Helps Agriculture</h3>
+          <h3 data-i18n="how_ai_helps">{{ t('how_ai_helps') }}</h3>
         </div>
-        <p style="color: var(--text-muted); font-size: 0.96rem; line-height: 1.7;">
-          Computer vision models analyze visual leaf foliage symptoms—such as chlorosis, target-ring spot lesions, fungal spores, and bacterial spots—identifying early pathology stages before extensive crop damage spreads.
+        <p style="color: var(--text-muted); font-size: 0.96rem; line-height: 1.7;" data-i18n="how_ai_helps_desc">
+          {{ t('how_ai_helps_desc') }}
         </p>
       </div>
 
       <div class="info-card" data-animate class="fade-left">
         <div class="info-card-header">
           <div class="info-card-icon">💡</div>
-          <h3>Explainable AI (XAI)</h3>
+          <h3 data-i18n="xai_title">{{ t('xai_title') }}</h3>
         </div>
-        <p style="color: var(--text-muted); font-size: 0.96rem; line-height: 1.7;">
-          Rather than operating as an opaque "black box", AgriVision AI incorporates Explainable AI (Grad-CAM feature heatmaps and visual symptom explanations) to highlight exact leaf regions that influenced the model's prediction.
+        <p style="color: var(--text-muted); font-size: 0.96rem; line-height: 1.7;" data-i18n="xai_desc">
+          {{ t('xai_desc') }}
         </p>
       </div>
     </div>
@@ -70,111 +70,110 @@
     <!-- 3. Technology Stack -->
     <div style="margin-bottom: 3.5rem;">
       <div class="section-header" data-animate class="fade-up">
-        <span class="section-tag">Architecture</span>
-        <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem;">Technology Stack</h3>
+        <span class="section-tag" data-i18n="tech_stack_tag">{{ t('tech_stack_tag') }}</span>
+        <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem;" data-i18n="tech_stack_title">{{ t('tech_stack_title') }}</h3>
       </div>
       
       <div class="features-grid stagger-reveal">
         <div class="feature-card">
           <div class="feature-icon">🐍</div>
           <h3>Python 3</h3>
-          <p style="color: var(--text-muted);">Core backend language managing data processing, API endpoints, and computer vision pipelines.</p>
+          <p style="color: var(--text-muted);" data-i18n="tech_python_desc">{{ t('tech_python_desc') }}</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">⚙️</div>
           <h3>Flask Framework</h3>
-          <p style="color: var(--text-muted);">Lightweight WSGI web framework providing stateless REST API routing and Jinja template rendering.</p>
+          <p style="color: var(--text-muted);" data-i18n="tech_flask_desc">{{ t('tech_flask_desc') }}</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">🤖</div>
-          <h3>Google Gemini Vision AI</h3>
-          <p style="color: var(--text-muted);">Official Google GenAI SDK executing real-time visual pathology identification and structured diagnostic reports.</p>
+          <h3 data-i18n="tech_gemini">{{ t('tech_gemini') }}</h3>
+          <p style="color: var(--text-muted);" data-i18n="tech_gemini_desc">{{ t('tech_gemini_desc') }}</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">👁️</div>
           <h3>OpenCV & Pillow</h3>
-          <p style="color: var(--text-muted);">Computer vision image processing pipeline for file validation, tensor scaling, and leaf saliency checks.</p>
+          <p style="color: var(--text-muted);" data-i18n="tech_vision_desc">{{ t('tech_vision_desc') }}</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">🔥</div>
           <h3>Grad-CAM XAI</h3>
-          <p style="color: var(--text-muted);">Gradient-weighted Class Activation Mapping generating spatial attention heatmaps.</p>
+          <p style="color: var(--text-muted);" data-i18n="tech_gradcam_desc">{{ t('tech_gradcam_desc') }}</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">🗄️</div>
           <h3>MySQL / SQLite</h3>
-          <p style="color: var(--text-muted);">Relational database system storing prediction history logs and verified agricultural records.</p>
+          <p style="color: var(--text-muted);" data-i18n="tech_db_desc">{{ t('tech_db_desc') }}</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">🌐</div>
           <h3>HTML5, CSS3 & JavaScript</h3>
-          <p style="color: var(--text-muted);">Vanilla CSS design system with CSS custom variables, light/dark mode, and responsive layout.</p>
+          <p style="color: var(--text-muted);" data-i18n="tech_frontend_desc">{{ t('tech_frontend_desc') }}</p>
         </div>
       </div>
     </div>
 
-
     <!-- 4. How the System Works Pipeline -->
     <div style="background: var(--bg-surface); border-radius: var(--radius-xl); padding: clamp(1.25rem, 4vw, 2.5rem); border: 1px solid var(--border-color); box-shadow: var(--shadow-3d-md); margin-bottom: 3.5rem;" data-animate class="fade-up">
-      <h3 style="font-size: clamp(1.3rem, 3vw, 1.8rem); margin-bottom: 1.75rem; text-align: center;">How the System Works</h3>
+      <h3 style="font-size: clamp(1.3rem, 3vw, 1.8rem); margin-bottom: 1.75rem; text-align: center;" data-i18n="system_works_title">{{ t('system_works_title') }}</h3>
       
       <div class="steps-grid stagger-reveal">
         <div class="step-card">
           <div class="step-number">1</div>
-          <h3>Upload Image</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem;">Upload a clear close-up crop leaf photograph.</p>
+          <h3 data-i18n="pipe_1_title">{{ t('pipe_1_title') }}</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="pipe_1_desc">{{ t('pipe_1_desc') }}</p>
         </div>
 
         <div class="step-card">
           <div class="step-number">2</div>
-          <h3>Image Processing</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem;">Server validates MIME format, resolution, and leaf visibility.</p>
+          <h3 data-i18n="pipe_2_title">{{ t('pipe_2_title') }}</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="pipe_2_desc">{{ t('pipe_2_desc') }}</p>
         </div>
 
         <div class="step-card">
           <div class="step-number">3</div>
-          <h3>AI Prediction</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem;">Gemini Vision model classifies species, pathology, and severity.</p>
+          <h3 data-i18n="pipe_3_title">{{ t('pipe_3_title') }}</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="pipe_3_desc">{{ t('pipe_3_desc') }}</p>
         </div>
 
         <div class="step-card">
           <div class="step-number">4</div>
-          <h3>Explainable AI</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem;">Generates visual heatmap attention and symptom breakdown.</p>
+          <h3 data-i18n="pipe_4_title">{{ t('pipe_4_title') }}</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="pipe_4_desc">{{ t('pipe_4_desc') }}</p>
         </div>
 
         <div class="step-card">
           <div class="step-number">5</div>
-          <h3>Disease Information</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem;">Displays verified symptoms, causes, and pest analysis.</p>
+          <h3 data-i18n="pipe_5_title">{{ t('pipe_5_title') }}</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="pipe_5_desc">{{ t('pipe_5_desc') }}</p>
         </div>
 
         <div class="step-card">
           <div class="step-number">6</div>
-          <h3>Management Guidance</h3>
-          <p style="color: var(--text-muted); font-size: 0.95rem;">Provides prioritized action steps, organic, and chemical solutions.</p>
+          <h3 data-i18n="pipe_6_title">{{ t('pipe_6_title') }}</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;" data-i18n="pipe_6_desc">{{ t('pipe_6_desc') }}</p>
         </div>
       </div>
     </div>
 
     <!-- 5. Important Limitations -->
     <div style="background: var(--status-warning-bg); border-radius: var(--radius-xl); padding: clamp(1.25rem, 4vw, 2.5rem); border: 1px solid rgba(217, 119, 6, 0.4); color: #92400e;" data-animate class="fade-up">
-      <h3 style="font-size: clamp(1.3rem, 3vw, 1.6rem); margin-bottom: 1rem;">Important AI Limitations</h3>
-      <p style="font-size: 1rem; line-height: 1.7; margin-bottom: 1rem;">
-        AgriVision AI is designed as an agricultural decision-support tool. Users should understand the following limitations:
+      <h3 style="font-size: clamp(1.3rem, 3vw, 1.6rem); margin-bottom: 1rem;" data-i18n="limitations_title">{{ t('limitations_title') }}</h3>
+      <p style="font-size: 1rem; line-height: 1.7; margin-bottom: 1rem;" data-i18n="limitations_intro">
+        {{ t('limitations_intro') }}
       </p>
       <ul style="padding-left: 1.5rem; line-height: 1.8; font-size: 0.98rem;">
-        <li>AI diagnostics rely on visible leaf foliage symptoms and photograph quality.</li>
-        <li>Different plant diseases can display visually similar chlorosis or leaf spot lesions.</li>
-        <li>Environmental sunburn or physical wind damage can resemble biological disease spots.</li>
-        <li>A leaf photo cannot measure exact soil pH, nitrogen/phosphorus levels, or vascular root rot.</li>
-        <li>AI assessments assist—and do not replace—qualified agronomists or laboratory diagnostic testing.</li>
+        <li data-i18n="limit_1">{{ t('limit_1') }}</li>
+        <li data-i18n="limit_2">{{ t('limit_2') }}</li>
+        <li data-i18n="limit_3">{{ t('limit_3') }}</li>
+        <li data-i18n="limit_4">{{ t('limit_4') }}</li>
+        <li data-i18n="limit_5">{{ t('limit_5') }}</li>
       </ul>
     </div>
   </div>

@@ -26,7 +26,18 @@ app.config.from_object(Config)
 # Ensure upload directory exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-from utils.i18n import get_translation, TRANSLATIONS
+from utils.i18n import (
+    get_translation,
+    translate_crop_name,
+    translate_disease_name,
+    translate_category,
+    translate_health_status,
+    translate_severity,
+    translate_urgency,
+    translate_confidence_level,
+    translate_text,
+    TRANSLATIONS
+)
 
 # ----------------------------------------------------
 # Global Template Context Processor
@@ -36,20 +47,37 @@ def inject_global_vars():
     lang = session.get('lang', 'en')
     return {
         'current_year': time.strftime('%Y'),
-        'app_name': 'AgriVision AI',
+        'app_name': get_translation('app_name', lang),
         'current_lang': lang,
         't': lambda key: get_translation(key, lang),
+        'translate_crop': lambda name: translate_crop_name(name, lang),
+        'translate_disease': lambda name: translate_disease_name(name, lang),
+        'translate_cat': lambda cat: translate_category(cat, lang),
+        'translate_status': lambda st: translate_health_status(st, lang),
+        'translate_sev': lambda sev: translate_severity(sev, lang),
+        'translate_urg': lambda urg: translate_urgency(urg, lang),
+        'translate_conf': lambda conf: translate_confidence_level(conf, lang),
+        'translate_tx': lambda txt: translate_text(txt, lang),
         'translations_json': TRANSLATIONS.get(lang, TRANSLATIONS['en'])
     }
 
 # ----------------------------------------------------
 # Language Switcher Route
 # ----------------------------------------------------
-@app.route('/set-language/<lang>')
+@app.route('/set-language/<lang>', methods=['GET', 'POST'])
 def set_language(lang):
-    """Set persistent session language (en, mr, hi)."""
+    """Set persistent session language (en, mr, hi) with AJAX or redirect response."""
     if lang in ['en', 'mr', 'hi']:
         session['lang'] = lang
+    
+    # Return JSON for async/AJAX requests
+    if request.is_json or request.headers.get('X-Requested-With') == 'XMLHttpRequest' or request.args.get('json') == '1':
+        return jsonify({
+            'success': True,
+            'lang': session.get('lang', 'en'),
+            'translations': TRANSLATIONS.get(session.get('lang', 'en'), TRANSLATIONS['en'])
+        })
+
     referrer = request.referrer
     if referrer and request.host in referrer:
         return redirect(referrer)

@@ -1,28 +1,28 @@
 {% extends "base.html" %}
 
-{% block title %}{{ disease.disease_name }} Details - AgriVision AI{% endblock %}
+{% block title %}{{ translate_disease(disease.disease_name) }} - {{ t('app_name') }}{% endblock %}
 
 {% block content %}
 <section class="section">
   <div class="container">
     <!-- Breadcrumb -->
     <div style="margin-bottom: 2rem; font-size: 0.95rem; color: var(--text-muted);">
-      <a href="{{ url_for('diseases') }}">Disease Library</a> &gt; 
-      <a href="{{ url_for('diseases', crop=disease.crop_name) }}">{{ disease.crop_name }}</a> &gt; 
-      <span style="color: var(--text-main); font-weight: 700;">{{ disease.disease_name }}</span>
+      <a href="{{ url_for('diseases') }}" data-i18n="disease_library_title">{{ t('disease_library_title') or 'Disease Library' }}</a> &gt; 
+      <a href="{{ url_for('diseases', crop=disease.crop_name) }}">{{ translate_crop(disease.crop_name) }}</a> &gt; 
+      <span style="color: var(--text-main); font-weight: 700;">{{ translate_disease(disease.disease_name) }}</span>
     </div>
 
     <!-- Header Banner -->
     <div class="result-header-card" style="margin-bottom: 2.5rem;">
       <div style="display: flex; align-items: center; gap: clamp(1rem, 3vw, 2rem); flex-wrap: wrap;">
         {% if disease.reference_image %}
-          <img src="{{ url_for('static', filename=disease.reference_image) }}" alt="{{ disease.disease_name }}" style="width: clamp(120px, 20vw, 160px); height: clamp(120px, 20vw, 160px); object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-3d-md); flex-shrink: 0;">
+          <img src="{{ url_for('static', filename=disease.reference_image) }}" alt="{{ translate_disease(disease.disease_name) }}" style="width: clamp(120px, 20vw, 160px); height: clamp(120px, 20vw, 160px); object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-3d-md); flex-shrink: 0;">
         {% else %}
-          <img src="{{ url_for('static', filename='images/sample_dataset/tomato___healthy.jpg') }}" alt="{{ disease.disease_name }}" style="width: clamp(120px, 20vw, 160px); height: clamp(120px, 20vw, 160px); object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-3d-md); flex-shrink: 0;">
+          <img src="{{ url_for('static', filename='images/sample_dataset/tomato___healthy.jpg') }}" alt="{{ translate_disease(disease.disease_name) }}" style="width: clamp(120px, 20vw, 160px); height: clamp(120px, 20vw, 160px); object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-3d-md); flex-shrink: 0;">
         {% endif %}
         <div style="flex: 1; min-width: min(100%, 260px);">
-          <span class="disease-crop-tag">🌱 {{ disease.crop_name }} Pathology</span>
-          <h1 style="font-size: clamp(1.5rem, 4vw, 2.5rem); margin-bottom: 0.5rem;">{{ disease.disease_name }}</h1>
+          <span class="disease-crop-tag" data-raw-crop="{{ disease.crop_name }}">🌱 {{ translate_crop(disease.crop_name) }}</span>
+          <h1 style="font-size: clamp(1.5rem, 4vw, 2.5rem); margin-bottom: 0.5rem;" class="dynamic-disease-name" data-raw="{{ disease.disease_name }}">{{ translate_disease(disease.disease_name) }}</h1>
           <p style="color: var(--text-muted); max-width: 720px; font-size: clamp(0.95rem, 2vw, 1.08rem); font-weight: 500;">{{ disease.description }}</p>
         </div>
       </div>
@@ -34,7 +34,7 @@
       <div class="info-card">
         <div class="info-card-header">
           <div class="info-card-icon">🔍</div>
-          <h3 data-i18n="symptoms">Symptoms</h3>
+          <h3 data-i18n="visible_symptoms_title">{{ t('visible_symptoms_title') or 'Symptoms' }}</h3>
         </div>
         <p style="color: var(--text-muted); font-size: 0.98rem;">{{ disease.symptoms }}</p>
       </div>
@@ -43,7 +43,7 @@
       <div class="info-card">
         <div class="info-card-header">
           <div class="info-card-icon">🦠</div>
-          <h3 data-i18n="causes">Causes & Pathogen</h3>
+          <h3 data-i18n="possible_causes_title">{{ t('possible_causes_title') or 'Causes & Pathogen' }}</h3>
         </div>
         <p style="color: var(--text-muted); font-size: 0.98rem;">{{ disease.causes }}</p>
       </div>
@@ -52,7 +52,7 @@
       <div class="info-card">
         <div class="info-card-header">
           <div class="info-card-icon">🛡️</div>
-          <h3 data-i18n="prevention">Prevention Strategies</h3>
+          <h3 data-i18n="preventive_measures_title">{{ t('preventive_measures_title') or 'Prevention Strategies' }}</h3>
         </div>
         <p style="color: var(--text-muted); font-size: 0.98rem;">{{ disease.prevention }}</p>
       </div>
@@ -61,7 +61,7 @@
       <div class="info-card">
         <div class="info-card-header">
           <div class="info-card-icon">⚙️</div>
-          <h3 data-i18n="management">Field Management</h3>
+          <h3 data-i18n="step_treatment_protocol">{{ t('step_treatment_protocol') or 'Field Management' }}</h3>
         </div>
         <p style="color: var(--text-muted); font-size: 0.98rem;">{{ disease.management }}</p>
       </div>
@@ -70,7 +70,7 @@
       <div class="info-card">
         <div class="info-card-header">
           <div class="info-card-icon">🌿</div>
-          <h3 data-i18n="organic_solution">Organic Solutions</h3>
+          <h3 data-i18n="organic_mgmt_title">{{ t('organic_mgmt_title') or 'Organic Solutions' }}</h3>
         </div>
         <p style="color: var(--text-muted); font-size: 0.98rem;">{{ disease.organic_solution }}</p>
       </div>
@@ -79,19 +79,19 @@
       <div class="info-card">
         <div class="info-card-header">
           <div class="info-card-icon">🧪</div>
-          <h3 data-i18n="nutrient_info">Nutrient & Fertilizer Recommendations</h3>
+          <h3 data-i18n="fertilizer_title">{{ t('fertilizer_title') or 'Nutrient & Fertilizer Recommendations' }}</h3>
         </div>
         <div style="font-size: 0.98rem; color: var(--text-muted);">
-          <p style="margin-bottom: 0.75rem;"><strong>Nutrient Requirements:</strong> {{ disease.nutrient_information }}</p>
-          <p><strong>Fertilizer Strategy:</strong> {{ disease.fertilizer_information }}</p>
+          <p style="margin-bottom: 0.75rem;"><strong data-i18n="suspected_deficiency_label">{{ t('suspected_deficiency_label') }}</strong> {{ disease.nutrient_information }}</p>
+          <p><strong data-i18n="conventional_option_label">{{ t('conventional_option_label') }}</strong> {{ disease.fertilizer_information }}</p>
         </div>
       </div>
     </div>
 
     <!-- Navigation CTA -->
     <div style="text-align: center; margin-top: 3rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-      <a href="{{ url_for('diseases') }}" class="btn-secondary">← Back to Disease Library</a>
-      <a href="{{ url_for('detect') }}" class="btn-cta">📷 Analyze Crop Leaf</a>
+      <a href="{{ url_for('diseases') }}" class="btn-secondary" data-i18n="disease_library_title">← {{ t('disease_library_title') or 'Back to Disease Library' }}</a>
+      <a href="{{ url_for('detect') }}" class="btn-cta" data-i18n="btn_analyze_leaf">📷 {{ t('btn_analyze_leaf') or 'Analyze Crop Leaf' }}</a>
     </div>
   </div>
 </section>

@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Analyze Leaf - AgriVision AI{% endblock %}
+{% block title %}{{ t('detect_disease') }} - {{ t('app_name') }}{% endblock %}
 
 {% block content %}
 <section class="section">
   <div class="container upload-container">
     <div class="section-header">
-      <span class="section-tag">AI Diagnostics Portal</span>
-      <h2 class="section-title">{{ t('upload_portal_title') }}</h2>
-      <p class="section-subtitle">{{ t('upload_portal_subtitle') }}</p>
+      <span class="section-tag" data-i18n="upload_portal_tag">{{ t('upload_portal_tag') }}</span>
+      <h2 class="section-title" data-i18n="upload_portal_title">{{ t('upload_portal_title') }}</h2>
+      <p class="section-subtitle" data-i18n="upload_portal_subtitle">{{ t('upload_portal_subtitle') }}</p>
     </div>
 
     <!-- Collapsible Quick Tips Accordion (Collapsed by Default) -->
@@ -16,21 +16,20 @@
       <summary style="font-weight: 800; font-size: 1.02rem; color: var(--text-heading); display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); user-select: none;" aria-expanded="false" role="button" tabindex="0">
         <div style="display: flex; align-items: center; gap: 8px;">
           <span style="font-size: 1.15rem;">💡</span>
-          <span>{{ t('quick_tips_title') }}</span>
+          <span data-i18n="quick_tips_title">{{ t('quick_tips_title') }}</span>
         </div>
         <span class="accordion-chevron" style="transition: transform 0.25s ease; font-size: 0.85rem; color: var(--primary);">▼</span>
       </summary>
       <div style="padding: 14px 18px; background: var(--bg-card); border: 1px solid var(--border-color); border-top: none; border-bottom-left-radius: var(--radius-md); border-bottom-right-radius: var(--radius-md);">
         <ul style="padding-left: 1.25rem; line-height: 1.7; font-size: 0.92rem; color: var(--text-main); margin: 0;">
-          <li style="margin-bottom: 0.35rem;">{{ t('quick_tip_1') }}</li>
-          <li style="margin-bottom: 0.35rem;">{{ t('quick_tip_2') }}</li>
-          <li style="margin-bottom: 0.35rem;">{{ t('quick_tip_3') }}</li>
-          <li style="margin-bottom: 0.35rem;">{{ t('quick_tip_4') }}</li>
-          <li>{{ t('quick_tip_5') }}</li>
+          <li style="margin-bottom: 0.35rem;" data-i18n="quick_tip_1">{{ t('quick_tip_1') }}</li>
+          <li style="margin-bottom: 0.35rem;" data-i18n="quick_tip_2">{{ t('quick_tip_2') }}</li>
+          <li style="margin-bottom: 0.35rem;" data-i18n="quick_tip_3">{{ t('quick_tip_3') }}</li>
+          <li style="margin-bottom: 0.35rem;" data-i18n="quick_tip_4">{{ t('quick_tip_4') }}</li>
+          <li data-i18n="quick_tip_5">{{ t('quick_tip_5') }}</li>
         </ul>
       </div>
     </details>
-
 
     <!-- Error & Validation Alert Container -->
     <div id="uploadErrorAlert" class="alert alert-danger" style="display: none;"></div>
@@ -41,12 +40,12 @@
       
       <div id="dropzoneDefaultState">
         <div class="upload-icon">📷</div>
-        <h3 class="upload-title" style="font-size: 1.6rem; margin-bottom: 0.5rem;">{{ t('step_01_title') }}</h3>
-        <p class="upload-subtitle" style="color: var(--text-muted); margin-bottom: 1.75rem;">
+        <h3 class="upload-title" style="font-size: 1.6rem; margin-bottom: 0.5rem;" data-i18n="step_01_title">{{ t('step_01_title') }}</h3>
+        <p class="upload-subtitle" style="color: var(--text-muted); margin-bottom: 1.75rem;" data-i18n="drag_drop_text">
           {{ t('drag_drop_text') }}
         </p>
         
-        <button type="button" class="btn-secondary" id="browseBtn" style="padding: 12px 28px;">
+        <button type="button" class="btn-secondary" id="browseBtn" style="padding: 12px 28px;" data-i18n="browse_files">
           {{ t('browse_files') }}
         </button>
       </div>
@@ -63,13 +62,13 @@
           <div class="reticle-corner reticle-bl"></div>
           <div class="reticle-corner reticle-br"></div>
           
-          <button type="button" class="btn-remove-img" id="removeImgBtn" title="Remove Image">✕</button>
+          <button type="button" class="btn-remove-img" id="removeImgBtn" title="Remove Image" data-i18n-title="remove_image">✕</button>
         </div>
 
         <div id="fileMetaInfo" style="margin-top: 1rem; font-weight: 700; font-size: 0.95rem; color: var(--text-main);"></div>
 
         <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center;">
-          <button type="button" class="btn-secondary" id="changeImgBtn">🔄 Change Image</button>
+          <button type="button" class="btn-secondary" id="changeImgBtn" data-i18n="change_image">{{ t('change_image') }}</button>
         </div>
       </div>
     </div>
@@ -77,38 +76,38 @@
     <!-- Real Dataset Sample Quick Test Leaves -->
     <div class="sample-leaves-section">
       <div style="font-weight: 800; font-size: 1rem; color: var(--text-heading);">
-        ⚡ {{ t('quick_test_leaves') }}
+        ⚡ <span data-i18n="quick_test_leaves">{{ t('quick_test_leaves') }}</span>
       </div>
       <div class="sample-leaves-grid">
         <div class="sample-leaf-card" data-sample="{{ url_for('static', filename='images/sample_dataset/tomato___early_blight.jpg') }}">
           <img src="{{ url_for('static', filename='images/sample_dataset/tomato___early_blight.jpg') }}" alt="Tomato Early Blight" class="sample-leaf-img">
           <div>
-            <div style="font-weight: 800; font-size: 0.9rem;">Tomato Early Blight</div>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">Dataset Leaf 1</div>
+            <div style="font-weight: 800; font-size: 0.9rem;" data-i18n="sample_1_name">{{ t('sample_1_name') }}</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);" data-i18n="sample_1_sub">{{ t('sample_1_sub') }}</div>
           </div>
         </div>
 
         <div class="sample-leaf-card" data-sample="{{ url_for('static', filename='images/sample_dataset/tomato___healthy.jpg') }}">
           <img src="{{ url_for('static', filename='images/sample_dataset/tomato___healthy.jpg') }}" alt="Tomato Healthy" class="sample-leaf-img">
           <div>
-            <div style="font-weight: 800; font-size: 0.9rem;">Tomato Healthy</div>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">Dataset Leaf 2</div>
+            <div style="font-weight: 800; font-size: 0.9rem;" data-i18n="sample_2_name">{{ t('sample_2_name') }}</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);" data-i18n="sample_2_sub">{{ t('sample_2_sub') }}</div>
           </div>
         </div>
 
         <div class="sample-leaf-card" data-sample="{{ url_for('static', filename='images/sample_dataset/potato___late_blight.jpg') }}">
           <img src="{{ url_for('static', filename='images/sample_dataset/potato___late_blight.jpg') }}" alt="Potato Late Blight" class="sample-leaf-img">
           <div>
-            <div style="font-weight: 800; font-size: 0.9rem;">Potato Late Blight</div>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">Dataset Leaf 3</div>
+            <div style="font-weight: 800; font-size: 0.9rem;" data-i18n="sample_3_name">{{ t('sample_3_name') }}</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);" data-i18n="sample_3_sub">{{ t('sample_3_sub') }}</div>
           </div>
         </div>
 
         <div class="sample-leaf-card" data-sample="{{ url_for('static', filename='images/sample_dataset/apple___apple_scab.jpg') }}">
           <img src="{{ url_for('static', filename='images/sample_dataset/apple___apple_scab.jpg') }}" alt="Apple Scab" class="sample-leaf-img">
           <div>
-            <div style="font-weight: 800; font-size: 0.9rem;">Apple Scab</div>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">Dataset Leaf 4</div>
+            <div style="font-weight: 800; font-size: 0.9rem;" data-i18n="sample_4_name">{{ t('sample_4_name') }}</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);" data-i18n="sample_4_sub">{{ t('sample_4_sub') }}</div>
           </div>
         </div>
       </div>
@@ -116,7 +115,7 @@
 
     <!-- Action Buttons -->
     <div class="analyze-actions" style="text-align: center; margin-top: 2rem;">
-      <button type="button" id="analyzeBtn" class="btn-cta" style="padding: 16px 44px; font-size: 1.15rem;" disabled>
+      <button type="button" id="analyzeBtn" class="btn-cta" style="padding: 16px 44px; font-size: 1.15rem;" data-i18n="btn_start_analysis" disabled>
         {{ t('btn_start_analysis') }}
       </button>
     </div>
@@ -126,13 +125,13 @@
 <!-- Animated 7-Stage AI Loading Overlay -->
 <div class="loading-overlay" id="loadingOverlay">
   <div class="spinner"></div>
-  <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem; color: #ffffff;" id="loadingOverlayTitle">{{ t('analyzing_img') }}</h3>
+  <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem; color: #ffffff;" id="loadingOverlayTitle" data-i18n="analyzing_img">{{ t('analyzing_img') }}</h3>
   
   <div class="scan-progress-box">
-    <div class="scan-step-item active" id="stage1">✓ {{ t('processing_msg') }}</div>
-    <div class="scan-step-item" id="stage2">{{ t('analyzing_symptoms') }}</div>
-    <div class="scan-step-item" id="stage3">{{ t('identifying_disease') }}</div>
-    <div class="scan-step-item" id="stage4">{{ t('preparing_guidance') }}</div>
+    <div class="scan-step-item active" id="stage1" data-i18n="processing_msg">✓ {{ t('processing_msg') }}</div>
+    <div class="scan-step-item" id="stage2" data-i18n="analyzing_symptoms">{{ t('analyzing_symptoms') }}</div>
+    <div class="scan-step-item" id="stage3" data-i18n="identifying_disease">{{ t('identifying_disease') }}</div>
+    <div class="scan-step-item" id="stage4" data-i18n="preparing_guidance">{{ t('preparing_guidance') }}</div>
   </div>
 </div>
 

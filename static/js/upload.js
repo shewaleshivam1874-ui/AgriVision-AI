@@ -1,5 +1,6 @@
 /**
  * AgriVision AI - Analyze Leaf Controller & 7-Stage Loader Engine
+ * Multilingual error messaging, sample loading, and state management.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,6 +21,17 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!uploadCard || !fileInput) return;
 
   let selectedFile = null;
+
+  function getLang() {
+    return localStorage.getItem('agrivision_lang') || document.documentElement.getAttribute('lang') || 'en';
+  }
+
+  function getMsg(key, fallback) {
+    if (typeof getTranslation === 'function') {
+      return getTranslation(key, getLang());
+    }
+    return fallback;
+  }
 
   // 1. Browse & Click Triggers
   if (browseBtn) {
@@ -99,12 +111,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const ext = file.name.split('.').pop().toLowerCase();
     
     if (!allowedTypes.includes(file.type) && !['jpg', 'jpeg', 'png', 'webp'].includes(ext)) {
-      showError('Unsupported file format. Please upload a JPG, JPEG, PNG, or WEBP image.');
+      showError(getMsg('err_unsupported_format', 'Unsupported file format. Please upload a JPG, JPEG, PNG, or WEBP image.'));
       return;
     }
 
     if (file.size > 10 * 1024 * 1024) {
-      showError('File size exceeds the 10 MB limit. Please select a smaller leaf image.');
+      showError(getMsg('err_file_too_large', 'File size exceeds the 10 MB limit. Please select a smaller leaf image.'));
       return;
     }
 
@@ -119,7 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
       if (fileMetaInfo) {
-        fileMetaInfo.textContent = `Selected: ${file.name} (${sizeMB} MB)`;
+        const prefix = getMsg('selected_file_label', 'Selected: ');
+        fileMetaInfo.textContent = `${prefix}${file.name} (${sizeMB} MB)`;
       }
       
       uploadCard.style.borderStyle = 'solid';
@@ -151,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (analyzeBtn) {
     analyzeBtn.addEventListener('click', () => {
       if (!selectedFile) {
-        showError('Please select or drop a crop leaf image first.');
+        showError(getMsg('err_select_image', 'Please select or drop a crop leaf image first.'));
         return;
       }
 
@@ -159,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
       animate7StageProgress();
       analyzeBtn.setAttribute('disabled', 'true');
 
-      const currentLang = localStorage.getItem('agrivision_lang') || 'en';
+      const currentLang = getLang();
       const formData = new FormData();
       formData.append('file', selectedFile);
       formData.append('lang', currentLang);
@@ -171,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(async response => {
         const data = await response.json();
         if (!response.ok || !data.success) {
-          const errMsg = data.message || data.error || 'Failed to complete crop analysis.';
+          const errMsg = data.message || data.error || getMsg('err_analysis_failed', 'Failed to complete crop analysis.');
           throw new Error(errMsg);
         }
         return data;
@@ -182,20 +195,19 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           hideLoading();
           analyzeBtn.removeAttribute('disabled');
-          showError(data.message || 'Failed to complete crop analysis.');
+          showError(data.message || getMsg('err_analysis_failed', 'Failed to complete crop analysis.'));
         }
       })
       .catch(err => {
         hideLoading();
         analyzeBtn.removeAttribute('disabled');
-        showError(err.message || 'Network error occurred while processing image.');
+        showError(err.message || getMsg('err_network_error', 'Network error occurred while processing image.'));
       });
     });
   }
 
-
   function animate7StageProgress() {
-    const stageIds = ['stage1', 'stage2', 'stage3', 'stage4', 'stage5', 'stage6', 'stage7'];
+    const stageIds = ['stage1', 'stage2', 'stage3', 'stage4'];
     let currentStage = 0;
     
     const interval = setInterval(() => {

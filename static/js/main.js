@@ -1,5 +1,6 @@
 /**
  * AgriVision AI - Global Application JavaScript & Responsive Interactivity Engine
+ * Multilingual toast notices, localized copy summaries, and form validation.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -7,6 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
   initDiseaseLibraryFilter();
   initContactFormValidation();
 });
+
+function getActiveLang() {
+  return localStorage.getItem('agrivision_lang') || document.documentElement.getAttribute('lang') || 'en';
+}
+
+function getLocalizedText(key, fallback) {
+  if (typeof getTranslation === 'function') {
+    return getTranslation(key, getActiveLang());
+  }
+  return fallback;
+}
 
 /**
  * Mobile Navigation Menu Toggle & Accessibility
@@ -150,14 +162,14 @@ function initContactFormValidation() {
 
     if (!name || !email || !message) {
       e.preventDefault();
-      showToast('Please fill in all required fields before submitting.', 'error');
+      showToast(getLocalizedText('toast_form_required', 'Please fill in all required fields before submitting.'), 'error');
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       e.preventDefault();
-      showToast('Please enter a valid email address.', 'error');
+      showToast(getLocalizedText('toast_valid_email', 'Please enter a valid email address.'), 'error');
     }
   });
 }
@@ -173,12 +185,22 @@ function printReport() {
  * Diagnostic Dashboard Copy Summary to Clipboard
  */
 function copyDiagnosticSummary(cropName, condition, confidence, urgency) {
-  const summaryText = `AgriVision AI Diagnostic Report:\n• Crop: ${cropName}\n• Condition: ${condition}\n• Confidence: ${confidence}\n• Action Urgency: ${urgency}\n• Generated: ${new Date().toLocaleDateString()}`;
+  const lang = getActiveLang();
+  const reportHeader = getLocalizedText('report_title', 'AgriVision AI Diagnostic Report');
+  const cropLabel = getLocalizedText('card_crop_species', 'Crop');
+  const condLabel = getLocalizedText('card_condition', 'Condition');
+  const confLabel = getLocalizedText('card_confidence', 'Confidence');
+  const urgLabel = getLocalizedText('card_action_urgency', 'Action Urgency');
   
+  const summaryText = `${reportHeader}:\n• ${cropLabel}: ${cropName}\n• ${condLabel}: ${condition}\n• ${confLabel}: ${confidence}\n• ${urgLabel}: ${urgency}\n• Date: ${new Date().toLocaleDateString()}`;
+  
+  const successMsg = getLocalizedText('toast_copied', 'Diagnostic summary copied to clipboard!');
+  const failMsg = getLocalizedText('toast_copy_failed', 'Failed to copy summary to clipboard.');
+
   if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(summaryText)
-      .then(() => showToast('Diagnostic summary copied to clipboard!', 'success'))
-      .catch(() => showToast('Failed to copy summary to clipboard.', 'error'));
+      .then(() => showToast(successMsg, 'success'))
+      .catch(() => showToast(failMsg, 'error'));
   } else {
     // Fallback for non-https contexts
     const textArea = document.createElement('textarea');
@@ -189,9 +211,9 @@ function copyDiagnosticSummary(cropName, condition, confidence, urgency) {
     textArea.select();
     try {
       document.execCommand('copy');
-      showToast('Diagnostic summary copied to clipboard!', 'success');
+      showToast(successMsg, 'success');
     } catch (err) {
-      showToast('Failed to copy summary.', 'error');
+      showToast(failMsg, 'error');
     }
     document.body.removeChild(textArea);
   }
@@ -206,4 +228,3 @@ function scrollToSection(sectionId) {
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
-
