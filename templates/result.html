@@ -17,7 +17,7 @@
       <!-- ========================================================= -->
       
       <!-- PAGE TITLE & REDESIGNED GOOGLE GEMINI AI VISION BADGE -->
-      <div class="section-header" style="margin-bottom: 1.5rem;" data-animate class="fade-up">
+      <div class="section-header" style="margin-bottom: 2.25rem;" data-animate class="fade-up">
         <h2 class="section-title" style="margin-bottom: 0.4rem;" data-i18n="report_title">{{ t('report_title') }}</h2>
         <p class="section-subtitle" style="margin-bottom: 0.6rem;" data-i18n="report_subtitle">{{ t('report_subtitle') }}</p>
         
@@ -26,33 +26,6 @@
           <span class="gemini-sparkle">✦</span>
           <span data-i18n="gemini_badge_text">{{ t('gemini_badge_text') }}</span>
           <span style="color: var(--text-muted); font-size: 0.78rem;" class="desktop-only" data-i18n="gemini_badge_sub">{{ t('gemini_badge_sub') }}</span>
-        </div>
-
-        <!-- User-Friendly Quick Action Toolbar -->
-        <div class="report-action-bar">
-          <div class="report-action-group">
-            <button type="button" class="btn-tool" onclick="printReport()" title="{{ t('btn_print_report') }}" data-i18n-title="btn_print_report">
-              🖨️ <span data-i18n="btn_print_report">{{ t('btn_print_report') }}</span>
-            </button>
-            <button type="button" class="btn-tool" onclick="copyDiagnosticSummary('{{ translate_crop(gemini_data.plant.common_name) }}', '{{ translate_disease(gemini_data.diagnosis.primary_condition) }}', '{{ gemini_data.diagnosis.confidence }}', '{{ translate_urg(gemini_data.urgency) }}')" title="{{ t('btn_copy_summary') }}" data-i18n-title="btn_copy_summary">
-              📋 <span data-i18n="btn_copy_summary">{{ t('btn_copy_summary') }}</span>
-            </button>
-          </div>
-          <div class="report-action-group">
-            <a href="{{ url_for('detect') }}" class="btn-tool" style="color: var(--primary); font-weight: 800;" title="{{ t('btn_new_analysis') }}" data-i18n-title="btn_new_analysis">
-              📷 <span data-i18n="btn_new_analysis">{{ t('btn_new_analysis') }}</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Interactive Section Quick Jump Navigation -->
-        <div class="jump-nav-bar" style="margin-top: 1rem;">
-          <a href="javascript:void(0)" onclick="scrollToSection('sectionOverview')" class="jump-nav-link" data-i18n="jump_overview">{{ t('jump_overview') }}</a>
-          <a href="javascript:void(0)" onclick="scrollToSection('sectionVisual')" class="jump-nav-link" data-i18n="jump_visual">{{ t('jump_visual') }}</a>
-          <a href="javascript:void(0)" onclick="scrollToSection('sectionActions')" class="jump-nav-link" data-i18n="jump_actions">{{ t('jump_actions') }}</a>
-          <a href="javascript:void(0)" onclick="scrollToSection('sectionTreatments')" class="jump-nav-link" data-i18n="jump_treatments">{{ t('jump_treatments') }}</a>
-          <a href="javascript:void(0)" onclick="scrollToSection('sectionNutrients')" class="jump-nav-link" data-i18n="jump_nutrients">{{ t('jump_nutrients') }}</a>
-          <a href="javascript:void(0)" onclick="scrollToSection('sectionInsights')" class="jump-nav-link" data-i18n="jump_insights">{{ t('jump_insights') }}</a>
         </div>
       </div>
 
@@ -163,10 +136,18 @@
         <!-- Uploaded Leaf Preview -->
         <div class="prob-card" style="text-align: center;" data-animate class="fade-right">
           <h3 style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--text-heading);" data-i18n="analyzed_leaf_photo">{{ t('analyzed_leaf_photo') }}</h3>
-          {% if preview_img %}
-            <img src="{{ url_for('static', filename='uploads/' + preview_img) }}" alt="{{ t('analyzed_leaf_photo') }}" class="xai-img" style="max-height: 280px; width: 100%; object-fit: contain; border-radius: var(--radius-md);">
+          {% set img_file = preview_img or (prediction and prediction.image_path) or (prediction_record and prediction_record.image_path) or '' %}
+          {% if img_file %}
+            {% if img_file.startswith('http') or img_file.startswith('/static/') or img_file.startswith('data:') %}
+              {% set resolved_img_src = img_file %}
+            {% elif img_file.startswith('uploads/') or img_file.startswith('images/') %}
+              {% set resolved_img_src = url_for('static', filename=img_file) %}
+            {% else %}
+              {% set resolved_img_src = url_for('static', filename='uploads/' + img_file) %}
+            {% endif %}
+            <img src="{{ resolved_img_src }}" alt="{{ t('analyzed_leaf_photo') }}" class="xai-img" style="max-height: 280px; width: 100%; object-fit: contain; border-radius: var(--radius-md);" onerror="if (!this.getAttribute('data-retried')) { this.setAttribute('data-retried', '1'); this.src='{{ url_for('static', filename='images/sample_dataset/tomato___early_blight.jpg') }}'; }">
           {% else %}
-            <div style="padding: 2rem; color: var(--text-muted);" data-i18n="leaf_sample_placeholder">{{ t('leaf_sample_placeholder') }}</div>
+            <img src="{{ url_for('static', filename='images/sample_dataset/tomato___early_blight.jpg') }}" alt="{{ t('analyzed_leaf_photo') }}" class="xai-img" style="max-height: 280px; width: 100%; object-fit: contain; border-radius: var(--radius-md);">
           {% endif %}
         </div>
 
@@ -207,15 +188,10 @@
       <!-- 3. REDESIGNED ACTIONABLE GUIDANCE SECTION WITH STRICT SPACING SYSTEM -->
       <div class="action-guidance-outer-card" id="sectionActions" data-animate class="fade-up">
         
-        <!-- Header with AI-Guided Actions Badge -->
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.75rem;">
-          <div>
-            <h3 style="font-size: 1.75rem; margin-bottom: 0.35rem; color: var(--text-heading);" data-i18n="actionable_guidance_title">{{ t('actionable_guidance_title') }}</h3>
-            <p style="font-size: 0.98rem; color: var(--text-muted); margin: 0;" data-i18n="actionable_guidance_sub">{{ t('actionable_guidance_sub') }}</p>
-          </div>
-          <span style="font-size: 0.8rem; font-weight: 700; padding: 6px 16px; border-radius: 20px; background: var(--primary); color: #ffffff;" data-i18n="ai_guided_actions_badge">
-            {{ t('ai_guided_actions_badge') }}
-          </span>
+        <!-- Header -->
+        <div style="margin-bottom: 1.5rem;">
+          <h3 style="font-size: 1.75rem; margin-bottom: 0.35rem; color: var(--text-heading);" data-i18n="actionable_guidance_title">{{ t('actionable_guidance_title') }}</h3>
+          <p style="font-size: 0.98rem; color: var(--text-muted); margin: 0;" data-i18n="actionable_guidance_sub">{{ t('actionable_guidance_sub') }}</p>
         </div>
 
         <!-- Two-Column Layout Container -->
@@ -228,118 +204,91 @@
               <h4 style="font-size: 1.3rem; margin-bottom: 0.35rem; color: var(--text-heading);" data-i18n="what_do_now_title">{{ t('what_do_now_title') }}</h4>
               <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;" data-i18n="what_do_now_sub">{{ t('what_do_now_sub') }}</p>
 
+              <!-- EXACTLY 4 ACTIONABLE GUIDANCE POINTS -->
               <div class="action-cards-list stagger-reveal">
-                {% if gemini_data.immediate_actions %}
-                  {% for action in gemini_data.immediate_actions %}
-                    {% if loop.first %}
-                      <!-- 01 PRIMARY ACTION (LARGER RECOMMENDED DO NOW CARD) -->
-                      <div class="action-card-item" style="border-left: 5px solid var(--primary); background: var(--bg-main);">
-                        <div class="action-card-header-flex">
-                          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                            <span class="action-step-num">01</span>
-                            <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981;" data-i18n="immediate_priority">
-                              {{ t('immediate_priority') }}
-                            </span>
-                          </div>
-                          <span style="font-size: 0.78rem; font-weight: 800; padding: 5px 14px; border-radius: 20px; background: #10b981; color: #ffffff;" data-i18n="do_now">
-                            {{ t('do_now') }}
-                          </span>
-                        </div>
-                        <h4 style="font-size: 1.1rem; color: var(--text-heading); margin-bottom: 0.5rem;" data-i18n="primary_action_title">{{ t('primary_action_title') }}</h4>
-                        <p style="font-size: 0.98rem; color: var(--text-main); line-height: 1.65; margin: 0; font-weight: 500;" class="dynamic-tx" data-raw="{{ action }}">
-                          {{ translate_tx(action) }}
-                        </p>
-                        <div style="margin-top: 1rem; font-size: 0.82rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 6px;" data-i18n="rec_24_hours">
-                          {{ t('rec_24_hours') }}
-                        </div>
-                      </div>
-                    {% else %}
-                      <!-- FOLLOW-UP ACTION CARDS -->
-                      <div class="action-card-item">
-                        <div class="action-card-header-flex">
-                          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                            <span class="action-step-num">0{{ loop.index }}</span>
-                            <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: var(--bg-input); color: var(--text-muted);">
-                              {% if loop.index == 2 %}{{ t('step_inspection_monitoring') }}{% elif loop.index == 3 %}{{ t('step_sanitation_prevention') }}{% else %}{{ t('step_treatment_protocol') }}{% endif %}
-                            </span>
-                          </div>
-                          {% if loop.index == 2 %}
-                            <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(245, 158, 11, 0.15); color: #f59e0b;" data-i18n="time_24_48_hours">{{ t('time_24_48_hours') }}</span>
-                          {% elif loop.index == 3 %}
-                            <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(59, 130, 246, 0.15); color: #3b82f6;" data-i18n="time_recommended">{{ t('time_recommended') }}</span>
-                          {% else %}
-                            <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: var(--bg-input); color: var(--text-muted);" data-i18n="time_if_needed">{{ t('time_if_needed') }}</span>
-                          {% endif %}
-                        </div>
-                        <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0;" class="dynamic-tx" data-raw="{{ action }}">
-                          {{ translate_tx(action) }}
-                        </p>
-                      </div>
-                    {% endif %}
-                  {% endfor %}
-                {% else %}
-                  <!-- DEFAULT 4-STEP ACTION JOURNEY CARDS -->
-                  <div class="action-card-item" style="border-left: 5px solid var(--primary); background: var(--bg-main);">
-                    <div class="action-card-header-flex">
-                      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                        <span class="action-step-num">01</span>
-                        <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981;" data-i18n="immediate_priority">
-                          {{ t('immediate_priority') }}
-                        </span>
-                      </div>
-                      <span style="font-size: 0.78rem; font-weight: 800; padding: 5px 14px; border-radius: 20px; background: #10b981; color: #ffffff;" data-i18n="do_now">
-                        {{ t('do_now') }}
+                {% set act1 = (gemini_data.immediate_actions and gemini_data.immediate_actions|length > 0 and gemini_data.immediate_actions[0]) or t('default_act_1_desc') %}
+                {% set act2 = (gemini_data.immediate_actions and gemini_data.immediate_actions|length > 1 and gemini_data.immediate_actions[1]) or t('default_act_2_desc') %}
+                {% set act3 = (gemini_data.immediate_actions and gemini_data.immediate_actions|length > 2 and gemini_data.immediate_actions[2]) or t('default_act_3_desc') %}
+                {% set act4 = (gemini_data.immediate_actions and gemini_data.immediate_actions|length > 3 and gemini_data.immediate_actions[3]) or t('default_act_4_desc') %}
+
+                <!-- Point 01: Immediate Priority / Do Now -->
+                <div class="action-card-item" style="border-left: 5px solid var(--primary); background: var(--bg-main);">
+                  <div class="action-card-header-flex">
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                      <span class="action-step-num">01</span>
+                      <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981;" data-i18n="immediate_priority">
+                        {{ t('immediate_priority') }}
                       </span>
                     </div>
-                    <h4 style="font-size: 1.1rem; color: var(--text-heading); margin-bottom: 0.4rem;" data-i18n="default_act_1_title">{{ t('default_act_1_title') }}</h4>
-                    <p style="font-size: 0.96rem; color: var(--text-main); line-height: 1.6; margin: 0;" data-i18n="default_act_1_desc">
-                      {{ t('default_act_1_desc') }}
-                    </p>
-                    <div style="margin-top: 0.85rem; font-size: 0.82rem; font-weight: 700; color: var(--primary);" data-i18n="default_act_1_rec">{{ t('default_act_1_rec') }}</div>
+                    <span style="font-size: 0.78rem; font-weight: 800; padding: 5px 14px; border-radius: 20px; background: #10b981; color: #ffffff;" data-i18n="do_now">
+                      {{ t('do_now') }}
+                    </span>
                   </div>
+                  <h4 style="font-size: 1.1rem; color: var(--text-heading); margin-bottom: 0.5rem;" data-i18n="primary_action_title">{{ t('primary_action_title') }}</h4>
+                  <p style="font-size: 0.98rem; color: var(--text-main); line-height: 1.65; margin: 0; font-weight: 500;" class="dynamic-tx" data-raw="{{ act1 }}">
+                    {{ translate_tx(act1) }}
+                  </p>
+                  <div style="margin-top: 1rem; font-size: 0.82rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 6px;" data-i18n="rec_24_hours">
+                    {{ t('rec_24_hours') }}
+                  </div>
+                </div>
 
-                  <div class="action-card-item">
-                    <div class="action-card-header-flex">
-                      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                        <span class="action-step-num">02</span>
-                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: rgba(245, 158, 11, 0.15); color: #d97706;" data-i18n="step_inspection_monitoring">{{ t('step_inspection_monitoring') }}</span>
-                      </div>
-                      <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(245, 158, 11, 0.15); color: #f59e0b;" data-i18n="time_24_48_hours">{{ t('time_24_48_hours') }}</span>
+                <!-- Point 02: Inspection & Monitoring -->
+                <div class="action-card-item">
+                  <div class="action-card-header-flex">
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                      <span class="action-step-num">02</span>
+                      <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: rgba(245, 158, 11, 0.15); color: #d97706;" data-i18n="step_inspection_monitoring">
+                        {{ t('step_inspection_monitoring') }}
+                      </span>
                     </div>
-                    <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;" data-i18n="default_act_2_title">{{ t('default_act_2_title') }}</h4>
-                    <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin: 0;" data-i18n="default_act_2_desc">
-                      {{ t('default_act_2_desc') }}
-                    </p>
+                    <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(245, 158, 11, 0.15); color: #f59e0b;" data-i18n="time_24_48_hours">
+                      {{ t('time_24_48_hours') }}
+                    </span>
                   </div>
+                  <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;" data-i18n="default_act_2_title">{{ t('default_act_2_title') }}</h4>
+                  <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0;" class="dynamic-tx" data-raw="{{ act2 }}">
+                    {{ translate_tx(act2) }}
+                  </p>
+                </div>
 
-                  <div class="action-card-item">
-                    <div class="action-card-header-flex">
-                      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                        <span class="action-step-num">03</span>
-                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: rgba(59, 130, 246, 0.15); color: #2563eb;" data-i18n="step_sanitation_prevention">{{ t('step_sanitation_prevention') }}</span>
-                      </div>
-                      <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(59, 130, 246, 0.15); color: #3b82f6;" data-i18n="time_recommended">{{ t('time_recommended') }}</span>
+                <!-- Point 03: Sanitation & Prevention -->
+                <div class="action-card-item">
+                  <div class="action-card-header-flex">
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                      <span class="action-step-num">03</span>
+                      <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: rgba(59, 130, 246, 0.15); color: #2563eb;" data-i18n="step_sanitation_prevention">
+                        {{ t('step_sanitation_prevention') }}
+                      </span>
                     </div>
-                    <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;" data-i18n="default_act_3_title">{{ t('default_act_3_title') }}</h4>
-                    <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin: 0;" data-i18n="default_act_3_desc">
-                      {{ t('default_act_3_desc') }}
-                    </p>
+                    <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: rgba(59, 130, 246, 0.15); color: #3b82f6;" data-i18n="time_recommended">
+                      {{ t('time_recommended') }}
+                    </span>
                   </div>
+                  <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;" data-i18n="default_act_3_title">{{ t('default_act_3_title') }}</h4>
+                  <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0;" class="dynamic-tx" data-raw="{{ act3 }}">
+                    {{ translate_tx(act3) }}
+                  </p>
+                </div>
 
-                  <div class="action-card-item">
-                    <div class="action-card-header-flex">
-                      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                        <span class="action-step-num">04</span>
-                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: var(--bg-input); color: var(--text-muted);" data-i18n="step_expert_support">{{ t('step_expert_support') }}</span>
-                      </div>
-                      <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: var(--bg-input); color: var(--text-muted);" data-i18n="time_if_needed">{{ t('time_if_needed') }}</span>
+                <!-- Point 04: Agricultural Support -->
+                <div class="action-card-item" style="margin-bottom: 0.25rem;">
+                  <div class="action-card-header-flex">
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                      <span class="action-step-num">04</span>
+                      <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: var(--bg-input); color: var(--text-muted);" data-i18n="step_expert_support">
+                        {{ t('step_expert_support') }}
+                      </span>
                     </div>
-                    <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;" data-i18n="default_act_4_title">{{ t('default_act_4_title') }}</h4>
-                    <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin: 0;" data-i18n="default_act_4_desc">
-                      {{ t('default_act_4_desc') }}
-                    </p>
+                    <span style="font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; background: var(--bg-input); color: var(--text-muted);" data-i18n="time_if_needed">
+                      {{ t('time_if_needed') }}
+                    </span>
                   </div>
-                {% endif %}
+                  <h4 style="font-size: 1rem; color: var(--text-heading); margin-bottom: 0.3rem;" data-i18n="default_act_4_title">{{ t('default_act_4_title') }}</h4>
+                  <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin: 0;" class="dynamic-tx" data-raw="{{ act4 }}">
+                    {{ translate_tx(act4) }}
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -609,13 +558,28 @@
       </div>
     {% endif %}
 
-    <!-- 7. MANDATORY AGRICULTURAL DISCLAIMER -->
-    <div style="background: var(--status-warning-bg); border: 1px solid rgba(245, 158, 11, 0.4); padding: 1.75rem 2rem; border-radius: var(--radius-lg); margin-top: 2.5rem; color: var(--text-main);" data-animate class="fade-up">
-      <h4 style="font-size: 1.15rem; margin-bottom: 0.75rem; color: var(--status-warning);" data-i18n="disclaimer_heading">{{ t('disclaimer_heading') }}</h4>
-      <p style="font-size: 0.96rem; line-height: 1.7; font-weight: 500; margin: 0;" data-i18n="disclaimer_notice">
-        {{ t('disclaimer_notice') }}
-      </p>
-    </div>
+    <!-- 7. MANDATORY AGRICULTURAL DISCLAIMER (Points Dropdown Accordion) -->
+    <details class="disclaimer-accordion" data-animate class="fade-up" id="disclaimerAccordion">
+      <summary aria-expanded="false" role="button" tabindex="0">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 1.25rem;">📢</span>
+          <h4 style="font-size: 1.12rem; color: var(--status-warning); margin: 0; font-weight: 800;" data-i18n="disclaimer_heading">
+            {{ t('disclaimer_heading') }}
+          </h4>
+        </div>
+        <span class="disclaimer-chevron">▼</span>
+      </summary>
+      <div class="disclaimer-dropdown-content">
+        <p style="font-size: 0.94rem; line-height: 1.65; font-weight: 500; margin-bottom: 0.75rem;" data-i18n="disclaimer_notice">
+          {{ t('disclaimer_notice') }}
+        </p>
+        <ul class="disclaimer-points-list">
+          <li data-i18n="disclaimer_point_1">{{ t('disclaimer_point_1') }}</li>
+          <li data-i18n="disclaimer_point_2">{{ t('disclaimer_point_2') }}</li>
+          <li data-i18n="disclaimer_point_3">{{ t('disclaimer_point_3') }}</li>
+        </ul>
+      </div>
+    </details>
 
     <!-- Action Bar Buttons -->
     <div style="margin-top: 3.5rem; text-align: center; display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap;" data-animate class="fade-up">
