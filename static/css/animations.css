@@ -429,7 +429,38 @@ details.upload-tip-box[open] summary {
 }
 
 /* ----------------------------------------------------
-   8. Reduced Motion Accessibility Override
+   8. Crop Health Analysis Report Subtle Animations
+   ---------------------------------------------------- */
+.result-header-card.is-visible .summary-card-1 { animation: reportCardFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s backwards; }
+.result-header-card.is-visible .summary-card-2 { animation: reportCardFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.12s backwards; }
+.result-header-card.is-visible .summary-card-3 { animation: reportCardFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.18s backwards; }
+.result-header-card.is-visible .summary-card-4 { animation: reportCardFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.24s backwards; }
+.result-header-card.is-visible .summary-card-5 { animation: reportCardFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.30s backwards; }
+
+@keyframes reportCardFade {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.action-card-item:first-child {
+  border-left: 4px solid var(--primary) !important;
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(16, 185, 129, 0.03) 100%);
+}
+
+.action-card-item:first-child .action-step-num {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #10b981;
+}
+
+/* ----------------------------------------------------
+   9. Reduced Motion Accessibility Override
    ---------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   [data-animate],
@@ -444,7 +475,14 @@ details.upload-tip-box[open] summary {
   .ai-scan-line,
   .ai-target-marker,
   .ai-hero-floating-card,
-  .gemini-sparkle {
+  .gemini-sparkle,
+  .dynamic-severity,
+  .meter-fill::after,
+  .result-header-card.is-visible .summary-card-1,
+  .result-header-card.is-visible .summary-card-2,
+  .result-header-card.is-visible .summary-card-3,
+  .result-header-card.is-visible .summary-card-4,
+  .result-header-card.is-visible .summary-card-5 {
     animation: none !important;
   }
 }
