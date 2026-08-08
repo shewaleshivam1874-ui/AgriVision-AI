@@ -1,8 +1,11 @@
 /* ==========================================================================
    AgriVision AI - Global Animation & Micro-Interactions System
+   Fully Responsive & Micro-Interactive Across All Breakpoints (320px - 1920px+)
    ========================================================================== */
 
-/* Top Scroll Progress Bar */
+/* ----------------------------------------------------
+   1. Top Scroll Progress Bar
+   ---------------------------------------------------- */
 .scroll-progress-bar {
   position: fixed;
   top: 0;
@@ -15,37 +18,21 @@
   box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
 }
 
-/* Scroll Reveal Base Utility Classes */
+/* ----------------------------------------------------
+   2. Scroll Reveal Utility Classes
+   ---------------------------------------------------- */
 [data-animate] {
   opacity: 0;
   will-change: transform, opacity;
   transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.fade-up {
-  transform: translateY(30px);
-}
-
-.fade-down {
-  transform: translateY(-30px);
-}
-
-.fade-left {
-  transform: translateX(35px);
-}
-
-.fade-right {
-  transform: translateX(-35px);
-}
-
-.scale-in {
-  transform: scale(0.92);
-}
-
-.blur-reveal {
-  filter: blur(8px);
-  transform: translateY(15px);
-}
+.fade-up { transform: translateY(30px); }
+.fade-down { transform: translateY(-30px); }
+.fade-left { transform: translateX(30px); }
+.fade-right { transform: translateX(-30px); }
+.scale-in { transform: scale(0.94); }
+.blur-reveal { filter: blur(6px); transform: translateY(15px); }
 
 .stagger-reveal > * {
   opacity: 0;
@@ -61,75 +48,17 @@
   filter: blur(0);
 }
 
-/* Navbar Scroll Shrink & Shadow */
-.navbar {
-  transition: padding 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
+/* ----------------------------------------------------
+   3. Navbar Scroll Shrink & Shadow
+   ---------------------------------------------------- */
 .navbar.nav-scrolled {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   background: var(--bg-surface);
 }
 
-/* Navbar Link Underline Animation */
-.nav-link {
-  position: relative;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: var(--primary);
-  transition: width 0.3s ease, left 0.3s ease;
-  border-radius: 2px;
-}
-
-.nav-link:hover::after,
-.nav-link.active::after {
-  width: 100%;
-  left: 0;
-}
-
-/* Button & Card Micro-Interactions */
-.btn-cta, .btn-secondary, .btn-primary {
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-.btn-cta:hover, .btn-secondary:hover, .btn-primary:hover {
-  transform: translateY(-2px);
-}
-
-.btn-cta:active, .btn-secondary:active, .btn-primary:active {
-  transform: scale(0.98) translateY(0);
-}
-
-.feature-card, .step-card, .info-card, .result-stat-item, .prob-card {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.feature-card:hover, .step-card:hover, .info-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-3d-lg);
-  border-color: var(--primary);
-}
-
-/* Theme Icon Animation */
-.theme-toggle-btn #themeIcon {
-  display: inline-block;
-  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.theme-toggle-btn:hover #themeIcon {
-  transform: rotate(25deg) scale(1.15);
-}
-
-/* Cursor Glow Effect */
+/* ----------------------------------------------------
+   4. Cursor Glow Proximity Effect
+   ---------------------------------------------------- */
 .cursor-glow {
   position: fixed;
   width: 250px;
@@ -148,327 +77,15 @@
   opacity: 1;
 }
 
-/* Glassmorphic 3D Tree Hover Tooltip Card */
-.tree-hover-card {
-  position: absolute;
-  z-index: 1000;
-  width: 280px;
-  padding: 1.25rem;
-  background: rgba(15, 23, 42, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  border-radius: 14px;
-  color: #f8fafc;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(16, 185, 129, 0.2);
-  pointer-events: auto;
-  opacity: 0;
-  transform: scale(0.94) translateY(8px);
-  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-[data-theme="light"] .tree-hover-card {
-  background: rgba(255, 255, 255, 0.92);
-  color: #0f172a;
-  border-color: rgba(16, 185, 129, 0.4);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 20px rgba(16, 185, 129, 0.15);
-}
-
-.tree-hover-card.active {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-}
-
-.tree-card-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 0.6rem;
-}
-
-.tree-card-icon {
-  font-size: 1.5rem;
-  padding: 6px;
-  background: rgba(16, 185, 129, 0.2);
-  border-radius: 8px;
-}
-
-.tree-card-title {
-  font-weight: 800;
-  font-size: 1.05rem;
-  color: var(--primary-dark);
-}
-
-.tree-card-tag {
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #10b981;
-}
-
-.tree-card-desc {
-  font-size: 0.88rem;
-  line-height: 1.55;
-  color: var(--text-muted);
-}
-
-/* 3D Container Styling & Full Tree Visibility Safety */
-.tree-3d-wrapper {
-  position: relative;
-  width: 100%;
-  height: clamp(360px, 60vh, 540px);
-  border-radius: 20px;
-  overflow: hidden;
-  background: radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-.tree-3d-canvas {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-  object-position: center center !important;
-  display: block;
-  cursor: grab;
-}
-
-.tree-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center center;
-}
-
-@media (max-width: 640px) {
-  .tree-3d-wrapper {
-    height: clamp(320px, 50vh, 420px);
-    padding: 0.5rem;
-  }
-}
-
-@media (max-height: 500px) and (orientation: landscape) {
-  .tree-3d-wrapper {
-    height: clamp(260px, 75vh, 380px);
-  }
-}
-
-.tree-3d-canvas:active {
-  cursor: grabbing;
-}
-
-
-/* Instruction Overlay Badge */
-.tree-hint-badge {
-  position: absolute;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(8px);
-  color: #a7f3d0;
-  padding: 8px 18px;
-  border-radius: 30px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  pointer-events: none;
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-[data-theme="light"] .tree-hint-badge {
-  background: rgba(255, 255, 255, 0.85);
-  color: #065f46;
-}
-
-/* ==========================================================================
-   Gemini Technology Badge Styling
-   ========================================================================== */
-.gemini-tech-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  background: var(--bg-card);
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  border-radius: 30px;
-  font-size: 0.85rem;
-  color: var(--text-main);
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  margin-top: 0.5rem;
-}
-
-.gemini-tech-badge:hover {
-  transform: translateY(-1px);
-  border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-}
-
-.gemini-sparkle {
-  color: #10b981;
-  font-size: 0.95rem;
-  animation: pulseSparkle 2s infinite ease-in-out;
-}
-
-@keyframes pulseSparkle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.15); }
-}
-
-/* ==========================================================================
-   5 Summary Cards - Centered 3 + 2 Grid Layout System
-   ========================================================================== */
-.summary-5-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 1.5rem;
-  align-items: stretch;
-}
-
-.summary-card-1 { grid-column: span 2; }
-.summary-card-2 { grid-column: span 2; }
-.summary-card-3 { grid-column: span 2; }
-.summary-card-4 { grid-column: 2 / span 2; }
-.summary-card-5 { grid-column: 4 / span 2; }
-
-@media (max-width: 1024px) {
-  .summary-5-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .summary-card-1 { grid-column: span 2; }
-  .summary-card-2 { grid-column: span 2; }
-  .summary-card-3 { grid-column: span 2; }
-  .summary-card-4 { grid-column: span 2; }
-  .summary-card-5 { grid-column: 2 / span 2; }
-}
-
-@media (max-width: 640px) {
-  .summary-5-grid {
-    grid-template-columns: 1fr;
-  }
-  .summary-card-1,
-  .summary-card-2,
-  .summary-card-3,
-  .summary-card-4,
-  .summary-card-5 {
-    grid-column: span 1;
-  }
-}
-
-/* ==========================================================================
-   Actionable Guidance Two-Column Layout & Strict Spacing System
-   ========================================================================== */
-.action-guidance-outer-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-xl, 24px);
-  padding: 32px;
-  box-shadow: var(--shadow-3d-md);
-  margin-bottom: 3.5rem;
-}
-
-@media (max-width: 1024px) {
-  .action-guidance-outer-card {
-    padding: 24px;
-  }
-}
-
-@media (max-width: 640px) {
-  .action-guidance-outer-card {
-    padding: 18px;
-  }
-}
-
-.action-guidance-container {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 32px;
-  align-items: start;
-  margin-top: 24px;
-}
-
-@media (max-width: 1024px) {
-  .action-guidance-container {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-}
-
-.action-journey-wrapper {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-xl, 20px);
-  padding: 24px;
-  box-shadow: var(--shadow-sm);
-}
-
-@media (max-width: 640px) {
-  .action-journey-wrapper {
-    padding: 16px;
-  }
-}
-
-.action-cards-list {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  margin-top: 20px;
-}
-
-.action-card-item {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg, 16px);
-  padding: 20px 24px;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  min-width: 0;
-  overflow-wrap: anywhere;
-  height: auto;
-}
-
-.action-card-item:hover {
-  transform: translateY(-2px);
-  border-color: var(--primary);
-  box-shadow: var(--shadow-md);
-}
-
-.action-step-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: var(--bg-input);
-  border: 1px solid var(--border-color);
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--primary);
-  flex-shrink: 0;
-}
-
-.action-right-col {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* ==========================================================================
-   Hero AI Crop Disease Detection Scanner Visual Component
-   ========================================================================== */
+/* ----------------------------------------------------
+   5. Hero AI Crop Disease Scanner Visual Component
+   ---------------------------------------------------- */
 .hero-scanner-wrapper {
   position: relative;
   width: 100%;
-  height: clamp(340px, 50vh, 480px);
-  border-radius: 24px;
+  max-width: 100%;
+  height: clamp(260px, 45vw, 420px);
+  border-radius: var(--radius-xl);
   overflow: hidden;
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
@@ -476,7 +93,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem;
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+  box-sizing: border-box;
 }
 
 .ai-scan-leaf-img {
@@ -484,7 +102,7 @@
   height: 100%;
   object-fit: contain !important;
   object-position: center center !important;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   position: relative;
   z-index: 1;
 }
@@ -510,8 +128,8 @@
 /* Computer Vision Pulsing Target Markers */
 .ai-target-marker {
   position: absolute;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border: 2px solid #10b981;
   border-radius: 50%;
   z-index: 6;
@@ -537,8 +155,8 @@
 /* Reticle Corner Indicators */
 .ai-reticle-corner {
   position: absolute;
-  width: 20px;
-  height: 20px;
+  width: clamp(14px, 2vw, 20px);
+  height: clamp(14px, 2vw, 20px);
   border-color: #10b981;
   border-style: solid;
   z-index: 4;
@@ -546,62 +164,82 @@
   opacity: 0.75;
 }
 
-.reticle-top-left { top: 18px; left: 18px; border-width: 3px 0 0 3px; border-top-left-radius: 6px; }
-.reticle-top-right { top: 18px; right: 18px; border-width: 3px 3px 0 0; border-top-right-radius: 6px; }
-.reticle-bottom-left { bottom: 18px; left: 18px; border-width: 0 0 3px 3px; border-bottom-left-radius: 6px; }
-.reticle-bottom-right { bottom: 18px; right: 18px; border-width: 0 3px 3px 0; border-bottom-right-radius: 6px; }
+.reticle-top-left { top: 14px; left: 14px; border-width: 3px 0 0 3px; border-top-left-radius: 6px; }
+.reticle-top-right { top: 14px; right: 14px; border-width: 3px 3px 0 0; border-top-right-radius: 6px; }
+.reticle-bottom-left { bottom: 14px; left: 14px; border-width: 0 0 3px 3px; border-bottom-left-radius: 6px; }
+.reticle-bottom-right { bottom: 14px; right: 14px; border-width: 0 3px 3px 0; border-bottom-right-radius: 6px; }
 
-/* Floating Information Result Cards */
+/* Floating Information Result Cards in Hero */
 .ai-hero-floating-card {
   position: absolute;
   z-index: 10;
-  padding: 8px 14px;
+  padding: 6px 12px;
   background: var(--bg-surface);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(16, 185, 129, 0.35);
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 0 15px rgba(16, 185, 129, 0.12);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 0 12px rgba(16, 185, 129, 0.12);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   animation: floatCard 4s ease-in-out infinite alternate;
-}
-
-[data-theme="dark"] .ai-hero-floating-card {
-  background: rgba(26, 31, 37, 0.9);
-  border-color: rgba(16, 185, 129, 0.4);
-}
-
-[data-theme="light"] .ai-hero-floating-card {
-  background: rgba(255, 255, 255, 0.94);
-  border-color: rgba(16, 185, 129, 0.35);
+  max-width: 85%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 @keyframes floatCard {
   0% { transform: translateY(0); }
-  100% { transform: translateY(-6px); }
+  100% { transform: translateY(-5px); }
 }
 
-.float-card-1 { top: 24px; left: 24px; animation-delay: 0s; }
-.float-card-2 { top: 24px; right: 24px; animation-delay: 1.2s; }
-.float-card-3 { bottom: 24px; right: 24px; animation-delay: 2.4s; }
+.float-card-1 { top: 16px; left: 16px; animation-delay: 0s; }
+.float-card-2 { top: 16px; right: 16px; animation-delay: 1.2s; }
+.float-card-3 { bottom: 16px; right: 16px; animation-delay: 2.4s; }
 
-/* ==========================================================================
-   How AgriVision AI Works - Professional Workflow Section
-   ========================================================================== */
+/* Responsive Adjustments for Floating Cards */
+@media (max-width: 600px) {
+  .ai-hero-floating-card {
+    padding: 5px 8px;
+    gap: 6px;
+    font-size: 0.8rem;
+    max-width: 48%;
+  }
+  .float-card-1 { top: 10px; left: 10px; }
+  .float-card-2 { top: 10px; right: 10px; }
+  .float-card-3 { bottom: 10px; right: 10px; }
+}
+
+@media (max-width: 380px) {
+  .ai-hero-floating-card {
+    padding: 4px 6px;
+    gap: 4px;
+    font-size: 0.72rem;
+    max-width: 46%;
+  }
+  .float-card-1 { top: 8px; left: 8px; }
+  .float-card-2 { top: 8px; right: 8px; }
+  .float-card-3 { bottom: 8px; right: 8px; }
+}
+
+/* ----------------------------------------------------
+   6. How AgriVision AI Works - Professional Workflow Section
+   ---------------------------------------------------- */
 .workflow-section-wrapper {
   position: relative;
-  margin-top: 2.5rem;
+  margin-top: 2rem;
+  width: 100%;
 }
 
 .workflow-grid {
   position: relative;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+  gap: clamp(1rem, 2vw, 1.5rem);
   align-items: stretch;
   z-index: 1;
+  width: 100%;
 }
 
 .workflow-progress-line {
@@ -620,15 +258,16 @@
   position: relative;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg, 18px);
-  padding: 1.75rem 1.5rem;
+  border-radius: var(--radius-lg);
+  padding: clamp(1.25rem, 3vw, 1.75rem);
   box-shadow: var(--shadow-sm);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 340px;
+  min-height: 280px;
   z-index: 2;
+  min-width: 0;
 }
 
 .workflow-card:hover {
@@ -645,8 +284,8 @@
 }
 
 .workflow-step-badge {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 12px;
   background: var(--bg-input);
   border: 1px solid var(--border-color);
@@ -656,24 +295,26 @@
   font-weight: 900;
   font-size: 1.1rem;
   color: var(--primary);
+  flex-shrink: 0;
 }
 
 .workflow-icon-box {
-  font-size: 1.75rem;
-  padding: 8px;
+  font-size: 1.6rem;
+  padding: 6px;
   background: rgba(16, 185, 129, 0.12);
   border-radius: 12px;
   color: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .workflow-card-title {
-  font-size: 1.15rem;
+  font-size: clamp(1.05rem, 2vw, 1.15rem);
   font-weight: 800;
   color: var(--text-heading);
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .workflow-card-desc {
@@ -709,17 +350,18 @@
 
 /* Workflow Bottom Banner CTA */
 .workflow-cta-banner {
-  margin-top: 3rem;
-  padding: 1.75rem 2rem;
+  margin-top: 2.5rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem) clamp(1.25rem, 4vw, 2rem);
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-xl, 20px);
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: 1.25rem;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 @media (max-width: 1024px) {
@@ -739,39 +381,56 @@
   }
   .workflow-card {
     min-height: auto;
-    padding: 1.5rem;
+    padding: 1.25rem;
   }
   .workflow-cta-banner {
     flex-direction: column;
     text-align: center;
-    align-items: center;
-/* Quick Tips Accordion Styling */
+    align-items: stretch;
+  }
+  .workflow-cta-banner .btn-cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ----------------------------------------------------
+   7. Quick Tips Accordion (detect.html)
+   ---------------------------------------------------- */
 details.upload-tip-box summary {
   list-style: none;
   cursor: pointer;
   transition: border-radius 0.2s ease, border-color 0.2s ease;
+  min-height: var(--touch-target-min);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
 }
+
 details.upload-tip-box summary::-webkit-details-marker {
   display: none;
 }
+
 details.upload-tip-box summary:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
+
 details.upload-tip-box[open] .accordion-chevron {
   transform: rotate(180deg);
 }
+
 details.upload-tip-box[open] summary {
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
   border-bottom-color: transparent !important;
 }
 
-
-
-
-
-/* Reduced Motion Override */
+/* ----------------------------------------------------
+   8. Reduced Motion Accessibility Override
+   ---------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   [data-animate],
   .fade-up, .fade-down, .fade-left, .fade-right, .scale-in, .blur-reveal, .stagger-reveal > * {
@@ -780,11 +439,12 @@ details.upload-tip-box[open] summary {
     opacity: 1 !important;
     filter: none !important;
   }
-  .scroll-progress-bar {
-    display: none;
-  }
-  .cursor-glow {
-    display: none;
+  .scroll-progress-bar,
+  .cursor-glow,
+  .ai-scan-line,
+  .ai-target-marker,
+  .ai-hero-floating-card,
+  .gemini-sparkle {
+    animation: none !important;
   }
 }
-

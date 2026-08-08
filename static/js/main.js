@@ -1,5 +1,5 @@
 /**
- * AgriVision AI - Global Application JavaScript & Toast Generator
+ * AgriVision AI - Global Application JavaScript & Responsive Interactivity Engine
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,27 +9,62 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Mobile Navigation Menu Toggle
+ * Mobile Navigation Menu Toggle & Accessibility
  */
 function initMobileMenu() {
   const navToggle = document.querySelector('.nav-toggle');
   const navMenu = document.querySelector('.nav-menu');
 
-  if (navToggle && navMenu) {
-    navToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
-      const isExpanded = navMenu.classList.contains('active');
-      navToggle.setAttribute('aria-expanded', isExpanded);
-      navToggle.innerHTML = isExpanded ? '✕' : '☰';
-    });
+  if (!navToggle || !navMenu) return;
 
-    document.addEventListener('click', (e) => {
-      if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-        navMenu.classList.remove('active');
-        if (navToggle) navToggle.innerHTML = '☰';
+  function closeMenu() {
+    navMenu.classList.remove('active');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.innerHTML = '☰';
+  }
+
+  function toggleMenu() {
+    const isActive = navMenu.classList.toggle('active');
+    navToggle.setAttribute('aria-expanded', String(isActive));
+    navToggle.innerHTML = isActive ? '✕' : '☰';
+  }
+
+  navToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMenu();
+  });
+
+  // Close when clicking any nav link or CTA button inside mobile menu
+  navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 992) {
+        closeMenu();
       }
     });
-  }
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+      if (navMenu.classList.contains('active')) {
+        closeMenu();
+      }
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+      closeMenu();
+    }
+  });
+
+  // Reset menu state on desktop resize / orientation change
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 992 && navMenu.classList.contains('active')) {
+      closeMenu();
+    }
+  }, { passive: true });
 }
 
 /**

@@ -126,12 +126,12 @@
       </div>
 
       <!-- 2. IMAGE PREVIEW & SEVERITY BADGE -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: clamp(1.25rem, 3vw, 2rem); margin-bottom: 3rem;">
         <!-- Uploaded Leaf Preview -->
         <div class="prob-card" style="text-align: center;" data-animate class="fade-right">
           <h3 style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--text-heading);">Analyzed Leaf Photo</h3>
           {% if preview_img %}
-            <img src="{{ url_for('static', filename='uploads/' + preview_img) }}" alt="Uploaded Leaf Preview" class="xai-img" style="max-height: 280px; object-fit: contain; border-radius: var(--radius-md);">
+            <img src="{{ url_for('static', filename='uploads/' + preview_img) }}" alt="Uploaded Leaf Preview" class="xai-img" style="max-height: 280px; width: 100%; object-fit: contain; border-radius: var(--radius-md);">
           {% else %}
             <div style="padding: 2rem; color: var(--text-muted);">Uploaded Leaf Sample</div>
           {% endif %}
@@ -201,8 +201,8 @@
                     {% if loop.first %}
                       <!-- 01 PRIMARY ACTION (LARGER RECOMMENDED DO NOW CARD) -->
                       <div class="action-card-item" style="border-left: 5px solid var(--primary); background: var(--bg-main);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-                          <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="action-card-header-flex">
+                          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                             <span class="action-step-num">01</span>
                             <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981;">
                               ● IMMEDIATE PRIORITY
@@ -223,8 +223,8 @@
                     {% else %}
                       <!-- FOLLOW-UP ACTION CARDS -->
                       <div class="action-card-item">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                          <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="action-card-header-flex">
+                          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                             <span class="action-step-num">0{{ loop.index }}</span>
                             <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: var(--bg-input); color: var(--text-muted);">
                               {% if loop.index == 2 %}Inspection & Monitoring{% elif loop.index == 3 %}Sanitation & Prevention{% else %}Treatment Protocol{% endif %}
@@ -247,8 +247,8 @@
                 {% else %}
                   <!-- DEFAULT 4-STEP ACTION JOURNEY CARDS -->
                   <div class="action-card-item" style="border-left: 5px solid var(--primary); background: var(--bg-main);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-                      <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="action-card-header-flex">
+                      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                         <span class="action-step-num">01</span>
                         <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; background: rgba(16, 185, 129, 0.15); color: #10b981;">
                           ● IMMEDIATE PRIORITY
@@ -266,8 +266,8 @@
                   </div>
 
                   <div class="action-card-item">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                      <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="action-card-header-flex">
+                      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                         <span class="action-step-num">02</span>
                         <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: rgba(245, 158, 11, 0.15); color: #d97706;">Monitoring</span>
                       </div>
@@ -280,8 +280,8 @@
                   </div>
 
                   <div class="action-card-item">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                      <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="action-card-header-flex">
+                      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                         <span class="action-step-num">03</span>
                         <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: rgba(59, 130, 246, 0.15); color: #2563eb;">Prevention & Treatment</span>
                       </div>
@@ -294,8 +294,8 @@
                   </div>
 
                   <div class="action-card-item">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                      <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="action-card-header-flex">
+                      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                         <span class="action-step-num">04</span>
                         <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 6px; background: var(--bg-input); color: var(--text-muted);">Expert Support</span>
                       </div>
@@ -385,12 +385,14 @@
             </div>
 
           </div>
+        </div>
+      </div>
 
       <!-- 4. VISUALLY SEPARATE ORGANIC VS CONVENTIONAL TREATMENT -->
       <div style="margin-bottom: 3rem;">
         <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-heading);" data-animate class="fade-up">Management & Treatment Solutions</h3>
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: clamp(1.25rem, 3vw, 2rem);">
           <!-- 🌱 Organic Management Card -->
           <div class="info-card" style="border-top: 4px solid #10b981;" data-animate class="fade-right">
             <div class="info-card-header">
@@ -428,14 +430,14 @@
       </div>
 
       <!-- 5. FERTILIZER & NUTRIENT GUIDANCE -->
-      <div style="background: var(--bg-surface); padding: 2rem; border-radius: var(--radius-xl); border: 1px solid var(--border-color); margin-bottom: 3rem;" data-animate class="fade-up">
+      <div style="background: var(--bg-surface); padding: clamp(1.25rem, 3vw, 2rem); border-radius: var(--radius-xl); border: 1px solid var(--border-color); margin-bottom: 3rem;" data-animate class="fade-up">
         <div class="info-card-header" style="margin-bottom: 1rem;">
           <div class="info-card-icon">🌾</div>
           <h3 style="font-size: 1.4rem; color: var(--text-heading);">Nutrient & Fertilizer Guidance</h3>
         </div>
 
         {% if (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.deficiency_suspected) or (gemini_data.fertilizer_guidance and gemini_data.fertilizer_guidance.needed) %}
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; font-size: 0.96rem; color: var(--text-main);">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 1.5rem; font-size: 0.96rem; color: var(--text-main);">
             <div>
               <strong style="color: var(--text-heading);">Suspected Deficiency:</strong>
               <p style="margin-top: 0.25rem; color: var(--text-muted);">{{ (gemini_data.nutrient_analysis and gemini_data.nutrient_analysis.possible_deficiency) or 'Nutrient Correction Recommended' }}</p>
@@ -469,7 +471,7 @@
       <div style="margin-bottom: 3rem;" data-animate class="fade-up">
         <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-heading);">Additional Diagnostic Insights</h3>
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1.5rem;">
           <!-- Symptoms Observed -->
           <div class="info-card">
             <div class="info-card-header">

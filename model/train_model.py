@@ -6,8 +6,16 @@ Performs transfer learning & fine-tuning on crop leaf dataset with 70/15/15 stra
 
 import os
 import sys
+import glob
 import argparse
 import json
+
+# Auto-detect workspace virtual environment site-packages if running outside venv
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+venv_site_packages = glob.glob(os.path.join(project_root, 'venv', 'lib', 'python*', 'site-packages'))
+for p in venv_site_packages:
+    if p not in sys.path:
+        sys.path.insert(0, p)
 
 def train_efficientnet(dataset_dir, output_model_path, img_size=(224, 224), batch_size=32, epochs_stage1=10, epochs_stage2=5):
     """
@@ -15,11 +23,17 @@ def train_efficientnet(dataset_dir, output_model_path, img_size=(224, 224), batc
     """
     try:
         import tensorflow as tf
-        from tensorflow.keras import layers, models
-        from tensorflow.keras.applications import EfficientNetB0
-        from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
+        try:
+            from tensorflow.keras import layers, models
+            from tensorflow.keras.applications import EfficientNetB0
+            from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
+        except ImportError:
+            from keras import layers, models
+            from keras.applications import EfficientNetB0
+            from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
     except ImportError:
-        print("[ERROR] TensorFlow is required for model training. Run: pip install tensorflow")
+        print("[ERROR] TensorFlow is required for model training.")
+        print("[HINT] Activate the project venv: 'source venv/bin/activate' or run with './venv/bin/python model/train_model.py'")
         return
 
     print("==================================================")

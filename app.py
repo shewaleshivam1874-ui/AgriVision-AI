@@ -1,4 +1,14 @@
 import os
+import sys
+import glob
+
+# Auto-detect workspace virtual environment site-packages if running outside venv
+project_root = os.path.abspath(os.path.dirname(__file__))
+venv_site_packages = glob.glob(os.path.join(project_root, 'venv', 'lib', 'python*', 'site-packages'))
+for p in venv_site_packages:
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
 import time
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session

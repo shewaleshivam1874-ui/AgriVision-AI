@@ -12,15 +12,15 @@
     </div>
 
     <!-- Search & Filter Controls -->
-    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 2.25rem; box-shadow: var(--shadow-sm);" data-animate class="fade-up">
-      <form method="GET" action="{{ url_for('history') }}" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
-        <div style="flex: 1; min-width: 240px;">
+    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: clamp(1rem, 3vw, 1.25rem); margin-bottom: 2.25rem; box-shadow: var(--shadow-sm);" data-animate class="fade-up">
+      <form method="GET" action="{{ url_for('history') }}" class="history-filter-form">
+        <div class="history-search-col">
           <input type="text" name="search" value="{{ search_query or '' }}" placeholder="🔍 Search by crop or disease name..." class="form-input" style="width: 100%; padding: 10px 14px; border-radius: var(--radius-md); border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main);">
         </div>
         
-        <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
-          <label style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted);">Severity Filter:</label>
-          <select name="severity" onchange="this.form.submit()" class="lang-select" style="padding: 10px 14px; border-radius: var(--radius-md); background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color);">
+        <div class="history-actions-col">
+          <label style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); white-space: nowrap;">Severity Filter:</label>
+          <select name="severity" onchange="this.form.submit()" class="lang-select" style="padding: 10px 14px; border-radius: var(--radius-md); background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); min-height: 42px;">
             <option value="all" {% if not severity_filter or severity_filter.lower() == 'all' %}selected{% endif %}>All Severities</option>
             <option value="healthy" {% if severity_filter and severity_filter.lower() == 'healthy' %}selected{% endif %}>Healthy</option>
             <option value="low" {% if severity_filter and severity_filter.lower() == 'low' %}selected{% endif %}>Low Severity</option>
@@ -29,16 +29,16 @@
             <option value="critical" {% if severity_filter and severity_filter.lower() == 'critical' %}selected{% endif %}>Critical / Severe</option>
           </select>
 
-          <button type="submit" class="btn-cta" style="padding: 10px 20px; font-size: 0.92rem;">Filter</button>
+          <button type="submit" class="btn-cta" style="padding: 10px 20px; font-size: 0.92rem; min-height: 42px;">Filter</button>
           {% if search_query or (severity_filter and severity_filter.lower() != 'all') %}
-            <a href="{{ url_for('history') }}" class="btn-secondary" style="padding: 10px 16px; font-size: 0.92rem;">Reset</a>
+            <a href="{{ url_for('history') }}" class="btn-secondary" style="padding: 10px 16px; font-size: 0.92rem; min-height: 42px;">Reset</a>
           {% endif %}
         </div>
       </form>
     </div>
 
     {% if history_records %}
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;" class="stagger-reveal">
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: clamp(1.25rem, 3vw, 2rem);" class="stagger-reveal">
       {% for record in history_records %}
       <div class="disease-card" style="display: flex; flex-direction: column; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.25s ease, box-shadow 0.25s ease;">
         
