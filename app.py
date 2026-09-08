@@ -4,10 +4,11 @@ import glob
 
 # Auto-detect workspace virtual environment site-packages if running outside venv
 project_root = os.path.abspath(os.path.dirname(__file__))
-venv_site_packages = glob.glob(os.path.join(project_root, 'venv', 'lib', 'python*', 'site-packages'))
-for p in venv_site_packages:
-    if p not in sys.path:
-        sys.path.insert(0, p)
+# Only add the virtualenv site-packages that match the running Python version
+pyver = f"python{sys.version_info.major}.{sys.version_info.minor}"
+venv_site = os.path.join(project_root, 'venv', 'lib', pyver, 'site-packages')
+if os.path.isdir(venv_site) and venv_site not in sys.path:
+    sys.path.insert(0, venv_site)
 
 import time
 from werkzeug.utils import secure_filename
@@ -15,8 +16,10 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, f
 
 from config import Config
 from database.database import db_manager
-from model.predict import predictor
-from services.crop_analyzer import crop_analyzer
+# Lazy-import heavy ML modules (TensorFlow, etc.) inside routes to allow
+# starting the web server even when those optional dependencies aren't installed.
+predictor = None
+crop_analyzer = None
 from utils.image_processing import allowed_file
 
 
@@ -133,6 +136,15 @@ def analyze_leaf():
     if ',' in lang:
         lang = lang.split(',')[0]
 
+
+    # Lazy import crop_analyzer to avoid requiring heavy ML packages at startup
+    global crop_analyzer
+    try:
+        if crop_analyzer is None:
+            from services.crop_analyzer import crop_analyzer as _ca
+            crop_analyzer = _ca
+    except Exception as imp_err:
+        return jsonify({'success': False, 'error': 'SERVING_UNAVAILABLE', 'message': f'ML services unavailable: {imp_err}'}), 503
 
     saved_path = None
     try:
@@ -268,6 +280,15 @@ def predict():
 
     if not allowed_file(file.filename):
         return jsonify({'success': False, 'error': 'Unsupported file format. Please upload JPG, JPEG, or PNG images.'}), 400
+
+    # Lazy import predictor to avoid requiring TensorFlow at startup
+    global predictor
+    try:
+        if predictor is None:
+            from model.predict import predictor as _pred
+            predictor = _pred
+    except Exception as imp_err:
+        return jsonify({'success': False, 'error': 'SERVING_UNAVAILABLE', 'message': f'ML predictor unavailable: {imp_err}'}), 503
 
     try:
         filename = secure_filename(file.filename)

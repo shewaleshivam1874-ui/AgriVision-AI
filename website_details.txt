@@ -1,0 +1,1414 @@
+================================================================================
+AGRIVISION AI — COMPREHENSIVE PROJECT & CODEBASE ARCHITECTURE DOCUMENTATION
+================================================================================
+Generated for: AgriVision AI Platform (Explainable Precision Agriculture)
+File Name: website_details.txt
+Repository Root: /home/kali/AgriVisionAI
+Target Audience: AI Systems, Software Engineers, Agronomists, and ML Engineers
+Confidentiality Notice: Sensitive credentials and API keys are represented as [REDACTED].
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+1.  Project Name
+2.  Project Overview
+3.  Purpose of the Website
+4.  Main Objectives
+5.  Target Users
+6.  Complete Technology Stack
+7.  Complete Project / File Structure
+8.  Website Pages
+9.  Dashboard & Visible UI Components
+10. Image Detection / AI Workflow
+11. CNN / ML Model Details
+12. OpenCV / Pillow Usage
+13. Flask Backend
+14. Frontend <-> Backend Communication
+15. Disease Information & Agricultural Knowledge
+16. AI-Guided Actions
+17. Language / Localization (i18n)
+18. UI/UX Design System
+19. Navigation Flow
+20. User Interaction Flow
+21. Input Validation
+22. Error Messages & Handling
+23. Security / Authentication
+24. Database Architecture
+25. API Documentation
+26. Dependencies & Requirements
+27. Installation Instructions
+28. How to Run Locally
+29. Environment Variables
+30. Deployment Configuration
+31. Known Limitations
+32. Current Features
+33. Features That Are Partially Implemented
+34. Future Improvements
+35. Complete End-to-End System Workflow
+36. Important Implementation Details
+37. Important UI Details
+38. Important Backend Details
+39. Important AI/ML Details
+40. Developer Notes
+
+================================================================================
+1. PROJECT NAME
+================================================================================
+AgriVision AI (Explainable Crop Disease Detection & Plant Pathology Health Analysis)
+
+================================================================================
+2. PROJECT OVERVIEW
+================================================================================
+AgriVision AI is an Explainable Artificial Intelligence (XAI) and Computer Vision web platform built to provide instant, accessible, and scientifically grounded crop health diagnosis. Farmers, agricultural extension officers, researchers, and agronomists can upload or capture close-up photographs of crop foliage to receive an immediate preliminary diagnosis.
+
+The system features a hybrid dual-engine AI architecture:
+1. Primary Production Cloud Vision Engine: Google Gemini Vision AI (Gemini 2.5 Flash / Gemini 3.6 Flash) integrated via google-genai / google-generativeai SDKs, delivering deep structured pathology analyses including botanical identification, disease condition classification, visual symptom breakdown, 4-tier severity staging, nutrient deficiency analysis, pest damage detection, environmental stress assessment, separate organic and conventional chemical management guidance, and a prioritized 4-step immediate action journey.
+2. Local Offline Classical ML Engine: A TensorFlow / Keras deep convolutional transfer learning architecture (EfficientNetB0 / MobileNetV2) trained on 38 crop disease classes with integrated OpenCV image quality screening, HSV-based leaf lesion segmentation, severity percentage calculation, and Grad-CAM (Gradient-weighted Class Activation Mapping) saliency heatmaps.
+
+The platform provides full multilingual localization across English (en), Marathi (mr), and Hindi (hi) at both server template rendering and real-time client DOM manipulation levels. It utilizes MySQL with automatic, zero-configuration SQLite fallback for persistence of diagnostic logs and agricultural reference data.
+
+================================================================================
+3. PURPOSE OF THE WEBSITE
+================================================================================
+- Early Disease Detection: Detect foliar fungal, bacterial, viral, pest, and nutrient disorders before severe crop loss or canopy collapse occurs.
+- Transparent AI Explainability: Bridge the trust gap between machine learning models and farmers by providing visual heatmap attention (Grad-CAM), lesion segmentation overlays, and plain-language symptom explanations.
+- Actionable Guidance: Provide farmers with immediate, practical steps categorized into organic bio-controls, conventional chemical active ingredients, and fertilizer adjustments.
+- Vernacular Language Inclusivity: Make precision agriculture accessible to non-English-speaking smallholder farmers in India by offering native Hindi and Marathi interfaces.
+- Historical Diagnostic Tracking: Allow farmers and agronomists to maintain a persistent audit trail of past crop health assessments with severity filtering and trend monitoring.
+
+================================================================================
+4. MAIN OBJECTIVES
+================================================================================
+1. Real-Time Leaf Pathology: Provide sub-second to low-latency foliar diagnostic feedback on mobile and desktop web browsers.
+2. Dual-Model Robustness: Enable high-precision cloud LLM vision diagnostics with offline CNN/XAI fallback capability.
+3. Out-of-Distribution & Image Quality Rejection: Prevent erroneous predictions by algorithmically validating blur, brightness, contrast, resolution, and green foliage ratios before AI inference.
+4. Structured Agricultural Safety: Prevent indiscriminate chemical use by separating organic biocontrol options from conventional treatments, enforcing active ingredient naming over commercial brand names, and emphasizing mandatory safety disclaimers.
+5. Persistent Audit Trail: Log diagnoses into database storage with search, severity filtering, and JSON snapshot retrieval.
+
+================================================================================
+5. TARGET USERS
+================================================================================
+- Smallholder & Commercial Farmers: Seeking rapid in-field identification of crop distress and step-by-step organic or conventional remediation guidance.
+- Agricultural Extension Workers & Field Agents: Providing diagnostic consultations and verifying disease spread across regional farms.
+- Agronomists & Crop Advisors: Conducting preliminary assessments and reviewing historical disease frequency.
+- Agricultural Researchers & Students: Studying plant pathology, deep learning transfer learning, Grad-CAM attention mechanisms, and multilingual agricultural interfaces.
+
+================================================================================
+6. COMPLETE TECHNOLOGY STACK
+================================================================================
+Frontend:
+- HTML5: Semantic markup with microdata and accessibility attributes.
+- CSS3: Pure Vanilla CSS Design System with CSS Custom Properties (variables.css), Glassmorphism, 3D elevation tokens, responsive clamp() fluid typography, and animation keyframes (animations.css, style.css).
+- JavaScript (ES6+): Pure Vanilla JavaScript with asynchronous Fetch API, Drag-and-Drop file handling, DOM mutation localization, IntersectionObserver scroll animations, and localStorage theme/language persistence (main.js, upload.js, i18n.js, theme-toggle.js, animations.js).
+- 3D WebGL Visualization: Three.js (r128) WebGL engine powering an interactive 360-degree Smart Tree architecture visualizer (tree3d.js).
+- Typography / Fonts: Google Fonts (Inter, Outfit, Noto Sans Devanagari, Plus Jakarta Sans).
+
+Backend:
+- Web Framework: Python Flask (v3.1.3).
+- WSGI Server: Werkzeug (v3.1.8) and Gunicorn (v26.0.0).
+- Session Management: Flask client-side signed cookie sessions with Werkzeug secure utilities.
+- Environment Management: python-dotenv (v1.2.2).
+
+AI / Machine Learning:
+- Cloud Vision AI: Google Gemini Vision API (`google-genai` v2.17.0 / `google-generativeai` legacy SDK) targeting models `gemini-3.6-flash` / `gemini-2.5-flash`.
+- Deep Learning Framework: TensorFlow (v2.21.0) & Keras (v3.15.1).
+- Convolutional Architectures: EfficientNetB0 (two-stage fine-tuning) & MobileNetV2 base models.
+- Machine Learning Utilities: scikit-learn (v1.6+ metrics: Precision, Recall, F1-Score, Confusion Matrix), NumPy (v2.5.1), h5py (v3.14.0).
+- Explainable AI (XAI): Grad-CAM (Gradient-weighted Class Activation Mapping) via TensorFlow GradientTape and OpenCV saliency visualizer fallback.
+
+Computer Vision & Image Processing:
+- OpenCV: `opencv-python` and `opencv-python-headless` (v5.0.0.93) for HSV color space transformations, morphological operations, Laplacian blur calculation, Gaussian filtering, adaptive thresholding, and contour overlays.
+- Pillow (PIL): `Pillow` (v12.3.0) for image loading, validation, format verification, resizing, and RGBA-to-RGB normalization.
+
+Database:
+- Primary RDBMS: MySQL (via `PyMySQL` v1.2.0 with DictCursor).
+- Embedded Fallback RDBMS: SQLite3 (built-in Python standard library with Row factory).
+- Schema Migration: Dynamic schema synchronization and table alter logic inside `database/database.py`.
+
+APIs & External Services:
+- Google AI Studio Gemini API endpoint.
+
+Libraries & Utilities:
+- Requests (v2.34.2), HTTPX (v0.28.1), Rich (v15.0.0), Pydantic (v2.13.4), TQDM (v4.70.0), Jinja2 (v3.1.6).
+
+Deployment:
+- Linux (Kali Linux, Ubuntu, Debian, RHEL) / Gunicorn / Nginx / Docker compatible.
+
+================================================================================
+7. COMPLETE PROJECT / FILE STRUCTURE
+================================================================================
+AgriVisionAI/
+├── .env                              # Active environment variables (API keys, DB credentials) [REDACTED]
+├── .env.example                      # Template for configuring environment variables
+├── .gitignore                        # Git exclusion rules (venv, __pycache__, uploads, SQLite db)
+├── README.md                         # Project documentation and setup guide
+├── app.py                            # Flask application entry point, routing, error handlers, context processors
+├── config.py                         # Configuration class loading variables from environment/.env
+├── dataset_analysis.py               # Dataset scanning, class balancing, duplicate hash checker, class_names.json generator
+├── image_quality.py                  # OpenCV image quality analyzer (blur, brightness, contrast, non-leaf rejection)
+├── requirements.txt                  # Complete pinned Python dependencies
+├── requirements-backup.txt           # Backup copy of package dependencies
+├── segmentation.py                   # OpenCV HSV foliage isolation, lesion segmentation, and severity band calculation
+├── database/
+│   ├── agrivision.db                 # SQLite embedded database file (auto-generated fallback)
+│   ├── agrivision.sql                # Complete MySQL schema creation script with seed data
+│   └── database.py                   # DatabaseManager class handling MySQL connection, SQLite fallback, migration, queries
+├── dataset/
+│   ├── README.md                     # Dataset source guidelines and directory organization notes
+│   └── prepare_dataset.py            # Automated dataset splitter (70% train, 15% val, 15% test) with PIL normalization
+├── model/
+│   ├── class_names.json              # 38-class index mapping dictionary (folder, crop, disease, status, display_name)
+│   ├── crop_disease_mapping.json     # Hierarchical JSON mapping crops to disease subclasses
+│   ├── evaluate_model.py             # Test set evaluation engine computing Accuracy, Macro F1, Precision, Recall, Confusion Matrix
+│   ├── gradcam.py                    # Grad-CAM heatmap overlay generator using Keras GradientTape / OpenCV saliency fallback
+│   ├── plant_disease_model.keras     # Saved trained neural network weights (optional/generated)
+│   ├── predict.py                    # CropDiseasePredictor engine coordinating inference, confidence, segmentation, Grad-CAM
+│   └── train_model.py                # Two-stage EfficientNetB0 transfer learning training pipeline
+├── notebooks/
+│   └── agrivision_pipeline.ipynb     # Jupyter notebook demonstrating pipeline stages
+├── services/
+│   └── crop_analyzer.py              # CropAnalyzerService managing Google Gemini Vision AI API calls, prompts, normalization
+├── static/
+│   ├── css/
+│   │   ├── animations.css            # Keyframe animations, pulse lasers, scanning reticles, progress meters, skeleton loaders
+│   │   ├── style.css                 # Master application stylesheet (layout, components, navbar, footer, cards, responsive rules)
+│   │   └── variables.css             # CSS variables, color palettes, dark mode overrides, fluid spacing, shadow elevations
+│   ├── images/
+│   │   ├── hero_leaf_scan.jpg        # Realistic hero scanner leaf image
+│   │   └── sample_dataset/           # 38 verified sample crop leaf images (Apple, Corn, Grape, Potato, Tomato, Pepper, etc.)
+│   │       ├── apple___apple_scab.jpg
+│   │       ├── apple___black_rot.jpg
+│   │       ├── apple___cedar_apple_rust.jpg
+│   │       ├── apple___healthy.jpg
+│   │       ├── blueberry___healthy.jpg
+│   │       ├── cherry_(including_sour)___healthy.jpg
+│   │       ├── cherry_(including_sour)___powdery_mildew.jpg
+│   │       ├── corn_(maize)___cercospora_leaf_spot gray_leaf_spot.jpg
+│   │       ├── corn_(maize)___common_rust_.jpg
+│   │       ├── corn_(maize)___healthy.jpg
+│   │       ├── corn_(maize)___northern_leaf_blight.jpg
+│   │       ├── grape___black_rot.jpg
+│   │       ├── grape___esca_(black_measles).jpg
+│   │       ├── grape___healthy.jpg
+│   │       ├── grape___leaf_blight_(isariopsis_leaf_spot).jpg
+│   │       ├── orange___haunglongbing_(citrus_greening).jpg
+│   │       ├── peach___bacterial_spot.jpg
+│   │       ├── peach___healthy.jpg
+│   │       ├── pepper,_bell___bacterial_spot.jpg
+│   │       ├── pepper,_bell___healthy.jpg
+│   │       ├── potato___early_blight.jpg
+│   │       ├── potato___healthy.jpg
+│   │       ├── potato___late_blight.jpg
+│   │       ├── raspberry___healthy.jpg
+│   │       ├── soybean___healthy.jpg
+│   │       ├── squash___powdery_mildew.jpg
+│   │       ├── strawberry___healthy.jpg
+│   │       ├── strawberry___leaf_scorch.jpg
+│   │       ├── tomato___bacterial_spot.jpg
+│   │       ├── tomato___early_blight.jpg
+│   │       ├── tomato___healthy.jpg
+│   │       ├── tomato___late_blight.jpg
+│   │       ├── tomato___leaf_mold.jpg
+│   │       ├── tomato___septoria_leaf_spot.jpg
+│   │       ├── tomato___spider_mites two-spotted_spider_mite.jpg
+│   │       ├── tomato___target_spot.jpg
+│   │       ├── tomato___tomato_mosaic_virus.jpg
+│   │       └── tomato___tomato_yellow_leaf_curl_virus.jpg
+│   ├── js/
+│   │   ├── animations.js             # Scroll progress bar, IntersectionObserver reveals, cursor proximity glow, input focus
+│   │   ├── i18n.js                   # Multilingual translation dictionary (en, mr, hi) and client DOM localization engine
+│   │   ├── main.js                   # Global UI controller: mobile menu, toast notifications, print trigger, clipboard copy
+│   │   ├── theme-toggle.js           # Light/Dark mode switcher with localStorage persistence & instant flash prevention
+│   │   ├── tree3d.js                 # Three.js interactive 360-degree 3D Smart Tree WebGL engine
+│   │   └── upload.js                 # Upload dropzone controller, pre-upload validation, 7-stage animated loader, sample clicks
+│   └── uploads/                      # Storage folder for user-uploaded leaf photos and generated Grad-CAM heatmaps
+├── templates/
+│   ├── about.html                    # About page: Platform overview, mission, tech stack, 6-step pipeline, limitations
+│   ├── base.html                     # Master layout: Nav, Theme Toggle, Language Selector, Flash Alerts, Toast Container, Footer
+│   ├── contact.html                  # Contact & feedback form with client/server validation
+│   ├── detect.html                   # Leaf upload & analysis portal with collapsible tips, dropzone, viewfinder, sample leaves
+│   ├── disease_details.html          # Individual disease reference detail page (symptoms, causes, management, nutrients)
+│   ├── diseases.html                 # Disease library knowledge base with search input and crop filter chips
+│   ├── history.html                  # Prediction history logs: 4 counter cards, search, severity filter, card grid, deletion
+│   ├── index.html                    # Landing page: Hero scanner, trust badges, 4-step workflow, 10 feature cards
+│   └── result.html                   # Master diagnostic report view: 5 summary cards, leaf preview, severity, 4 actions, treatments
+└── utils/
+    ├── i18n.py                       # Server-side Python translation maps (Crops, Diseases, Severity, Urgency, Status, Phrases)
+    └── image_processing.py           # Utility functions: allowed_file, validate_image_file, preprocess_image_for_model
+
+================================================================================
+8. WEBSITE PAGES
+================================================================================
+1. Home Page (/) -> templates/index.html
+   - Purpose: Brand introduction, platform capabilities overview, trust-building, and quick navigation to diagnostic tools.
+   - UI Elements:
+     * Hero Header: Badge ("🤖 Google Gemini Vision AI & Interactive 3D XAI"), dynamic title with gradient text, explanatory subtitle, Primary CTA button ("🔍 Analyze a Leaf").
+     * Trust Badges: 3 checkmark badges ("✓ Real-Time Vision AI", "✓ Explainable AI Guidance", "✓ Organic & Chemical Solutions").
+     * Real-Time AI Leaf Scanner Container: Bounding reticle corners, pulsing laser scan beam, computer vision target spots, sample leaf photo (`hero_leaf_scan.jpg`), and 3 floating interactive cards (Condition Identified, AI Confidence 94.2%, Severity Stage Moderate).
+     * "How AgriVision AI Works" Section: 4-step horizontal connecting workflow (01 Upload Image -> 02 AI Vision Analysis -> 03 Disease Assessment -> 04 Actionable Guidance) with interactive badge chips.
+     * Bottom Workflow CTA Banner: "Ready to check your crop?" with quick link button.
+     * Platform Capabilities (10 Feature Cards Grid): Deep Neural Detection, Confidence Calibration, Grad-CAM Heatmaps, Disease Stage Estimation, Severity Percentage, Disease Knowledge Base, Organic Management, Conventional Chemical Guidance, N-P-K Nutrient Guidance, Prevention & Field Monitoring.
+   - Functionality: Responsive layout, client-side translation of all headings/cards, IntersectionObserver scroll animations, theme toggling.
+
+2. Diagnostic Portal (/detect) -> templates/detect.html
+   - Purpose: Dedicated foliage image upload, capture, pre-validation, and submission portal.
+   - UI Elements:
+     * Header: Badge ("AI Diagnostics Portal"), section title, subtitle.
+     * Collapsible Quick Tips Accordion: Expandable `<details>` element with 5 essential photography rules (well-lit, focused, clear lighting, disease visible, no finger/tool obstruction).
+     * Error & Validation Alert Banner: Hidden alert box displaying client/server validation errors.
+     * Interactive Upload Card & Viewfinder: Hidden `<input type="file">`, default dropzone state with camera icon, "Browse Files" button, drag-and-drop hover styling, and preview viewfinder with animated laser scanning beam and remove (✕) button.
+     * File Metadata Info: Displays selected filename and size in Megabytes.
+     * Quick Test Sample Leaves Grid: 4 pre-configured test cards (Tomato Early Blight, Tomato Healthy, Potato Late Blight, Apple Scab) loading verified sample images with one click.
+     * Action Button: "🔬 Analyze Crop Image" CTA button with automatic enable/disable states.
+     * Animated 7-Stage AI Loading Overlay: Full-screen modal overlay with spinner and live progressive checkmarks (Processing image -> Analyzing visible symptoms -> Identifying possible disease -> Preparing recommendations).
+   - Functionality: Drag-and-drop listener, file type and size validation (max 10MB, JPG/PNG/WEBP), asynchronous AJAX submission to `/api/analyze-leaf`, automatic redirection to `/gemini-result`.
+
+3. Master Diagnostic Report (/gemini-result & /result/<id>) -> templates/result.html
+   - Purpose: Comprehensive, actionable agricultural pathology report generated from AI vision analysis or database history.
+   - UI Elements:
+     * Header & Gemini Technology Badge: Sparkle icon, "AI Vision Analysis with Google Gemini AI Vision", "• Visual Crop Analysis".
+     * 5 Master Summary Cards Grid (2-row structured layout):
+       - Card 1 (Top Left): Crop & Species (Common Name with 🌱 icon, Scientific Botanical Name).
+       - Card 2 (Top Middle): Condition Identified (Primary Disease Name with 🦠 icon, Disease Category).
+       - Card 3 (Top Right): AI Confidence (Categorical Confidence HIGH/MEDIUM/LOW, visual progress meter, Botanical ID certainty).
+       - Card 4 (Bottom Left-Center): Health Status (Status Pill: HEALTHY / DISEASED / PEST_DAMAGE / NUTRIENT_DEFICIENCY / ENVIRONMENTAL_STRESS).
+       - Card 5 (Bottom Right-Center): Action Urgency (Urgency Pill: CRITICAL / HIGH / MODERATE / LOW with time-sensitivity subtitle).
+     * Visual Foliage & Severity Grid:
+       - Left Card: Analyzed Leaf Photo (High-resolution preview with error fallback).
+       - Right Card: Disease Severity Stage (Large rounded pill: Healthy, Early, Moderate, Severe + detailed plain-language severity assessment rationale).
+     * Actionable Guidance Section (Two-Column Asymmetric Layout):
+       - Left Column (~68%): "What Should I Do Now? Action Journey" containing EXACTLY 4 prioritized action cards:
+         * Step 01: Immediate Priority / Do Now (Green border, recommended within 24 hours).
+         * Step 02: Inspection & Monitoring (Amber border, 24-48 hours).
+         * Step 03: Sanitation & Prevention (Blue border, recommended standard practice).
+         * Step 04: Agricultural Support (Neutral border, if needed / expert contact).
+       - Right Column (~32%): 3 Stacked Context Cards:
+         * 1. Action Urgency Status Card (Color-coded severity description).
+         * 2. "Monitor For" Checklist (5 visual symptoms to watch).
+         * 3. "When to Seek Expert Help" Guide (4 critical thresholds for agricultural extension contact).
+     * Visually Separated Treatments Grid:
+       - Left Card (🌱 Green Top Border): Organic Management (Biological control agents, neem extracts, cultural sanitation).
+       - Right Card (🧪 Blue Top Border): Conventional Management (Chemical fungicide/bactericide classes, application timing, label warnings).
+     * Fertilizer & Nutrient Guidance Box (🌾 Amber Container):
+       - Suspected deficiency, visible evidence chlorosis pattern, organic soil amendment recommendation, conventional NPK ratio, soil testing guidance.
+     * Additional Diagnostic Insights Grid (4 Cards):
+       - 1. Visible Symptoms Observed (Bullet list).
+       - 2. Possible Causes & Pathogen Biology (Bullet list).
+       - 3. Pest Analysis (Suspected insect activity, evidence of chewing/frass).
+       - 4. Environmental Stress Factors (Humidity, temperature, moisture risk).
+       - 5. Preventive Measures (Cultural practices, crop rotation).
+       - 6. Diagnostic Limitations Notice (AI preliminary assistance notice).
+     * Mandatory Agricultural Disclaimer Dropdown: Collapsible `<details>` element with 3 essential legal/safety points.
+     * Bottom Action Bar: "Analyze Another Leaf" CTA button.
+   - Functionality: Full client and server-side multilingual translation, dynamic image error handling, direct print support (`printReport()`), clipboard summary copy (`copyDiagnosticSummary()`).
+
+4. Prediction History Dashboard (/history) -> templates/history.html
+   - Purpose: Persistent record log of all analyzed leaves with search, severity filtering, summary metrics, and record management.
+   - UI Elements:
+     * Header: Section badge, title, subtitle.
+     * 4 Summary Metric Counter Cards:
+       - Stat Card 1 (Blue/Green): Total Analyzed Leaves count.
+       - Stat Card 2 (Green 🟢): Healthy Foliage count.
+       - Stat Card 3 (Orange 🟠): Moderate / Watch count.
+       - Stat Card 4 (Red 🔴): Urgent / Critical Priority count.
+     * Search & Filter Toolbar: Text search input (searches crop name and disease name) + Severity dropdown select (All, Healthy, Low, Moderate, High, Critical) + "Filter" and "Reset" buttons.
+     * History Cards Grid:
+       - Thumbnail image of the analyzed leaf with overlaid crop badge ("🌱 Tomato").
+       - Prediction date and time timestamp.
+       - Disease name heading.
+       - Confidence badge and mini confidence progress bar.
+       - Severity badge (Healthy, Low, Moderate, High, Critical).
+       - "View Report" button (links to `/result/<prediction_id>`).
+       - "🗑️" Delete button (triggers POST request to `/history/delete/<prediction_id>` with confirmation dialog).
+     * Empty State Display: Icon, "No Prediction History Found", description, and "Analyze a Leaf" CTA button.
+   - Functionality: Dynamic database queries with SQL LIKE and WHERE clauses, client-side dynamic translation of crop and disease names, record deletion with flash feedback.
+
+5. About Page (/about) -> templates/about.html
+   - Purpose: Detailed explanation of project architecture, core mission, Explainable AI concepts, complete technology stack, 6-step system pipeline, and agricultural limitations.
+   - UI Elements:
+     * Two-Part Header Card Grid: Part 1 Platform Overview (Green top border) & Part 2 Core Objective & Mission (Emerald top border).
+     * How AI Helps & Explainable AI (XAI) Cards (2-column layout).
+     * Complete Technology Stack Grid (7 cards: Python, Flask, Google Gemini AI, OpenCV, Grad-CAM, MySQL/SQLite, Modern Web Frontend).
+     * "How the System Works" 6-Step Pipeline Grid (Step 1 Upload -> Step 2 Validation -> Step 3 AI Vision -> Step 4 Saliency -> Step 5 Database -> Step 6 Structured Report).
+     * Important Limitations Warning Box: Amber-bordered container listing 5 critical usage caveats.
+
+6. Contact & Feedback Page (/contact) -> templates/contact.html
+   - Purpose: User inquiries, bug reports, farmer feedback submission.
+   - UI Elements:
+     * Centered glassmorphic card container.
+     * Form Fields: Full Name (required), Email Address (required, email format validated), Subject (optional), Message (required textarea).
+     * Submit Button: Full-width "Send Message" CTA.
+   - Functionality: Client-side regex email validation, server-side POST handler, flash confirmation alert ("Thank you, [Name]! Your message has been received.").
+
+7. Disease Library (/diseases) -> templates/diseases.html
+   - Purpose: Agricultural reference library of known diseases.
+   - Note: In current routing, legacy `/diseases` requests redirect seamlessly to `/detect`. The template exists for standalone modular expansion.
+
+8. Disease Details (/disease/<id>) -> templates/disease_details.html
+   - Purpose: Deep-dive reference page for specific crop diseases.
+   - Note: In current routing, legacy `/disease/<id>` requests redirect seamlessly to `/detect`. The template exists with breadcrumbs, reference image banner, symptoms card, causes card, prevention card, field management card, organic solutions card, and fertilizer info card.
+
+================================================================================
+9. DASHBOARD & VISIBLE UI COMPONENTS
+================================================================================
+Header & Navigation Bar:
+- Fixed glassmorphic navigation header with subtle blur and border.
+- Brand logo: 🌿 icon + "AgriVision AI" text + "Explainable Crop Disease Detection" subtitle.
+- Light/Dark Mode Toggle: Rounded button with animated Sun/Moon icon (`#themeToggleBtn`).
+- Multilingual Dropdown: Language select dropdown (`#languageSelect`) supporting English, Marathi, Hindi with 🌐 globe icon.
+- Mobile Hamburger Toggle: Accessible button (`.nav-toggle`) triggering slide-out navigation drawer.
+- Navigation Links: Home, Analyze Leaf, Prediction History, About, plus prominent "🔍 Analyze Crop" CTA pill button.
+
+Floating Action Bar & Toast Notifications:
+- Fixed toast notification container (`#toastContainer`) in upper right for asynchronous success/error notices.
+- Top thin scroll progress bar tracking page scroll depth.
+- Desktop cursor proximity glow following mouse pointer.
+
+Diagnostic Result Dashboard Cards:
+- Exact 5 Summary Cards Grid (Crop Species, Condition Identified, Confidence Score, Health Status, Action Urgency).
+- Dual Visual Display (Original Leaf Photo and Severity Assessment Card).
+- 4-Tier Action Journey Cards (01 Immediate Priority, 02 Monitoring, 03 Sanitation, 04 Support).
+- Side-by-Side Management Cards (Organic Biocontrol vs Conventional Chemicals).
+- Fertilizer & Soil Testing Recommendation Box.
+- Collapsible Agricultural Disclaimer Accordion.
+
+Prediction History Dashboard Cards:
+- 4 Metric Counter Cards (Total Diagnoses, Healthy Count, Moderate Watch Count, Urgent Critical Count).
+- Filter Toolbar with instant form submission on dropdown change.
+- Responsive History Record Card Grid with image previews, severity tags, and deletion triggers.
+
+Footer:
+- 4-Column Responsive Footer: Brand mission, Navigation links, Capabilities links, Technologies links, and Copyright notice with dynamically injected current year.
+
+================================================================================
+10. IMAGE DETECTION / AI WORKFLOW
+================================================================================
+Stage 1: Image Selection & Client Pre-Validation
+- User drops or selects an image in `/detect` (or clicks one of the 4 quick test sample leaves).
+- Client-side validation verifies extension (.jpg, .jpeg, .png, .webp) and file size (< 10MB).
+- FileReader generates an instant in-browser preview inside the laser scanning viewfinder.
+- User clicks "🔬 Analyze Crop Image".
+
+Stage 2: Asynchronous API Dispatch & Loading Overlay
+- `upload.js` displays full-screen loading modal (`#loadingOverlay`).
+- Progressive 4-step loading sequence executes:
+  1. "Processing image..."
+  2. "Analyzing visible symptoms..."
+  3. "Identifying possible disease..."
+  4. "Preparing recommendations..."
+- Multipart FormData containing `file` and `lang` (`en`, `mr`, or `hi`) is POSTed to `/api/analyze-leaf`.
+
+Stage 3: Server-Side Validation & Ingestion
+- `app.py` receives request at `/api/analyze-leaf`.
+- Filename is sanitized with `werkzeug.utils.secure_filename`.
+- Temporary preview file is saved to `static/uploads/leaf_preview_<timestamp>_<filename>`.
+- `crop_analyzer.validate_image()` checks byte integrity and verifies readability with Pillow (`Image.open().verify()`).
+
+Stage 4: Google Gemini Vision AI Processing
+- `crop_analyzer.analyze_leaf()` converts image to RGB JPEG buffer.
+- `_build_prompt()` generates a strict agricultural system prompt specifying target language (English, Marathi, or Hindi) and enforcing exact JSON schema.
+- Gemini API (`gemini-3.6-flash` or `gemini-2.5-flash`) is invoked with `temperature=0.2` and `response_mime_type="application/json"`.
+- Response text is parsed and stripped of markdown code blocks.
+- Non-leaf check: If `valid_image == false`, API returns HTTP 400 error (`IMAGE_NOT_SUITABLE`).
+
+Stage 5: Normalization & Persistence
+- Data is normalized via `_normalize_analysis_response()` to ensure zero missing keys.
+- Elapsed processing time is recorded.
+- Diagnostic record and full JSON payload are safely logged to `prediction_history` table via `db_manager.save_prediction()`.
+- Result payload is stored in Flask `session['gemini_analysis']`, `session['gemini_preview_img']`, `session['gemini_pred_id']`.
+- JSON response `{ success: true, redirect_url: '/gemini-result', data: ... }` is returned to browser.
+
+Stage 6: Rendering Report
+- Browser receives JSON and executes `window.location.href = data.redirect_url`.
+- `gemini_result()` route renders `templates/result.html` with full pathology report.
+
+Local Offline CNN Inference Alternative (/predict):
+- If using `/predict`, `model/predict.py` executes:
+  1. `validate_image_file()` (existence, size, PIL verify).
+  2. `preprocess_image_for_model()` (OpenCV load, BGR->RGB, resize to 224x224, normalize to [0,1], expand batch dimension).
+  3. `image_quality.analyze_quality()` (Laplacian variance blur check, HSV brightness/contrast, foliage greenness ratio). If not leaf-like, rejects immediately.
+  4. TensorFlow Keras model predicts 38-class softmax distribution.
+  5. Computes Top-3 class breakdown and calibrated confidence level (Very High, High, Moderate, Low).
+  6. `segmentation.segment_leaf_and_lesions()` isolates leaf mask via HSV, extracts brown/yellow necrotic lesions, calculates affected percentage, assigns severity band (Very Low, Low, Moderate, High, Severe), and outputs segmentation mask overlay.
+  7. `gradcam.generate_gradcam()` calculates GradientTape gradients on last Conv2D layer, pools weights, applies JET colormap, and superimposes heatmap onto leaf image.
+  8. Saves prediction to database and redirects to `/result/<prediction_id>`.
+
+================================================================================
+11. CNN / ML MODEL DETAILS
+================================================================================
+Model Architecture:
+- Base Model: EfficientNetB0 (ImageNet pre-trained weights, transfer learning).
+- Alternative/Legacy Supported Base: MobileNetV2.
+- Input Resolution: 224 x 224 pixels, 3 channels (RGB), normalized float32 in range [0.0, 1.0].
+- Classification Head Architecture:
+  * Input Layer: (224, 224, 3)
+  * Data Augmentation Layer (Sequential): RandomFlip("horizontal"), RandomRotation(0.15), RandomZoom(0.15), RandomTranslation(0.1, 0.1), RandomContrast(0.1)
+  * Base Preprocessing: `tf.keras.applications.efficientnet.preprocess_input`
+  * Backbone: EfficientNetB0 (include_top=False, weights='imagenet')
+  * Pooling Layer: GlobalAveragePooling2D()
+  * Regularization: BatchNormalization()
+  * Dropout Layer: Dropout(rate=0.3)
+  * Output Dense Layer: Dense(num_classes=38, activation='softmax')
+
+Output Classes (38 Total Classes in model/class_names.json):
+ 0. Apple - Apple Scab (Apple___Apple_scab)
+ 1. Apple - Black Rot (Apple___Black_rot)
+ 2. Apple - Cedar Apple Rust (Apple___Cedar_apple_rust)
+ 3. Apple - Healthy (Apple___healthy)
+ 4. Blueberry - Healthy (Blueberry___healthy)
+ 5. Cherry (including sour) - Powdery Mildew (Cherry_(including_sour)___Powdery_mildew)
+ 6. Cherry (including sour) - Healthy (Cherry_(including_sour)___healthy)
+ 7. Corn (maize) - Cercospora Leaf Spot Gray Leaf Spot (Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot)
+ 8. Corn (maize) - Common Rust (Corn_(maize)___Common_rust_)
+ 9. Corn (maize) - Northern Leaf Blight (Corn_(maize)___Northern_Leaf_Blight)
+ 10. Corn (maize) - Healthy (Corn_(maize)___healthy)
+ 11. Grape - Black Rot (Grape___Black_rot)
+ 12. Grape - Esca (Black Measles) (Grape___Esca_(Black_Measles))
+ 13. Grape - Leaf Blight (Isariopsis Leaf Spot) (Grape___Leaf_blight_(Isariopsis_Leaf_Spot))
+ 14. Grape - Healthy (Grape___healthy)
+ 15. Orange - Haunglongbing (Citrus Greening) (Orange___Haunglongbing_(Citrus_greening))
+ 16. Peach - Bacterial Spot (Peach___Bacterial_spot)
+ 17. Peach - Healthy (Peach___healthy)
+ 18. Pepper bell - Bacterial Spot (Pepper,_bell___Bacterial_spot)
+ 19. Pepper bell - Healthy (Pepper,_bell___healthy)
+ 20. Potato - Early Blight (Potato___Early_blight)
+ 21. Potato - Late Blight (Potato___Late_blight)
+ 22. Potato - Healthy (Potato___healthy)
+ 23. Raspberry - Healthy (Raspberry___healthy)
+ 24. Soybean - Healthy (Soybean___healthy)
+ 25. Squash - Powdery Mildew (Squash___Powdery_mildew)
+ 26. Strawberry - Leaf Scorch (Strawberry___Leaf_scorch)
+ 27. Strawberry - Healthy (Strawberry___healthy)
+ 28. Tomato - Bacterial Spot (Tomato___Bacterial_spot)
+ 29. Tomato - Early Blight (Tomato___Early_blight)
+ 30. Tomato - Late Blight (Tomato___Late_blight)
+ 31. Tomato - Leaf Mold (Tomato___Leaf_Mold)
+ 32. Tomato - Septoria Leaf Spot (Tomato___Septoria_leaf_spot)
+ 33. Tomato - Spider Mites Two-Spotted Spider Mite (Tomato___Spider_mites Two-spotted_spider_mite)
+ 34. Tomato - Target Spot (Tomato___Target_Spot)
+ 35. Tomato - Tomato Yellow Leaf Curl Virus (Tomato___Tomato_Yellow_Leaf_Curl_Virus)
+ 36. Tomato - Tomato Mosaic Virus (Tomato___Tomato_mosaic_virus)
+ 37. Tomato - Healthy (Tomato___healthy)
+
+Training Pipeline (model/train_model.py):
+- Dataset split: 70% Training, 15% Validation, 15% Test.
+- Data Pipeline: `tf.keras.preprocessing.image_dataset_from_directory` with `AUTOTUNE`, caching, shuffling (buffer 1000), prefetching.
+- Stage 1: Freeze base model (`base_model.trainable = False`), Train Classification Head, Optimizer: Adam(lr=1e-3), Loss: Sparse Categorical Crossentropy, Callbacks: ModelCheckpoint(save_best_only=True, monitor='val_accuracy'), EarlyStopping(patience=3), ReduceLROnPlateau(factor=0.5, patience=2).
+- Stage 2 (Fine-Tuning): Unfreeze upper layers (freeze bottom 100 layers), Optimizer: Adam(lr=1e-5), Callbacks: ModelCheckpoint, EarlyStopping(patience=3).
+- Model output artifact: `model/plant_disease_model.keras`.
+
+Evaluation Engine (model/evaluate_model.py):
+- Evaluates test dataset calculating: Test Accuracy, Macro Precision, Macro Recall, Macro F1-Score, Weighted F1-Score, Per-Class Precision/Recall/F1, and Misclassification Diagnostics.
+
+================================================================================
+12. OPENCV / PILLOW USAGE
+================================================================================
+OpenCV (`cv2`) Usage:
+1. `utils/image_processing.py`:
+   - `cv2.imread(image_path)`: Loads image matrix from disk in BGR format.
+   - `cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)`: Converts BGR matrix to RGB tensor format for neural inference.
+   - `cv2.resize(rgb_img, target_size, interpolation=cv2.INTER_AREA)`: Resizes image to 224x224.
+2. `image_quality.py`:
+   - `cv2.cvtColor(cv_bgr_image, cv2.COLOR_BGR2GRAY)`: Converts image to single-channel grayscale.
+   - `cv2.Laplacian(gray, cv2.CV_64F).var()`: Computes variance of the Laplacian to evaluate image focus and blur score (threshold: 80.0).
+   - `cv2.cvtColor(cv_bgr_image, cv2.COLOR_BGR2HSV)`: Converts to HSV color space.
+   - HSV V-channel mean extraction for under-exposure (<40) and over-exposure (>220) detection.
+   - Grayscale standard deviation (`np.std(gray)`) for contrast checking (<25.0).
+   - Green foliage HSV thresholding (`cv2.inRange(hsv, [20,30,30], [90,255,255])`) + brown foliage mask (`cv2.inRange(hsv, [10,30,30], [30,255,255])`) to calculate leaf pixel ratio for non-leaf out-of-distribution rejection.
+3. `segmentation.py`:
+   - Foliage area segmentation via HSV range `[5, 20, 20]` to `[95, 255, 255]`.
+   - Morphological operations: `cv2.morphologyEx(leaf_mask, cv2.MORPH_CLOSE, kernel)` and `cv2.MORPH_OPEN` with an elliptical structuring element (`cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))`) to remove background noise.
+   - Lesion segmentation via HSV range `[5, 40, 20]` to `[32, 255, 220]`.
+   - Gaussian blur + adaptive thresholding (`cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)`).
+   - Bitwise intersection: `cv2.bitwise_and(lesion_mask_hsv, leaf_mask)`.
+   - Mask blending: `cv2.addWeighted(cv_bgr_image, 0.4, red_mask, 0.6, 0)`.
+   - Contour outline rendering: `cv2.findContours(lesion_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)` and `cv2.drawContours(overlay, contours, -1, (0, 255, 255), 1)`.
+   - `cv2.imwrite()` to save visual segmentation masks.
+4. `model/gradcam.py`:
+   - Resizing heatmap matrices with `cv2.resize()`.
+   - Colormap application with `cv2.applyColorMap(heatmap_uint8, cv2.COLORMAP_JET)`.
+   - Visual heatmap overlay blending with `cv2.addWeighted()`.
+   - Saliency visualizer fallback using Laplacian feature gradients and 2D Gaussian meshgrids.
+
+Pillow (`PIL.Image`) Usage:
+1. `services/crop_analyzer.py`:
+   - `Image.open(io.BytesIO(file_bytes))`: Loads raw byte stream in-memory without temporary disk overhead.
+   - `img.verify()`: Verifies image header and byte integrity to prevent corrupted file exploits.
+   - Mode conversion: Converts RGBA, CMYK, Palette, and Grayscale images to RGB (`pil_img.convert('RGB')`).
+   - `pil_img.save(buf, format='JPEG')`: Encodes image into clean JPEG buffer for Google Gemini API Part payload.
+2. `utils/image_processing.py`:
+   - `validate_image_file()`: Verifies image file readability.
+   - Fallback loader if OpenCV fails on special character paths.
+3. `dataset/prepare_dataset.py` & `dataset_analysis.py`:
+   - Batch image loading, Lanczos high-quality resampling (`Image.Resampling.LANCZOS`), and image dimension verification.
+
+================================================================================
+13. FLASK BACKEND
+================================================================================
+Application Structure:
+- Entry Point: `app.py`
+- Configuration: `config.py` (loads variables from `.env` using `python-dotenv`)
+- Blueprints: Monolithic modular service architecture (`db_manager`, `predictor`, `crop_analyzer`).
+- Templates Directory: `templates/` (Jinja2 templates extending `base.html`).
+- Static Assets: `static/` (`css/`, `js/`, `images/`, `uploads/`).
+
+Complete Route Map & Endpoints:
+
+1. `GET /`
+   - Function: `index()`
+   - Purpose: Renders landing page.
+   - Parameters: None.
+   - Data Returned: HTML page (`templates/index.html`) with list of supported crops from database.
+
+2. `GET /detect`
+   - Function: `detect()`
+   - Purpose: Renders the leaf diagnostic upload portal.
+   - Parameters: None.
+   - Data Returned: HTML page (`templates/detect.html`).
+
+3. `POST /api/analyze-leaf`
+   - Function: `analyze_leaf()`
+   - Purpose: Master API for Google Gemini Vision AI crop health analysis.
+   - Request Type: `multipart/form-data`.
+   - Request Body:
+     * `file` or `image`: Binary image file (JPG, JPEG, PNG, WEBP, <= 10MB).
+     * `lang` (optional): Target language code ('en', 'mr', 'hi').
+   - Success Response (HTTP 200 JSON):
+     ```json
+     {
+       "success": true,
+       "redirect_url": "/gemini-result",
+       "image_url": "/static/uploads/leaf_preview_1770695000_leaf.jpg",
+       "data": {
+         "valid_image": true,
+         "plant": { "common_name": "Tomato", "scientific_name": "Solanum lycopersicum", "confidence": "HIGH" },
+         "health": { "status": "DISEASED" },
+         "diagnosis": {
+           "primary_condition": "Tomato Early Blight",
+           "alternative_conditions": ["Septoria Leaf Spot", "Target Spot"],
+           "category": "Fungal",
+           "confidence": "HIGH"
+         },
+         "symptoms": ["Concentric dark brown target spot lesions", "Yellow chlorotic halos around lesions"],
+         "severity": { "level": "MODERATE", "reason": "Multiple circular necrotic lesions covering approximately 20-30% of foliage." },
+         "possible_causes": ["Alternaria solani fungal spores", "High relative humidity >80%", "Warm temperatures 24-29°C"],
+         "pest_analysis": { "suspected": false, "possible_pest": "", "evidence": "" },
+         "nutrient_analysis": { "deficiency_suspected": false, "possible_deficiency": "", "visible_evidence": "" },
+         "environmental_stress": ["Extended leaf wetness from rain splash"],
+         "organic_treatment": ["Apply Copper Octanoate foliar spray", "Spray Bacillus subtilis bio-fungicide"],
+         "conventional_treatment": ["Mancozeb protective fungicide", "Chlorothalonil foliar application"],
+         "fertilizer_guidance": {
+           "needed": false,
+           "recommendation": "Maintain balanced N-P-K nutrition",
+           "organic_option": "Compost tea amendment",
+           "conventional_option": "Balanced 10-10-10 fertilizer"
+         },
+         "prevention": ["Avoid overhead irrigation", "Practice 3-year crop rotation", "Stake plants for air circulation"],
+         "immediate_actions": [
+           "Prune and safely destroy lower infected leaves immediately",
+           "Switch irrigation to ground drip lines to keep foliage dry",
+           "Apply protective organic copper or bio-fungicide spray",
+           "Inspect neighboring plants every 3 days"
+         ],
+         "urgency": "HIGH",
+         "expert_consultation": false,
+         "limitations": "Visual identification is preliminary. Confirm with local agricultural extension if symptoms spread.",
+         "elapsed_time": 1.84
+       }
+     }
+     ```
+   - Error Responses:
+     * HTTP 400: `{ "success": false, "error": "IMAGE_NOT_SUITABLE", "message": "Please upload a clear close-up image of the affected crop leaf." }`
+     * HTTP 401: `{ "success": false, "error": "INVALID_API_KEY", "message": "Invalid Gemini API key provided." }`
+     * HTTP 413: `{ "success": false, "error": "File size exceeds maximum 10MB limit." }`
+     * HTTP 429: `{ "success": false, "error": "RATE_LIMIT_EXCEEDED", "message": "Gemini API quota or rate limit exceeded. Please wait a moment." }`
+     * HTTP 500: `{ "success": false, "error": "SERVER_ERROR", "message": "We couldn't analyze this image. Please try again." }`
+
+4. `GET /gemini-result`
+   - Function: `gemini_result()`
+   - Purpose: Displays the master diagnostic report using data stored in session.
+   - Parameters: None (reads `session['gemini_analysis']` and `session['gemini_preview_img']`).
+   - Data Returned: HTML page (`templates/result.html` with `is_gemini=True`).
+
+5. `POST /predict`
+   - Function: `predict()`
+   - Purpose: Local offline CNN inference and Grad-CAM prediction pipeline.
+   - Request Type: `multipart/form-data`.
+   - Request Body: `file` (image binary).
+   - Success Response (HTTP 200 JSON):
+     ```json
+     {
+       "success": true,
+       "prediction_id": 14,
+       "redirect_url": "/result/14",
+       "crop_name": "Tomato",
+       "disease_name": "Tomato Early Blight",
+       "confidence": 94.2,
+       "confidence_level": "Very High",
+       "image_quality": "Good",
+       "affected_area_pct": 24.0,
+       "severity_band": "Moderate",
+       "status": "Disease Detected",
+       "image_url": "/static/uploads/leaf_1770695000_sample.jpg",
+       "heatmap_url": "/static/uploads/heatmap_leaf_1770695000_sample.jpg",
+       "disease_info": { ... }
+     }
+     ```
+
+6. `GET /result/<int:prediction_id>`
+   - Function: `result(prediction_id)`
+   - Purpose: Renders saved diagnostic report from `prediction_history` database table.
+   - Parameters: `prediction_id` in URL path.
+   - Data Returned: HTML page (`templates/result.html`).
+
+7. `GET /history`
+   - Function: `history()`
+   - Purpose: Renders historical prediction logs with search and filtering.
+   - Query Parameters: `search` (string), `severity` (string: all, healthy, low, moderate, high, critical).
+   - Data Returned: HTML page (`templates/history.html`) populated with database records.
+
+8. `POST /history/delete/<int:prediction_id>`
+   - Function: `delete_history(prediction_id)`
+   - Purpose: Deletes a specific prediction log from the database.
+   - Parameters: `prediction_id` in URL path.
+   - Behavior: Redirects to `/history` with success/error flash message.
+
+9. `GET, POST /set-language/<lang>`
+   - Function: `set_language(lang)`
+   - Purpose: Updates language in Flask session (`session['lang'] = lang`).
+   - Parameters: `lang` in path ('en', 'mr', 'hi'); query param `json=1` for async JSON response.
+   - Response: JSON if AJAX, else 302 Redirect to referrer.
+
+10. `GET /about`
+    - Function: `about()`
+    - Purpose: Renders project architecture and documentation page.
+
+11. `GET, POST /contact`
+    - Function: `contact()`
+    - Purpose: Contact/feedback submission page.
+    - Form Data: `name`, `email`, `message`.
+
+12. `GET /diseases` & `GET /disease/<int:disease_id>`
+    - Functions: `diseases()`, `disease_details(disease_id)`
+    - Purpose: Legacy routes redirecting seamlessly to `/detect`.
+
+Global Template Context Processor (@app.context_processor):
+- Automatically injects helper functions into every Jinja2 template:
+  * `current_year`: Current 4-digit year string.
+  * `app_name`: Localized application name.
+  * `current_lang`: Active session language code (`en`, `mr`, `hi`).
+  * `t(key)`: Static translation lookup via `get_translation()`.
+  * `translate_crop(name)`: Dynamic crop name translation.
+  * `translate_disease(name)`: Dynamic disease name translation.
+  * `translate_cat(cat)`: Disease category translation.
+  * `translate_status(st)`: Health status translation.
+  * `translate_sev(sev)`: Severity level translation.
+  * `translate_urg(urg)`: Action urgency translation.
+  * `translate_conf(conf)`: Confidence level translation.
+  * `translate_tx(txt)`: Sentence and paragraph text translation.
+  * `translations_json`: Full translation dictionary for client-side scripts.
+
+================================================================================
+14. FRONTEND <-> BACKEND COMMUNICATION
+================================================================================
+Data Flow Architecture:
+
+1. User Selection -> DOM Upload:
+   - User drags and drops a photo or selects an image on `/detect`.
+   - `upload.js` intercepts the file change event, displays local preview via HTML5 `FileReader` (`readAsDataURL`), and un-disables the submit button.
+
+2. Asynchronous AJAX Submission:
+   - When the user clicks "Analyze Crop Image", `upload.js` creates a `FormData` object containing `file` and `lang` (read from `localStorage.getItem('agrivision_lang')`).
+   - Sends `POST /api/analyze-leaf` request via `fetch()`.
+
+3. Backend Ingestion & Processing:
+   - Flask validates file presence, extension, and non-emptiness.
+   - File bytes are saved to `static/uploads/leaf_preview_<timestamp>_<filename>`.
+   - `crop_analyzer.analyze_leaf()` constructs the prompt in the requested language and calls Google Gemini API.
+
+4. Database Sync & Session State:
+   - Backend inserts record into `prediction_history` table (including serialized `full_analysis` JSON).
+   - Backend populates Flask signed session cookie with analysis dictionary and image path.
+   - Backend responds with JSON: `{ "success": true, "redirect_url": "/gemini-result", "data": ... }`.
+
+5. Client Navigation:
+   - `upload.js` receives JSON response, hides the loading overlay, and navigates `window.location.href = data.redirect_url`.
+   - Flask handles `GET /gemini-result`, reads session data, and renders `result.html`.
+
+6. Language Switching Synchronization:
+   - When user changes dropdown in navbar (`#languageSelect`), `setLanguage(lang)` in `i18n.js`:
+     1. Updates `localStorage.setItem('agrivision_lang', lang)`.
+     2. Sets `document.documentElement.lang = lang`.
+     3. Instantly iterates over DOM elements with `[data-i18n]`, `[data-raw]`, `.dynamic-crop-name`, `.dynamic-disease-name`, `.dynamic-tx` to translate all visible text without full page reload.
+     4. Sends asynchronous non-blocking `POST /set-language/<lang>?json=1` to sync language with backend Flask session for subsequent server-rendered pages.
+
+================================================================================
+15. DISEASE INFORMATION & AGRICULTURAL KNOWLEDGE
+================================================================================
+The platform contains verified agricultural knowledge across 38 crop disease categories. Representative crops and disease pathologies include:
+
+1. Tomato (Solanum lycopersicum):
+   - Tomato Early Blight (Alternaria solani): Fungal disease forming concentric target-spot dark brown lesions on older foliage surrounded by yellow halos.
+     * Organic Remedies: Copper Octanoate, Bacillus subtilis bio-fungicide foliar sprays every 7-10 days.
+     * Conventional Solutions: Mancozeb or Chlorothalonil protective fungicides.
+     * Nutrient Guidance: Potassium and Calcium support cell wall strength; avoid excessive Nitrogen.
+     * Environmental Risk: 24-29°C, high humidity (>80%).
+   - Tomato Late Blight (Phytophthora infestans): Water mold oomycete causing rapid water-soaked leaf collapse, dark lesions, and white sporulation.
+     * Organic Remedies: Bordeaux mixture (Copper Sulfate + Lime), Trichoderma viride.
+     * Conventional Solutions: Systemic fungicides (Metalaxyl, Cymoxanil).
+     * Environmental Risk: Cool, wet conditions (15-22°C, >90% humidity).
+   - Tomato Bacterial Spot (Xanthomonas spp.): Water-soaked lesions turning dark brown with yellow halos; defoliation.
+   - Tomato Leaf Mold (Passalora fulva): Pale green/yellow spots on upper leaf surface, olive-green velvety mold on undersides.
+   - Tomato Septoria Leaf Spot (Septoria lycopersici): Small circular spots with dark brown margins and gray/tan centers.
+   - Tomato Spider Mites (Tetranychus urticae): Yellow stippling/speckling and fine webbing on leaf undersides.
+   - Tomato Target Spot (Corynespora cassiicola): Brown circular lesions with light brown centers.
+   - Tomato Yellow Leaf Curl Virus (TYLCV): Upward leaf curling, marginal chlorosis, stunted bushy growth (vector: Whiteflies / Bemisia tabaci).
+   - Tomato Mosaic Virus (ToMV): Mottling, light/dark green mosaic patterns, leaf distortion.
+   - Tomato Healthy: Optimal foliage structure, vibrant green color, absence of lesions.
+
+2. Potato (Solanum tuberosum):
+   - Potato Early Blight (Alternaria solani): Concentric ring brown lesions on lower canopy leaves.
+   - Potato Late Blight (Phytophthora infestans): Water-soaked gray-black lesions with white fungal sporulation on undersides.
+   - Potato Healthy: Uniform green leaf blades, sturdy stems, absence of blight.
+
+3. Bell Pepper (Capsicum annuum):
+   - Pepper Bacterial Spot (Xanthomonas campestris pv. vesicatoria): Small water-soaked dark lesions causing premature defoliation.
+   - Pepper Healthy: Glossy dark green leaves, sturdy stem branches.
+
+4. Apple (Malus domestica):
+   - Apple Scab (Venturia inaequalis): Olive-green to velvety brown-black spots on leaf surfaces.
+   - Apple Black Rot (Diplodia seriata): Frogeye leaf spots (circular brown spots with purple margins).
+   - Apple Cedar Apple Rust (Gymnosporangium juniperi-virginianae): Bright orange-yellow lesions with small black dots.
+   - Apple Healthy: Uniform green foliage.
+
+5. Corn / Maize (Zea mays):
+   - Corn Cercospora Leaf Spot / Gray Leaf Spot (Cercospora zeae-maydis): Rectangular, narrow grayish lesions bounded by leaf veins.
+   - Corn Common Rust (Puccinia sorghi): Reddish-brown elongated pustules on both leaf surfaces.
+   - Corn Northern Leaf Blight (Exserohilum turcicum): Long, elliptical, grayish-green to tan cigar-shaped lesions.
+   - Corn Healthy: Sturdy green leaf blades without pustules.
+
+6. Grape (Vitis vinifera):
+   - Grape Black Rot (Guignardia bidwellii): Small reddish-brown circular spots with dark borders.
+   - Grape Esca / Black Measles (Phaeomoniella chlamydospora): Interveinal chlorosis and necrosis ("tiger-stripe" pattern).
+   - Grape Leaf Blight (Pseudocercospora cladosporioides): Irregular dark brown lesions.
+   - Grape Healthy: Robust green vine leaves.
+
+7. Other Supported Crops:
+   - Blueberry (Healthy), Cherry (Healthy, Powdery Mildew), Orange (Citrus Greening / Huanglongbing), Peach (Bacterial Spot, Healthy), Raspberry (Healthy), Soybean (Healthy), Squash (Powdery Mildew), Strawberry (Leaf Scorch, Healthy).
+
+================================================================================
+16. AI-GUIDED ACTIONS
+================================================================================
+Implemented in `services/crop_analyzer.py` and rendered in `templates/result.html`:
+The AI returns a structured 4-tier Action Journey:
+1. Step 01 — Immediate Priority / Do Now (Recommended within 24 hours):
+   - Urgent field interventions (e.g., pruning severely infected lower foliage, isolating infected rows, halting sprinkler irrigation).
+2. Step 02 — Inspection & Monitoring (24 to 48 hours):
+   - Close monitoring instructions (e.g., inspect lower canopy leaves of adjacent plants, monitor for aphid or whitefly insect vectors).
+3. Step 03 — Sanitation & Prevention (Standard Farm Practice):
+   - Cultural management (e.g., sterilizing pruning shears with 70% alcohol, mulching around plant bases to prevent rain soil splash).
+4. Step 04 — Agricultural Support (If needed / escalating):
+   - Expert consultation recommendations (e.g., contact local agricultural university or extension officer if disease spreads to more than 15% of the field).
+
+================================================================================
+17. LANGUAGE / LOCALIZATION (i18n)
+================================================================================
+Supported Languages:
+1. English (`en`) — Default
+2. Marathi (`mr` / मराठी) — Full native agricultural dialect support
+3. Hindi (`hi` / हिंदी) — Full native agricultural terminology support
+
+Dual-Layer Translation Mechanism:
+
+1. Server-Side Localization (`utils/i18n.py`):
+   - `TRANSLATIONS` dictionary: Over 150+ static UI keys per language.
+   - `CROP_NAME_MAP`: Maps 20+ crop names to native scripts (e.g., Tomato -> टोमॅटो [mr], टमाटर [hi]; Potato -> बटाटा [mr], आलू [hi]; Corn -> मका [mr], मक्का [hi]).
+   - `DISEASE_NAME_MAP`: Maps 40+ disease names to native vernacular equivalents.
+   - `CATEGORY_MAP`: Maps disease categories (Fungal -> बुरशीजन्य [mr] / फंगल [hi], Bacterial -> जिवाणूजन्य [mr] / जीवाणु [hi], Viral -> विषाणूजन्य [mr] / वायरल [hi]).
+   - `HEALTH_STATUS_MAP`: Maps diagnostic statuses (HEALTHY -> निरोगी, DISEASED -> रोगग्रस्त, PEST_DAMAGE -> कीटक प्रादुर्भाव, NUTRIENT_DEFICIENCY -> पोषण कमतरता, ENVIRONMENTAL_STRESS -> पर्यावरणीय ताण).
+   - `SEVERITY_MAP`: Maps severity stages (HEALTHY -> निरोगी, EARLY -> प्रारंभिक, MODERATE -> मध्यम, SEVERE -> गंभीर).
+   - `URGENCY_MAP`: Maps action urgencies (LOW -> कमी / कम, MODERATE -> मध्यम, HIGH -> उच्च, CRITICAL -> अत्यंत गंभीर).
+   - `PHRASE_TRANSLATIONS`: Maps complete recurring agricultural sentences, organic treatments, chemical guidance, and disclaimers.
+
+2. Client-Side Localization (`static/js/i18n.js`):
+   - Stores user's selected language in `localStorage.getItem('agrivision_lang')`.
+   - `setLanguage(lang)` function executes instant client DOM translation:
+     * Translates elements matching `[data-i18n="key"]`.
+     * Translates placeholders matching `[data-i18n-placeholder="key"]`.
+     * Translates tooltips matching `[data-i18n-title="key"]` and `[data-i18n-aria-label="key"]`.
+     * Translates dynamic content using cached original strings in `data-raw` attributes (`.dynamic-crop-name`, `.dynamic-disease-name`, `.dynamic-category`, `.dynamic-confidence`, `.dynamic-health-status`, `.dynamic-severity`, `.dynamic-urgency`, `.dynamic-tx`).
+     * Asynchronously synchronizes session with backend via `POST /set-language/<lang>?json=1`.
+     * Dispatches `languageChanged` custom DOM event.
+
+================================================================================
+18. UI/UX DESIGN SYSTEM
+================================================================================
+Design Architecture:
+- Philosophy: Modern agricultural aesthetic with clean whitespace, emerald greens, glassmorphic elevation, high-contrast typography, and smooth micro-animations.
+- Themes: Light Mode (Default) and Dark Mode (OLED-friendly `#0f172a` slate background).
+
+Color Palette:
+- Primary Green: `#166534` (Light Mode) / `#22c55e` (Dark Mode)
+- Primary Hover: `#14532d` / `#4ade80`
+- Primary Light: `#d1fae5` / `#052e16`
+- Accent Emerald: `#22c55e` with glow `rgba(34, 197, 94, 0.25)`
+- Background Main: `#f8faf9` (Light) / `#0f172a` (Dark)
+- Background Surface/Card: `#ffffff` (Light) / `#1a1f25` (Dark)
+- Background Input: `#f1f5f9` (Light) / `#242b35` (Dark)
+- Text Heading: `#0f172a` (Light) / `#ffffff` (Dark)
+- Text Body: `#334155` (Light) / `#e5e7eb` (Dark)
+- Text Muted: `#64748b` (Light) / `#a0aec0` (Dark)
+- Status Healthy: `#166534` / `#4ade80` (Background: `#d1fae5` / `#052e16`)
+- Status Disease/Severe: `#dc2626` / `#f87171` (Background: `#fee2e2` / `#450a0a`)
+- Status Warning/Moderate: `#d97706` / `#fbbf24` (Background: `#fef3c7` / `#451a03`)
+- Status Info: `#2563eb` / `#60a5fa` (Background: `#dbeafe` / `#1e3a8a`)
+
+Typography:
+- Heading Font: `'Outfit', 'Inter', sans-serif`
+- Body Font: `'Plus Jakarta Sans', 'Inter', 'Noto Sans Devanagari', sans-serif`
+- Fluid Scaling: Uses CSS `clamp()` functions across all headings, cards, and container paddings.
+
+Cards & Elevation:
+- Border Radii: `--radius-sm: 8px`, `--radius-md: 14px`, `--radius-lg: 20px`, `--radius-xl: 28px`.
+- Shadows: Multi-layered 3D box-shadow tokens (`--shadow-sm`, `--shadow-md`, `--shadow-lg`, `--shadow-3d`).
+- Glassmorphism: `backdrop-filter: blur(12px)` on navigation bar and floating reticle cards.
+
+Buttons & Interactive Elements:
+- Primary CTA Button (`.btn-cta`): Gradient green background, white bold text, box shadow, active scale transform (`transform: translateY(-2px)` on hover).
+- Secondary Button (`.btn-secondary`): Clean bordered button with smooth hover background transition.
+- Touch Target Sizes: Minimum 44px on all buttons, inputs, and dropdowns for mobile compliance.
+
+Responsive Breakpoint Handling:
+- Mobile Small: 320px - 375px
+- Mobile Regular: 375px - 480px
+- Tablet: 481px - 768px
+- Laptop / 16:10 Display: 769px - 1280px (optimized container max-width 1280px, fluid grid auto-fit minmax)
+- Desktop Ultra-Wide: 1281px - 1920px+
+
+================================================================================
+19. NAVIGATION FLOW
+================================================================================
+Complete User Journey:
+1. Entry: User opens `http://localhost:5000/` (Home Landing Page).
+2. Orientation: User reads value proposition, reviews trust badges, and inspects the live animated hero scanner.
+3. Navigation: User clicks "🔍 Analyze a Leaf" button in hero section or "Analyze Leaf" in top navbar.
+4. Portal (/detect): User arrives at diagnostic portal.
+   - User can expand "💡 Quick Tips for Best Results" accordion.
+   - User drags and drops a foliage image, browses from local filesystem, or clicks a Quick Test sample leaf.
+5. In-Browser Verification: Viewfinder renders preview image with animated laser scan beam.
+6. Execution: User clicks "🔬 Analyze Crop Image".
+7. Live Feedback: 7-stage animated loader overlay shows real-time progress steps.
+8. Diagnosis (/gemini-result): Browser redirects to comprehensive diagnostic report displaying:
+   - 5 Summary metric cards (Crop, Disease, Confidence, Health Status, Urgency).
+   - Analyzed leaf photo and Severity band rating.
+   - Prioritized 4-tier immediate action steps (Do Now -> Monitoring -> Sanitation -> Support).
+   - Side-by-side Organic vs Conventional treatment cards.
+   - Fertilizer and nutrient guidance box.
+   - Visible symptoms, causes, pest analysis, and environmental stress.
+   - Mandatory agricultural disclaimer.
+9. Audit Review (/history): User navigates to Prediction History to review past diagnostic records, search by crop name, or filter by severity rating.
+10. System Knowledge (/about): User visits About page to inspect system architecture, pipeline, and explainable AI mechanisms.
+11. Inquiries (/contact): User sends feedback or asks questions via contact form.
+
+================================================================================
+20. USER INTERACTION FLOW
+================================================================================
+- Drag & Drop: Dragging over `.upload-card` triggers `.drag-over` CSS border pulse; dropping immediately triggers file reading.
+- Theme Toggle: Clicking `#themeToggleBtn` toggles `data-theme="dark"` / `data-theme="light"` on `<html>`, updates icon ☀️/🌙, and saves to `localStorage`.
+- Language Switching: Selecting language in `#languageSelect` instantly translates all DOM nodes and sends background sync request.
+- Sample Card Click: Clicking any `.sample-leaf-card` fetches sample image blob, instantiates a JS `File` object, and loads it into the dropzone.
+- Quick Tips Accordion: Clicking `<summary>` smoothly expands/collapses helpful leaf photography tips.
+- Report Actions:
+  * "Print Report" triggers native browser print dialog with print-specific CSS media query overrides.
+  * "Copy Summary" writes a formatted diagnostic summary to clipboard with toast confirmation.
+- History Filter: Selecting a severity option in the dropdown automatically submits the filter form.
+- History Record Deletion: Clicking the trash can (🗑️) button opens a confirmation popup and safely deletes the record.
+
+================================================================================
+21. INPUT VALIDATION
+================================================================================
+Frontend Validation:
+- File Existence: Checks that a file is selected before enabling submission.
+- File Extension: Whitelist checking for `.jpg`, `.jpeg`, `.png`, `.webp`.
+- MIME Type: Whitelist checking for `image/jpeg`, `image/png`, `image/webp`.
+- File Size Limit: Rejects files larger than 10,485,760 bytes (10 MB) with descriptive error toast.
+- Contact Form: Regex email validation (`/^[^\s@]+@[^\s@]+\.[^\s@]+$/`) and required field checks.
+
+Backend Validation:
+- Flask Request Parsing: Validates presence of `file` or `image` in `request.files`.
+- Filename Sanitization: `werkzeug.utils.secure_filename(file.filename)`.
+- Extension Whitelisting: `utils.image_processing.allowed_file()` checks against `ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'webp'}`.
+- Payload Length: `MAX_CONTENT_LENGTH = 10 * 1024 * 1024` enforced by Flask/Werkzeug (HTTP 413 on breach).
+- PIL Image Verification: `Image.open().verify()` verifies genuine image byte encoding to protect against polyglot or malformed upload exploits.
+- Non-Leaf Detection:
+  * Gemini Cloud Vision: Returns `valid_image: false` if photo contains unrelated objects, animals, vehicles, people, or extreme blur.
+  * Local OpenCV Pipeline: `image_quality.py` computes foliage color ratio; if green+brown pixel ratio < 8.0% or blur Laplacian variance < 80.0, marks `is_usable = False` and rejects.
+
+================================================================================
+22. ERROR MESSAGES & HANDLING
+================================================================================
+Standardized Error Codes & Messages:
+
+1. `IMAGE_NOT_SUITABLE` (HTTP 400):
+   - Trigger: Uploaded file is non-leaf, extremely blurry, severely underexposed, or corrupted.
+   - Message: "Please upload a clear close-up image of the affected crop leaf."
+
+2. `GEMINI_API_KEY_MISSING` (HTTP 401):
+   - Trigger: `GEMINI_API_KEY` is not set or equals default placeholder in `.env`.
+   - Message: "Gemini API key is not configured. Please set GEMINI_API_KEY in your environment or .env file."
+
+3. `INVALID_API_KEY` (HTTP 401):
+   - Trigger: Gemini API returns authentication failure.
+   - Message: "Invalid Gemini API key provided. Please check your GEMINI_API_KEY configuration."
+
+4. `RATE_LIMIT_EXCEEDED` (HTTP 429):
+   - Trigger: Google Gemini API quota or rate limit exceeded.
+   - Message: "Gemini API quota or rate limit exceeded. Please wait a moment and try again."
+
+5. `REQUEST_TIMEOUT` (HTTP 500):
+   - Trigger: Gemini API network request times out.
+   - Message: "Gemini API request timed out. Please try again with a smaller clear leaf image."
+
+6. `GEMINI_API_ERROR` (HTTP 500):
+   - Trigger: Unhandled exception during GenAI SDK invocation.
+   - Message: "Gemini vision analysis service error: <error details>"
+
+7. `SERVER_ERROR` (HTTP 500):
+   - Trigger: Internal unhandled server exception.
+   - Message: "We couldn't analyze this image. Please try again with another clear crop leaf image."
+
+8. HTTP 404 (Not Found):
+   - Handled by `page_not_found(e)` in `app.py`. Renders `base.html` with error title "404 - Page Not Found".
+
+9. HTTP 413 (Payload Too Large):
+   - Handled by `request_entity_too_large(e)` in `app.py`. Returns JSON `{ "success": false, "error": "File size exceeds maximum 10MB limit." }`.
+
+================================================================================
+23. SECURITY / AUTHENTICATION
+================================================================================
+Security Mechanisms Implemented:
+- User Authentication: Not implemented (Open access public diagnostic tool; no user login or passwords required).
+- API Keys & Credentials: All keys loaded via `os.environ.get()` through `python-dotenv`. Default values provided as placeholders. Hardcoded secrets are avoided. Sensitive values represented as `[REDACTED]`.
+- Session Security: Signed Flask client session cookies using `SECRET_KEY` configured in `.env`.
+- Upload Security:
+  * Sanitization via `secure_filename()` preventing directory traversal attacks (`../../`).
+  * Explicit file extension whitelisting (`ALLOWED_EXTENSIONS`).
+  * In-memory byte verification using PIL (`Image.verify()`) preventing malicious executable uploads disguised as images.
+  * Size caps enforced at 10 MB (`MAX_CONTENT_LENGTH`).
+  * Immediate error-cleanup: If analysis fails, temporary preview images in `static/uploads/` are purged from disk.
+- Database Query Security: 100% Parameterized queries across both MySQL and SQLite (`?` for SQLite, `%s` for PyMySQL) preventing SQL injection vulnerabilities.
+
+================================================================================
+24. DATABASE ARCHITECTURE
+================================================================================
+Database Management Engine: `DatabaseManager` (`database/database.py`)
+- Dual-mode architecture: Attempts connection to MySQL (`agrivision_db`). If MySQL server is unavailable or connection times out (3 seconds), automatically falls back to SQLite (`database/agrivision.db`).
+- Auto-migration on startup: Dynamically inspects tables and adds missing columns (`confidence_level`, `image_quality`, `affected_area_pct`, `severity_band`, `full_analysis`).
+- Auto-seeding: Automatically seeds SQLite with verified crop and disease records if tables are empty.
+
+Tables and Schema (`database/agrivision.sql` & `database/database.py`):
+
+1. Table: `crops`
+   - `crop_id`: INT / INTEGER PRIMARY KEY AUTO_INCREMENT
+   - `crop_name`: VARCHAR(100) / TEXT NOT NULL UNIQUE (e.g. 'Tomato', 'Potato', 'Pepper', 'Apple', 'Corn', 'Grape')
+   - `scientific_name`: VARCHAR(150) / TEXT (e.g. 'Solanum lycopersicum')
+   - `description`: TEXT
+   - `image`: VARCHAR(255) / TEXT (Relative path to sample image)
+   - `created_at`: TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+2. Table: `diseases`
+   - `disease_id`: INT / INTEGER PRIMARY KEY AUTO_INCREMENT
+   - `crop_id`: INT / INTEGER NOT NULL (FOREIGN KEY -> crops.crop_id)
+   - `disease_name`: VARCHAR(150) / TEXT NOT NULL
+   - `pathogen_type`: VARCHAR(50) / TEXT (e.g. 'Fungal', 'Bacterial', 'Viral', 'Healthy')
+   - `description`: TEXT
+   - `symptoms`: TEXT
+   - `causes`: TEXT
+   - `prevention`: TEXT
+   - `management`: TEXT
+   - `organic_solution`: TEXT
+   - `conventional_solution`: TEXT
+   - `nutrient_information`: TEXT
+   - `fertilizer_information`: TEXT
+   - `environmental_conditions`: TEXT
+   - `monitoring_guidance`: TEXT
+   - `reference_image`: VARCHAR(255) / TEXT
+   - `created_at`: TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+3. Table: `prediction_history`
+   - `prediction_id`: INT / INTEGER PRIMARY KEY AUTO_INCREMENT
+   - `image_path`: VARCHAR(255) / TEXT NOT NULL (Saved image filename in `static/uploads/`)
+   - `crop_name`: VARCHAR(100) / TEXT NOT NULL
+   - `disease_name`: VARCHAR(150) / TEXT NOT NULL
+   - `confidence`: FLOAT / REAL NOT NULL (Percentage, e.g. 94.2)
+   - `confidence_level`: VARCHAR(50) / TEXT (e.g. 'HIGH', 'Very High')
+   - `image_quality`: VARCHAR(50) / TEXT (e.g. 'Good', 'Moderate', 'Poor')
+   - `affected_area_pct`: FLOAT / REAL (Lesion percentage, e.g. 24.0)
+   - `severity_band`: VARCHAR(50) / TEXT (e.g. 'MODERATE', 'Healthy', 'Early', 'Severe')
+   - `heatmap_path`: VARCHAR(255) / TEXT (Path to Grad-CAM heatmap filename, or NULL)
+   - `full_analysis`: TEXT (Complete serialized JSON payload from Google Gemini AI)
+   - `prediction_date`: TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+4. Extended MySQL Tables in `database/agrivision.sql` (Relational Normalization Schema):
+   - `disease_symptoms` (symptom_id, disease_id, primary_visual_symptoms, leaf_pattern, lesion_appearance, progression_notes)
+   - `disease_causes` (cause_id, disease_id, pathogen_name, primary_causes, conducive_factors)
+   - `disease_prevention` (prevention_id, disease_id, cultural_practices, sanitation_guidelines, resistant_varieties)
+   - `disease_management` (management_id, disease_id, immediate_precautions, field_actions, quarantine_advice)
+   - `organic_options` (organic_id, disease_id, bio_control_agents, botanical_extracts, cultural_controls, advantages, limitations)
+   - `conventional_options` (conventional_id, disease_id, fungicide_bactericide_classes, application_timing, label_warning)
+   - `nutrient_information` (nutrient_id, disease_id, key_nutrients, deficiency_susceptibility, foliar_support, disclaimer)
+   - `fertilizer_guidance` (fertilizer_id, disease_id, npk_ratio_advice, fertilizer_timing, soil_testing_recommendation)
+   - `environmental_conditions` (env_id, disease_id, optimum_temp_c, humidity_requirement, moisture_risk, spread_risk)
+   - `monitoring_guidance` (monitoring_id, disease_id, inspection_frequency, key_signs_to_watch, when_to_consult_expert)
+   - `references_sources` (ref_id, disease_id, source_name, publisher, url)
+
+================================================================================
+25. API DOCUMENTATION
+================================================================================
+--------------------------------------------------------------------------------
+Endpoint: POST /api/analyze-leaf
+--------------------------------------------------------------------------------
+- Purpose: Executes cloud-based Google Gemini Vision AI crop health analysis.
+- Content-Type: `multipart/form-data`
+- Headers: Standard HTTP headers.
+- Request Parameters (Body):
+  * `file` (Binary File, required): Image file (JPG, JPEG, PNG, WEBP, <= 10MB).
+  * `lang` (String, optional): Target language code ('en', 'mr', 'hi').
+- Response Format: JSON
+- Success (HTTP 200):
+  ```json
+  {
+    "success": true,
+    "redirect_url": "/gemini-result",
+    "image_url": "/static/uploads/leaf_preview_1770695000_sample.jpg",
+    "data": { ... full pathology JSON ... }
+  }
+  ```
+- Error Responses:
+  * 400 Bad Request: Missing file, unsupported format, or non-leaf image.
+  * 401 Unauthorized: Missing or invalid Gemini API key.
+  * 413 Payload Too Large: File exceeds 10MB limit.
+  * 429 Too Many Requests: API rate limit or quota exceeded.
+  * 500 Internal Server Error: Gemini SDK exception or internal error.
+
+--------------------------------------------------------------------------------
+Endpoint: POST /predict
+--------------------------------------------------------------------------------
+- Purpose: Executes local CNN inference with Grad-CAM and lesion segmentation.
+- Content-Type: `multipart/form-data`
+- Request Parameters (Body):
+  * `file` (Binary File, required): Image file.
+- Response Format: JSON
+- Success (HTTP 200):
+  ```json
+  {
+    "success": true,
+    "prediction_id": 15,
+    "redirect_url": "/result/15",
+    "crop_name": "Potato",
+    "disease_name": "Potato Early Blight",
+    "confidence": 91.5,
+    "confidence_level": "Very High",
+    "image_quality": "Good",
+    "affected_area_pct": 18.2,
+    "severity_band": "Low",
+    "status": "Disease Detected",
+    "image_url": "/static/uploads/leaf_1770695000_sample.jpg",
+    "heatmap_url": "/static/uploads/heatmap_leaf_1770695000_sample.jpg",
+    "disease_info": { ... }
+  }
+  ```
+- Error Responses:
+  * 400 Bad Request: Image quality check failed or non-leaf detected.
+  * 500 Internal Server Error: Model inference failure.
+
+--------------------------------------------------------------------------------
+Endpoint: GET /set-language/<lang>
+--------------------------------------------------------------------------------
+- Purpose: Updates persistent session language.
+- URL Parameter: `lang` ('en', 'mr', 'hi').
+- Query Parameter: `json=1` (forces JSON response).
+- Success (HTTP 200 JSON):
+  ```json
+  {
+    "success": true,
+    "lang": "mr",
+    "translations": { ... }
+  }
+  ```
+- Fallback: 302 Redirect to referrer URL.
+
+--------------------------------------------------------------------------------
+Endpoint: POST /history/delete/<int:prediction_id>
+--------------------------------------------------------------------------------
+- Purpose: Deletes a specific prediction record from the database.
+- URL Parameter: `prediction_id` (Integer ID).
+- Response: 302 Redirect to `/history` with flash notification.
+
+================================================================================
+26. DEPENDENCIES & REQUIREMENTS
+================================================================================
+Python Core Packages (from requirements.txt):
+- Flask==3.1.3 (Web micro-framework)
+- Werkzeug==3.1.8 (WSGI utility library)
+- Jinja2==3.1.6 (Template rendering engine)
+- google-genai==2.17.0 (Modern Google Gemini GenAI SDK)
+- tensorflow==2.21.0 (Deep learning framework)
+- keras==3.15.1 (Neural network high-level API)
+- opencv-python==5.0.0.93 & opencv-python-headless==5.0.0.93 (Computer vision)
+- pillow==12.3.0 (Image processing library)
+- numpy==2.5.1 (Numerical array computations)
+- PyMySQL==1.2.0 (MySQL database connector)
+- python-dotenv==1.2.2 (Environment configuration loader)
+- gunicorn==26.0.0 (Production WSGI HTTP server)
+- scikit-learn (Model evaluation metrics)
+- pydantic==2.13.4, httpx==0.28.1, requests==2.34.2, rich==15.0.0
+
+Frontend Libraries:
+- Three.js (r128) loaded via CDN in `templates/base.html` (`https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js`).
+
+System Dependencies (Linux/Kali):
+- `python3`, `python3-pip`, `python3-venv`
+- `mysql-server` (optional; SQLite fallback requires no system DB package)
+- `libgl1-mesa-glx` / `libglib2.0-0` (required by OpenCV for headless graphics)
+
+================================================================================
+27. INSTALLATION INSTRUCTIONS
+================================================================================
+Step 1: Install System Packages
+```bash
+sudo apt update
+sudo apt install -y python3 python3-pip python3-venv mysql-server libgl1-mesa-glx
+```
+
+Step 2: Navigate to Project Directory & Create Virtual Environment
+```bash
+cd /home/kali/AgriVisionAI
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Step 3: Upgrade pip and Install Python Dependencies
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+Step 4: Configure Environment Variables
+```bash
+cp .env.example .env
+```
+Edit `.env` to configure `GEMINI_API_KEY` (from https://aistudio.google.com/) and MySQL credentials.
+
+Step 5: Initialize MySQL Database (Optional)
+```bash
+sudo systemctl start mysql
+sudo mysql -u root < database/agrivision.sql
+```
+*(Note: If MySQL is omitted, AgriVision AI automatically boots with SQLite at `database/agrivision.db`).*
+
+================================================================================
+28. HOW TO RUN LOCALLY
+================================================================================
+Development Mode (Flask Built-in Server):
+```bash
+# Ensure virtual environment is activated
+source venv/bin/activate
+
+# Launch the server
+python3 app.py
+```
+Terminal will output:
+```
+==================================================
+  Starting AgriVision AI Web Application Server
+==================================================
+ * Running on http://0.0.0.0:5000 (Press CTRL+C to quit)
+```
+
+Production Mode (Gunicorn WSGI Server):
+```bash
+source venv/bin/activate
+gunicorn --bind 0.0.0.0:5000 --workers 4 --threads 2 app:app
+```
+
+Accessing the Application:
+Open your web browser and navigate to `http://localhost:5000` or `http://127.0.0.1:5000`.
+
+================================================================================
+29. ENVIRONMENT VARIABLES
+================================================================================
+Configured in `.env` (loaded via `config.py`):
+- `FLASK_APP`: Application entry point (`app.py`). Default: `app.py`.
+- `FLASK_ENV`: Environment mode (`development` or `production`). Default: `development`.
+- `SECRET_KEY`: Flask session encryption key. Default: `agrivision_ai_default_secret_key_2026`.
+- `GEMINI_API_KEY`: Google AI Studio Gemini API Key (`[REDACTED]`).
+- `GEMINI_MODEL`: Model identifier. Default: `gemini-3.6-flash` (or `gemini-2.5-flash`).
+- `DB_HOST`: MySQL database host. Default: `localhost`.
+- `DB_PORT`: MySQL database port. Default: `3306`.
+- `DB_USER`: MySQL username. Default: `root`.
+- `DB_PASSWORD`: MySQL password (`[REDACTED]`). Default: `""`.
+- `DB_NAME`: MySQL database name. Default: `agrivision_db`.
+- `UPLOAD_FOLDER`: File upload directory. Default: `static/uploads`.
+- `MAX_CONTENT_LENGTH`: Maximum permitted upload byte limit. Default: `10485760` (10 MB).
+
+================================================================================
+30. DEPLOYMENT CONFIGURATION
+================================================================================
+- Web Server: Nginx acting as a reverse proxy forwarding port 80/443 traffic to Gunicorn on `127.0.0.1:5000`.
+- Process Management: Systemd service unit (`agrivision.service`) configured to restart automatically on failure.
+- Containerization: Fully Docker-ready using official `python:3.11-slim` base image with OpenCV headless bindings.
+- Static File Serving: In production, Nginx can directly serve `/static/` files with gzip/brotli compression and browser caching headers.
+- Ephemeral Storage Handling: Uploaded preview images can be retained or configured on a cron job for periodic cleanup of images older than 30 days.
+
+================================================================================
+31. KNOWN LIMITATIONS
+================================================================================
+1. Visual Similarity Overlap: Different fungal pathogens (e.g. Early Blight vs Septoria Leaf Spot) may exhibit visually similar early necrotic spots, requiring careful review of the alternative conditions listed.
+2. In-Field Lighting Variations: Severe direct sunlight glare or extreme night-time shadows may lower image quality scores and necessitate re-taking photos.
+3. Laboratory Confirmation: AI visual diagnosis cannot replace chemical tissue cultures, microscope spore analysis, or ELISA / PCR viral testing.
+4. Chemical Dosages: The system deliberately recommends chemical active ingredients and classes rather than exact localized brand dosages; farmers must always consult official product labels.
+5. Single-Leaf Focus: The current pipeline evaluates single leaf close-ups rather than wide-angle canopy aerial drone footage.
+
+================================================================================
+32. CURRENT FEATURES
+================================================================================
+- Dual-Engine AI Pathology (Cloud Gemini Vision AI + Local EfficientNet/MobileNet CNN).
+- Full Multilingual Localization across English, Marathi, Hindi with instant client-side DOM translation.
+- Automated Image Quality & Non-Leaf Rejection (blur variance, brightness, contrast, greenness ratio).
+- 5-Stat Structured Summary Grid on Diagnostic Reports (Crop Species, Condition, Confidence, Health Status, Action Urgency).
+- Prioritized 4-Step Action Journey (Do Now, Monitoring, Sanitation, Support).
+- Visually Separated Organic Bio-Controls vs Conventional Chemical Guidance.
+- N-P-K Fertilizer & Soil Testing Guidance.
+- Pest Damage & Nutrient Deficiency Diagnostics.
+- Persistent Prediction History Dashboard with 4 summary metric counters, text search, severity filter, and record deletion.
+- Three.js Interactive 3D WebGL Smart Tree Engine.
+- Light Mode / Dark Mode Theme Switcher with localStorage persistence.
+- Collapsible Quick Tips Accordion and Agricultural Disclaimer Accordion.
+- Real-Time 7-Stage Animated Scanning Progress Overlay.
+- Direct PDF/Print Report Trigger & Localized Clipboard Summary Copy.
+- Zero-Configuration SQLite Auto-Fallback with database schema migrations.
+
+================================================================================
+33. FEATURES THAT ARE PARTIALLY IMPLEMENTED
+================================================================================
+1. Disease Library Standalone Explorer: The `/diseases` and `/disease/<id>` templates (`templates/diseases.html`, `templates/disease_details.html`) are fully written with search inputs, crop filter chips, and comprehensive seed data, but routes in `app.py` currently redirect to `/detect` to prioritize the unified diagnostic workflow.
+2. Offline CNN Heatmap View: The `/predict` backend endpoint generates Grad-CAM heatmaps and segmentation masks, while the active primary UI in `/detect` directs uploads to the higher-capacity Google Gemini `/api/analyze-leaf` vision endpoint.
+3. Three.js 3D Tree Page Integration: `static/js/tree3d.js` contains a complete procedural WebGL 3D Smart Tree with breeze physics and clickable identity nodes, available for integration into custom 3D landing sections.
+
+================================================================================
+34. FUTURE IMPROVEMENTS
+================================================================================
+- Drone & Wide Canopy Imagery: Support multi-leaf and full field aerial drone imagery segmentation.
+- Weather & Micro-Climate Integration: Ingest local humidity, precipitation, and temperature forecasts via OpenWeatherMap API to compute real-time fungal outbreak risk scores.
+- Real-Time Live Video Camera Stream: Live in-browser WebRTC video stream scanning leaves dynamically without requiring static photo uploads.
+- Farmer Community Forum: Collaborative peer-to-peer discussion board allowing farmers to share localized treatment experiences and geo-tag disease outbreaks.
+- Native Mobile App (PWA): Progressive Web App offline caching for remote rural zones with intermittent cellular connectivity.
+
+================================================================================
+35. COMPLETE END-TO-END SYSTEM WORKFLOW
+================================================================================
+[Farmer Captures Leaf Photo]
+           │
+           ▼
+[Upload Portal: /detect]
+   ├── Client Pre-Validation: Format (JPG/PNG/WEBP) & Size (<10MB)
+   ├── In-Browser FileReader Preview & Viewfinder Laser Animation
+   └── Click "Analyze Crop Image"
+           │
+           ▼
+[AJAX Request: POST /api/analyze-leaf]
+   ├── Multilingual Payload: Binary Image + Target Language ('en'/'mr'/'hi')
+   └── Client displays 7-Stage Animated Progress Overlay
+           │
+           ▼
+[Flask Backend: app.py]
+   ├── Sanitize Filename with secure_filename()
+   ├── Save Preview File to static/uploads/
+   └── Invoke crop_analyzer.analyze_leaf()
+           │
+           ▼
+[Crop Analyzer Service: services/crop_analyzer.py]
+   ├── Validate File Bytes & Verify PIL Integrity
+   ├── Convert to RGB JPEG Buffer
+   ├── Construct Strict Multilingual Pathology Prompt
+   └── Execute Gemini Vision API Call (gemini-3.6-flash, temp=0.2)
+           │
+           ▼
+[Gemini Vision Model Reasoning]
+   ├── Check valid_image (Reject if non-leaf/blurry)
+   ├── Classify Plant Botanical Name & Confidence
+   ├── Classify Disease Condition, Category, Symptoms
+   ├── Determine Severity Stage & Visible Damage Reason
+   ├── Diagnose Pest Damage & Nutrient Chlorosis Patterns
+   ├── Formulate Organic Solutions & Conventional Chemical Options
+   └── Structure Prioritized 4-Step Immediate Action Journey
+           │
+           ▼
+[Backend Post-Processing & Persistence]
+   ├── Parse & Clean Structured JSON
+   ├── Normalize Response via _normalize_analysis_response()
+   ├── Log Diagnostic Record to prediction_history Database Table
+   ├── Save Payload & Preview Image in Flask Session
+   └── Return HTTP 200 JSON { success: true, redirect_url: '/gemini-result' }
+           │
+           ▼
+[Client Browser Redirection]
+   └── Window navigates to /gemini-result
+           │
+           ▼
+[Diagnostic Report View: templates/result.html]
+   ├── Render 5 Summary Cards Grid
+   ├── Render Leaf Photo & Severity Stage Badge
+   ├── Render 4-Step Action Journey Cards + Urgency & Monitoring Cards
+   ├── Render Separate Organic vs Conventional Treatment Boxes
+   ├── Render Fertilizer Guidance & Diagnostic Insights
+   └── Render Agricultural Disclaimer Accordion
+           │
+           ▼
+[Historical Audit: /history]
+   └── Farmer reviews historical logs, searches records, or filters by severity.
+
+================================================================================
+36. IMPORTANT IMPLEMENTATION DETAILS
+================================================================================
+- Decoupled Service Architecture: All GenAI logic is encapsulated inside `services/crop_analyzer.py`, completely separate from routing in `app.py`.
+- Dual GenAI SDK Compatibility: `crop_analyzer.py` detects both the modern `google.genai` SDK and legacy `google.generativeai`, switching syntax automatically.
+- Stateless Backend Processing: Analysis requests process image byte streams directly; temporary preview images are tracked and can be purged without affecting database history.
+- Non-Blocking Database Fail-Safe: In both `/api/analyze-leaf` and `/predict`, database save operations are wrapped in safe try/except blocks (`db_manager.save_prediction()`). A database connection error will never crash the prediction response or break the user experience.
+- Automatic SQLite Migration: SQLite migrations run automatically inside `_setup_sqlite()` if new columns are added to the application models.
+
+================================================================================
+37. IMPORTANT UI DETAILS
+================================================================================
+- Fluid Sizing: Utilizes CSS `clamp(min, preferred, max)` to ensure buttons, fonts, and paddings scale seamlessly from 320px mobile screens up to 4K monitors.
+- 16:10 Aspect Ratio Optimization: Layouts use max container widths of 1280px with CSS Grid `auto-fit` and `minmax()` definitions to prevent card stretching on widescreen laptops (e.g. MacBook 16:10 or 1920x1200 displays).
+- No Flash of Unstyled Theme (FOUT): `theme-toggle.js` executes an inline self-invoking function before the DOM renders, reading `localStorage` to immediately set `data-theme` on `<html>`.
+- Zero External CSS Dependencies: Pure Vanilla CSS without Tailwind or Bootstrap overhead, granting complete granular styling control.
+
+================================================================================
+38. IMPORTANT BACKEND DETAILS
+================================================================================
+- Context Processors: `app.py` registers `@app.context_processor` injecting `t()`, `translate_crop()`, `translate_disease()`, `translate_cat()`, `translate_status()`, `translate_sev()`, `translate_urg()`, `translate_conf()`, and `translate_tx()` into Jinja2 templates, ensuring template rendering is fully language-aware.
+- Session Management: Stores serialized JSON dictionary in Flask's encrypted session (`session['gemini_analysis']`), allowing instant report generation on `/gemini-result`.
+- Graceful Connection Fallback: `db_manager.get_connection()` attempts MySQL with a 3-second timeout; upon failure, it transparently reroutes queries to SQLite with zero downtime.
+
+================================================================================
+39. IMPORTANT AI/ML DETAILS
+================================================================================
+- Zero Hallucination Prompting: The Gemini prompt explicitly commands the model: "Do not claim certainty when visual evidence is insufficient. Do not invent laboratory results or exact confidence percentages. Use confidence labels: HIGH, MEDIUM, LOW. If the condition cannot be determined reliably, return UNKNOWN rather than guessing."
+- Active Ingredient Enforcement: The prompt strictly forbids inventing brand names or unverified dosages, instructing the model to return active chemical ingredients and direct farmers to local label instructions.
+- Grad-CAM Mathematics: Calculates gradients of top class score $y^c$ with respect to feature activation map $A^k$ of the final convolutional layer ($\frac{\partial y^c}{\partial A^k}$), computes global average pooled weights $\alpha_k^c = \frac{1}{Z} \sum_i \sum_j \frac{\partial y^c}{\partial A_{i,j}^k}$, computes weighted combination followed by ReLU activation: $L_{\text{Grad-CAM}}^c = \text{ReLU}\left(\sum_k \alpha_k^c A^k\right)$, and resizes to original input dimensions.
+
+================================================================================
+40. DEVELOPER NOTES
+================================================================================
+1. To test the Gemini AI Vision pipeline: Ensure `GEMINI_API_KEY` is provided in `.env` (obtain from https://aistudio.google.com/).
+2. To run with offline CNN model: Train weights using `python3 model/train_model.py` to create `model/plant_disease_model.keras`.
+3. To add new crop classes: Update `model/class_names.json`, `model/crop_disease_mapping.json`, and translation mappings in `utils/i18n.py` and `static/js/i18n.js`.
+4. To test multilingual support: Toggle the globe dropdown in the navbar or pass `?lang=mr` or `?lang=hi` to API requests.
+5. All database operations support SQLite fallback out-of-the-box, requiring zero MySQL configuration for local development.
+
+================================================================================
+END OF DOCUMENTATION FILE — AGRIVISION AI (website_details.txt)
+================================================================================

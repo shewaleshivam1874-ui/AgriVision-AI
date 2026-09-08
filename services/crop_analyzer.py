@@ -5,6 +5,8 @@ import io
 import time
 from PIL import Image
 from config import Config
+import ssl
+import certifi
 
 # Attempt importing google.genai (new SDK) and google.generativeai (legacy SDK)
 GENAI_SDK_AVAILABLE = False
@@ -273,49 +275,96 @@ Confidence MUST be one of: HIGH, MEDIUM, LOW.
 
         # Modern google-genai SDK
         if GENAI_SDK_TYPE == 'google-genai':
-            client = genai.Client(api_key=api_key)
-            
-            # Save PIL image to BytesIO jpeg buffer
-            buf = io.BytesIO()
-            pil_img.save(buf, format='JPEG')
-            img_bytes = buf.getvalue()
+            old_req_ca = os.environ.get('REQUESTS_CA_BUNDLE')
+            old_ssl_cert = os.environ.get('SSL_CERT_FILE')
+            os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
+            os.environ['SSL_CERT_FILE'] = certifi.where()
 
-            image_part = types.Part.from_bytes(
-                data=img_bytes,
-                mime_type='image/jpeg'
-            )
+            try:
+                # Do not pass unsupported http_options to genai.Client (Pydantic validation
+                # rejects unknown keys like 'verify'). Rely on environment vars
+                # REQUESTS_CA_BUNDLE / SSL_CERT_FILE (set above) so underlying
+                # requests uses the certifi bundle.
+                client = genai.Client(api_key=api_key)
 
-            # Try generating content with model
-            config = types.GenerateContentConfig(
-                temperature=0.2,
-                response_mime_type="application/json"
-            )
+                # Prepare image part
+                buf = io.BytesIO()
+                pil_img.save(buf, format='JPEG')
+                image_part = types.Part.from_bytes(data=buf.getvalue(), mime_type='image/jpeg')
 
-            response = client.models.generate_content(
-                model=model_name,
-                contents=[prompt, image_part],
-                config=config
-            )
-            return response.text
+                config = types.GenerateContentConfig(
+                    temperature=0.2,
+                    response_mime_type="application/json"
+                )
+
+                last_exc = None
+                for attempt in range(3):
+                    try:
+                        response = client.models.generate_content(
+                            model=model_name,
+                            contents=[prompt, image_part],
+                            config=config
+                        )
+                        return response.text
+                    except ssl.SSLError as ssle:
+                        last_exc = ssle
+                        time.sleep(1 + attempt)
+                    except Exception as e:
+                        # If the model is temporarily unavailable (503), attempt
+                        # alternative image-capable models with exponential backoff.
+                        err = str(e).lower()
+                        if ('503' in err) or ('unavailable' in err) or ('high demand' in err):
+                            fallback_models = [
+                                'models/gemini-3.1-flash-image',
+                                'models/gemini-3-pro-image',
+                                'models/gemini-3.6-flash'
+                            ]
+                            # Ensure current model isn't retried in fallback list
+                            fallback_models = [m for m in fallback_models if m != model_name]
+                            for idx, alt_model in enumerate(fallback_models):
+                                backoff = (2 ** idx)
+                                try:
+                                    time.sleep(backoff)
+                                    response = client.models.generate_content(
+                                        model=alt_model,
+                                        contents=[prompt, image_part],
+                                        config=config
+                                    )
+                                    return response.text
+                                except Exception:
+                                    continue
+                        # Not a retryable error — re-raise
+                        raise
+
+                raise RuntimeError(
+                    f"SSL error during GenAI request after retries: {last_exc}. "
+                    "Try updating system CA certs, reinstalling 'certifi', or setting 'REQUESTS_CA_BUNDLE' to a valid CA bundle."
+                )
+            finally:
+                if old_req_ca is None:
+                    os.environ.pop('REQUESTS_CA_BUNDLE', None)
+                else:
+                    os.environ['REQUESTS_CA_BUNDLE'] = old_req_ca
+                if old_ssl_cert is None:
+                    os.environ.pop('SSL_CERT_FILE', None)
+                else:
+                    os.environ['SSL_CERT_FILE'] = old_ssl_cert
 
         # Legacy google-generativeai SDK
-        elif GENAI_SDK_TYPE == 'google-generativeai':
+        if GENAI_SDK_TYPE == 'google-generativeai':
             import google.generativeai as legacy_genai
             legacy_genai.configure(api_key=api_key)
             model = legacy_genai.GenerativeModel(model_name)
-            
+
             generation_config = {
                 "temperature": 0.2,
                 "response_mime_type": "application/json"
             }
-            
-            response = model.generate_content(
-                [prompt, pil_img],
-                generation_config=generation_config
-            )
+
+            response = model.generate_content([prompt, pil_img], generation_config=generation_config)
             return response.text
-        else:
-            raise RuntimeError("No compatible Google GenAI SDK found installed in environment.")
+
+        raise RuntimeError("No compatible Google GenAI SDK found installed in environment.")
 
     def _parse_json_response(self, text):
         """Clean markdown wrapping and parse raw string into JSON object."""
