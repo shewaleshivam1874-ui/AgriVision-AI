@@ -11,7 +11,7 @@ class Config:
     
     # Gemini AI Configuration
     GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
-    GEMINI_MODEL = os.environ.get('GEMINI_MODEL', 'gemini-3.6-flash')
+    GEMINI_MODEL = os.environ.get('GEMINI_MODEL', 'gemini-3.8-flash')
 
 
     # Upload Settings

@@ -36,13 +36,13 @@ def attempt_sdk_check(key):
         if hasattr(genai, "Client"):
             client = genai.Client(api_key=key) if "api_key" in genai.Client.__init__.__code__.co_varnames else genai.Client()
             if hasattr(client, "responses") and getattr(client, "responses"):
-                r = client.responses.create(model="gemini-3.6-mini", input="Please respond with the single word OK")
+                r = client.responses.create(model="gemini-3.8-flash", input="Please respond with the single word OK")
                 text = str(r)
                 ok = "OK" in text or "ok" in text
                 return ok, ("response" if ok else f"unexpected: {text[:200]}")
         # fallback: try models.generate_content if available
         if hasattr(genai, "models") and hasattr(genai.models, "generate_content"):
-            res = genai.models.generate_content(model="gemini-3.6-mini", contents=["OK?"])
+            res = genai.models.generate_content(model="gemini-3.8-flash", contents=["OK?"])
             text = json.dumps(res, default=str)
             return True, f"got {len(text)} bytes"
     except Exception as exc:

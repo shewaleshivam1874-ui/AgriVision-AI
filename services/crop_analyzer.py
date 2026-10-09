@@ -33,6 +33,13 @@ class CropAnalyzerService:
     Analyzes crop leaf images and produces structured pathology reports.
     """
 
+    FALLBACK_GEMINI_MODELS = (
+        'gemini-3.8-flash',
+        'gemini-3.8-flash-lite',
+        'gemini-2.5-flash',
+        'gemini-2.5-flash-lite',
+    )
+
     SUPPORTED_MIME_TYPES = {
         'image/jpeg': 'jpeg',
         'image/jpg': 'jpeg',
@@ -44,8 +51,19 @@ class CropAnalyzerService:
 
     def __init__(self):
         self.api_key = Config.GEMINI_API_KEY
-        self.model_name = Config.GEMINI_MODEL or 'gemini-3.6-flash'
+        self.model_name = Config.GEMINI_MODEL or 'gemini-3.8-flash'
 
+    def _get_model_candidates(self):
+        """Return configured model first, followed by stable Gemini fallback models."""
+        configured = (self.model_name or 'gemini-3.8-flash').strip()
+        if configured.startswith('models/'):
+            configured = configured.replace('models/', '', 1)
+
+        ordered = [configured]
+        for fallback in self.FALLBACK_GEMINI_MODELS:
+            if fallback not in ordered:
+                ordered.append(fallback)
+        return ordered
 
     def is_configured(self):
         """Check if Gemini API key and SDK are properly configured."""
@@ -211,7 +229,16 @@ Confidence MUST be one of: HIGH, MEDIUM, LOW.
         except Exception as e:
             err_str = str(e)
             print(f"[Gemini API Exception]: {err_str}")
-            if "429" in err_str or "quota" in err_str.lower() or "rate" in err_str.lower():
+            err_lower = err_str.lower()
+            if (
+                "429" in err_str or
+                "resource_exhausted" in err_lower or
+                "quota" in err_lower or
+                "rate limit" in err_lower or
+                "rate_limit" in err_lower or
+                "daily limit" in err_lower or
+                "exceeded" in err_lower
+            ):
                 return {
                     "success": False,
                     "error": "RATE_LIMIT_EXCEEDED",
@@ -271,7 +298,7 @@ Confidence MUST be one of: HIGH, MEDIUM, LOW.
 
     def _call_gemini_api(self, api_key, pil_img, prompt):
         """Invoke Gemini API using new google-genai or legacy google-generativeai SDK."""
-        model_name = self.model_name or 'gemini-2.5-flash'
+        model_candidates = self._get_model_candidates()
 
         # Modern google-genai SDK
         if GENAI_SDK_TYPE == 'google-genai':
@@ -298,43 +325,31 @@ Confidence MUST be one of: HIGH, MEDIUM, LOW.
                 )
 
                 last_exc = None
-                for attempt in range(3):
-                    try:
-                        response = client.models.generate_content(
-                            model=model_name,
-                            contents=[prompt, image_part],
-                            config=config
-                        )
-                        return response.text
-                    except ssl.SSLError as ssle:
-                        last_exc = ssle
-                        time.sleep(1 + attempt)
-                    except Exception as e:
-                        # If the model is temporarily unavailable (503), attempt
-                        # alternative image-capable models with exponential backoff.
-                        err = str(e).lower()
-                        if ('503' in err) or ('unavailable' in err) or ('high demand' in err):
-                            fallback_models = [
-                                'models/gemini-3.1-flash-image',
-                                'models/gemini-3-pro-image',
-                                'models/gemini-3.6-flash'
-                            ]
-                            # Ensure current model isn't retried in fallback list
-                            fallback_models = [m for m in fallback_models if m != model_name]
-                            for idx, alt_model in enumerate(fallback_models):
-                                backoff = (2 ** idx)
-                                try:
-                                    time.sleep(backoff)
-                                    response = client.models.generate_content(
-                                        model=alt_model,
-                                        contents=[prompt, image_part],
-                                        config=config
-                                    )
-                                    return response.text
-                                except Exception:
-                                    continue
-                        # Not a retryable error — re-raise
-                        raise
+                for model_name in model_candidates:
+                    for attempt in range(3):
+                        try:
+                            response = client.models.generate_content(
+                                model=model_name,
+                                contents=[prompt, image_part],
+                                config=config
+                            )
+                            return response.text
+                        except ssl.SSLError as ssle:
+                            last_exc = ssle
+                            time.sleep(1 + attempt)
+                            continue
+                        except Exception as e:
+                            err = str(e).lower()
+                            if '404' in err or 'not found' in err or 'model' in err and 'not' in err:
+                                last_exc = e
+                                break
+                            if ('429' in err) or ('quota' in err) or ('rate' in err) or ('resource_exhausted' in err) or ('daily limit' in err):
+                                raise
+                            if ('503' in err) or ('unavailable' in err) or ('high demand' in err):
+                                last_exc = e
+                                time.sleep(1 + attempt)
+                                continue
+                            raise
 
                 raise RuntimeError(
                     f"SSL error during GenAI request after retries: {last_exc}. "
@@ -354,15 +369,30 @@ Confidence MUST be one of: HIGH, MEDIUM, LOW.
         if GENAI_SDK_TYPE == 'google-generativeai':
             import google.generativeai as legacy_genai
             legacy_genai.configure(api_key=api_key)
-            model = legacy_genai.GenerativeModel(model_name)
 
             generation_config = {
                 "temperature": 0.2,
                 "response_mime_type": "application/json"
             }
 
-            response = model.generate_content([prompt, pil_img], generation_config=generation_config)
-            return response.text
+            last_exc = None
+            for model_name in model_candidates:
+                try:
+                    model = legacy_genai.GenerativeModel(model_name)
+                    response = model.generate_content([prompt, pil_img], generation_config=generation_config)
+                    return response.text
+                except Exception as e:
+                    err = str(e).lower()
+                    last_exc = e
+                    if ('429' in err) or ('quota' in err) or ('rate' in err) or ('resource_exhausted' in err) or ('daily limit' in err):
+                        raise
+                    if '404' in err or 'not found' in err or ('model' in err and 'not' in err):
+                        continue
+                    if ('503' in err) or ('unavailable' in err) or ('high demand' in err):
+                        continue
+                    raise
+
+            raise RuntimeError(f"Gemini request failed after trying models {model_candidates}: {last_exc}")
 
         raise RuntimeError("No compatible Google GenAI SDK found installed in environment.")
 
